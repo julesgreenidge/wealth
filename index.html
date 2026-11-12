@@ -71,7 +71,7 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
 </style>
 </head>
 <body>
-<div id="login">
+<div id="login" style="visibility:hidden">
 <form id="f" method="post" action="" autocomplete="on">
 <h1>Wealth</h1>
 <p id="lmsg">Private. Enter your password to unlock.</p>
@@ -312,8 +312,8 @@ const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const bu=a=>{let s='';const u=new Uint8Array(a);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)};
 const err=document.getElementById('err'),go=document.getElementById('go'),f=document.getElementById('f');
 const get=async(u,t)=>{const r=await fetch(u+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(u+' '+r.status);return t?r.text():r.json()};
-if(!window.crypto||!crypto.subtle){document.getElementById('lmsg').innerHTML='This page needs a secure connection. <a style="color:inherit;font-weight:600" href="https://'+location.host+location.pathname+'">Open the secure version</a>.';go.disabled=true;return}
-let LOCK;try{LOCK=await get('lock.json')}catch(x){err.textContent='Could not load the page. Check your connection and reload.';return}
+if(!window.crypto||!crypto.subtle){document.getElementById('lmsg').innerHTML='This page needs a secure connection. <a style="color:inherit;font-weight:600" href="https://'+location.host+location.pathname+'">Open the secure version</a>.';go.disabled=true;document.getElementById('login').style.visibility='visible';return}
+let LOCK;try{LOCK=await get('lock.json')}catch(x){err.textContent='Could not load the page. Check your connection and reload.';document.getElementById('login').style.visibility='visible';return}
 async function openWith(wk){
   const pk=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(LOCK.wrap.iv)},wk,ub(LOCK.wrap.ct));
   const priv=await crypto.subtle.importKey('pkcs8',pk,{name:'RSA-OAEP',hash:'SHA-256'},false,['decrypt']);
@@ -321,12 +321,19 @@ async function openWith(wk){
   const dk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(enc.k)),'AES-GCM',false,['decrypt']);
   const D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(enc.iv)},dk,ub(enc.ct))));
   D.prices=prices;D.look=funds;
-  try{const ye=await get('ynab.enc');const yk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(ye.k)),'AES-GCM',false,['decrypt']);D.ynab=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(ye.iv)},yk,ub(ye.ct))))}catch(e){}
+  let newY=false;if(!sessionStorage.getItem('wealth-skip-ynab'))try{const ye=await get('ynab.enc');const yk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(ye.k)),'AES-GCM',false,['decrypt']);D.ynab=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(ye.iv)},yk,ub(ye.ct))));newY=true}catch(e){}
   document.getElementById('login').hidden=true;document.getElementById('app').hidden=false;
-  window.startApp(D);
+  const prob=sessionStorage.getItem('wealth-problem');
+  if(prob){const b=document.createElement('div');b.className='card';b.style.cssText='margin-bottom:12px;border-color:var(--neg)';b.innerHTML='<b>The automatic YNAB update could not be shown, so this page is using your last export instead.</b><p class="note" style="margin:6px 0 0">Send Claude this line (it contains no figures): <code style="user-select:all">'+prob.replace(/</g,'&lt;')+'</code></p>';document.getElementById('app').prepend(b)}
+  try{window.startApp(D)}catch(e){
+    if(newY){const Y=D.ynab||{};const L=o=>o?Object.keys(o).length:0;
+      const info=[e.message,'months='+(Y.months||[]).length+' '+((Y.months||[])[0]||'')+'..'+((Y.months||[]).slice(-1)[0]||''),'nw='+(Y.nw||[]).length,'types='+Object.keys(Y.bytype||{}).join('|'),'cf='+Object.keys(Y.cf||{}).map(k=>k+':'+(Y.cf[k]||[]).length).join(','),'groups='+L(Y.groups),'cats='+L(Y.cats),'accounts='+(Y.accounts||[]).length,'cutoff='+Y.cutoff].join(' ; ');
+      sessionStorage.setItem('wealth-skip-ynab','1');sessionStorage.setItem('wealth-problem',info);location.reload();return}
+    throw e}
 }
 const keyFrom=raw=>crypto.subtle.importKey('raw',ub(raw),'AES-GCM',false,['decrypt']);
 for(const st of [sessionStorage,localStorage]){try{const s=JSON.parse(st.getItem('wealth-wk')||'null');if(s&&s.salt===LOCK.wrap.salt){await openWith(await keyFrom(s.k));return}}catch(e){}}
+document.getElementById('login').style.visibility='visible';
 f.onsubmit=async e=>{
   e.preventDefault();err.textContent='';go.disabled=true;go.textContent='Unlocking…';
   let wk;
