@@ -153,7 +153,7 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.t));
  try{localStorage.setItem('wealth-tab',b.dataset.t)}catch(e){} draw();});
 try{const t=localStorage.getItem('wealth-tab');if(t)document.querySelector('nav button[data-t="'+t+'"]')?.click()}catch(e){}
-document.getElementById('lock').onclick=()=>{try{sessionStorage.removeItem('wealth-wk');localStorage.removeItem('wealth-wk')}catch(e){} location.reload()};
+document.getElementById('lock').onclick=()=>{try{['wealth-wk','wealth-skip-ynab','wealth-problem'].forEach(k=>sessionStorage.removeItem(k));localStorage.removeItem('wealth-wk')}catch(e){} location.reload()};
 
 /* today's figures */
 const POT={'Pension':'Pensions','Funds ISA':'Stocks & shares ISAs','Shares ISA':'Stocks & shares ISAs','Crypto':'Crypto'};
