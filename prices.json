@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 21:29 UTC",
+ "updated": "2026-11-12 21:53 UTC",
  "fx": {
   "usd": {
    "rate": 1.3256,
@@ -33,7 +33,7 @@
    "src": "FT"
   },
   "AAPL": {
-   "price": 354.84,
+   "price": 354.88,
    "date": "2026-11-12",
    "cur": "USD",
    "src": "FT"
@@ -87,13 +87,13 @@
    "src": "FT"
   },
   "BTC": {
-   "price": 54062.0,
+   "price": 54035.0,
    "date": "2026-11-12",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1525.1,
+   "price": 1524.9,
    "date": "2026-11-12",
    "cur": "GBP",
    "src": "CoinGecko"
