@@ -1,30 +1,30 @@
 {
- "updated": "2026-11-11",
+ "updated": "2026-11-12 21:24 UTC",
  "fx": {
   "usd": {
-   "rate": 1.3335,
-   "date": "2026-11-10",
-   "src": "Bank of England"
+   "rate": 1.3256,
+   "date": "2026-11-12",
+   "src": "ECB (Frankfurter)"
   }
  },
  "items": {
   "GAC": {
-   "price": 287.4478,
-   "date": "2026-11-10",
+   "price": 291.6,
+   "date": "2026-11-11",
    "cur": "GBP",
-   "src": "Fidelity"
+   "src": "FT"
   },
   "USEQ": {
-   "price": 1270.3253,
-   "date": "2026-11-10",
+   "price": 1291.62,
+   "date": "2026-11-11",
    "cur": "GBP",
-   "src": "Fidelity"
+   "src": "FT"
   },
   "LS100": {
-   "price": 488.5587,
-   "date": "2026-11-10",
+   "price": 494.74,
+   "date": "2026-11-11",
    "cur": "GBP",
-   "src": "Fidelity"
+   "src": "FT"
   },
   "MSFT": {
    "price": 530.61,
@@ -87,16 +87,28 @@
    "src": "MarketScreener"
   },
   "BTC": {
-   "price": 56046.67,
-   "date": "2026-11-11",
+   "price": 53996.0,
+   "date": "2026-11-12",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1540.64,
-   "date": "2026-11-11",
+   "price": 1522.2,
+   "date": "2026-11-12",
    "cur": "GBP",
    "src": "CoinGecko"
   }
- }
+ },
+ "failed": [
+  "MSFT",
+  "AAPL",
+  "AMD",
+  "META",
+  "NVDA",
+  "AMZN",
+  "GOOGL",
+  "DIS",
+  "PEP",
+  "AAF"
+ ]
 }
