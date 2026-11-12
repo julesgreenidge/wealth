@@ -321,6 +321,7 @@ async function openWith(wk){
   const dk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(enc.k)),'AES-GCM',false,['decrypt']);
   const D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(enc.iv)},dk,ub(enc.ct))));
   D.prices=prices;D.look=funds;
+  try{const ye=await get('ynab.enc');const yk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(ye.k)),'AES-GCM',false,['decrypt']);D.ynab=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(ye.iv)},yk,ub(ye.ct))))}catch(e){}
   document.getElementById('login').hidden=true;document.getElementById('app').hidden=false;
   window.startApp(D);
 }
