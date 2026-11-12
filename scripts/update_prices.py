@@ -5,7 +5,7 @@ import json, re, datetime as dt, urllib.request, urllib.parse, csv, io, sys
 UA = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
       'Accept-Language': 'en-GB,en;q=0.9'}
 FUNDS = {'GAC': 'GB00BD3RZ582', 'USEQ': 'GB00B5B71Q71', 'LS100': 'GB00B41XG308'}
-US = ['MSFT', 'AAPL', 'AMD', 'META', 'NVDA', 'AMZN', 'GOOGL', 'DIS', 'PEP']
+US = {'MSFT': 'NSQ', 'AAPL': 'NSQ', 'AMD': 'NSQ', 'META': 'NSQ', 'NVDA': 'NSQ', 'AMZN': 'NSQ', 'GOOGL': 'NSQ', 'DIS': 'NYQ', 'PEP': 'NSQ'}
 CRYPTO = {'BTC': 'bitcoin', 'ETH': 'ethereum'}
 
 def get(url, timeout=25):
@@ -35,6 +35,14 @@ def ft_fund(isin):
     date = dt.datetime.strptime(d.group(1), '%b %d %Y').date().isoformat() if d else today()
     return float(m.group(1).replace(',', '')), date
 
+def ft_equity(sym, exch):
+    h = get('https://markets.ft.com/data/equities/tearsheet/summary?s=' + sym + ':' + exch)
+    m = re.search(r'Price \((\w+)\)</span><span class="mod-ui-data-list__value">([\d,\.]+)<', h)
+    if not m: raise ValueError('price not found')
+    d = re.search(r'as of ([A-Z][a-z]{2} \d{1,2} \d{4})', h)
+    date = dt.datetime.strptime(d.group(1), '%b %d %Y').date().isoformat() if d else today()
+    return float(m.group(2).replace(',', '')), date, m.group(1)
+
 def yahoo_isin(isin):
     j = json.loads(get('https://query2.finance.yahoo.com/v1/finance/search?q=' + isin))
     sym = j['quotes'][0]['symbol']
@@ -62,14 +70,17 @@ def main(path='prices.json'):
         r = first(k, ('FT', lambda isin=isin: ft_fund(isin)), ('Yahoo', lambda isin=isin: yahoo_isin(isin)))
         if r: items[k] = dict(price=r[0], date=r[1], cur='GBP', src=r[2])
         else: failed.append(k)
-    for t in US:
-        r = first(t, ('Yahoo', lambda t=t: yahoo(t)[:2]), ('Stooq', lambda t=t: stooq(t.lower() + '.us')))
+    for t, ex in US.items():
+        r = first(t, ('FT', lambda t=t, ex=ex: ft_equity(t, ex)[:2]), ('Yahoo', lambda t=t: yahoo(t)[:2]))
         if r: items[t] = dict(price=r[0], date=r[1], cur='USD', src=r[2])
         else: failed.append(t)
     def aaf_yahoo():
         p, d, cur = yahoo('AAF.L')
         return (p if cur == 'GBp' else p * 100), d
-    r = first('AAF', ('Yahoo', aaf_yahoo), ('Stooq', lambda: stooq('aaf.uk')))
+    def aaf_ft():
+        p, d, cur = ft_equity('AAF', 'LSE')
+        return (p if cur == 'GBX' else p * 100), d
+    r = first('AAF', ('FT', aaf_ft), ('Yahoo', aaf_yahoo))
     if r: items['AAF'] = dict(price=r[0], date=r[1], cur='GBp', src=r[2])
     else: failed.append('AAF')
     try:
