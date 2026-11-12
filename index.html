@@ -53,6 +53,14 @@ svg{display:block;width:100%;height:auto;overflow:visible}
 svg text{fill:var(--muted);font-size:11px}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin-top:8px}
 .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--k);margin-right:5px;vertical-align:-1px}
+.pb{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.pb .num{min-width:62px;text-align:right;font-variant-numeric:tabular-nums}
+.pt{position:relative;width:64px;height:8px;background:var(--line);border-radius:4px;flex:none}
+.pt i{position:absolute;top:0;bottom:0;border-radius:4px}
+.pt .z{position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--muted)}
+.pt .ov{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent}
+@media (max-width:600px){.pt{display:none}.pb .num{min-width:0}}
+nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav button{flex:none;white-space:nowrap}
 .pot .v{font:600 22px/1.2 Georgia,serif;font-variant-numeric:tabular-nums}
 .tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);font-size:12px;padding:5px 8px;border-radius:6px;opacity:0;transition:opacity .1s;z-index:9}
 #login{min-height:100vh;display:grid;place-items:center;padding:16px}
@@ -85,7 +93,7 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
 </div>
 <div class="wrap" id="app" hidden>
 <header><div><h1>Wealth</h1><div class="sub" id="asof"></div></div><button class="lock" id="lock" type="button">Lock</button></header>
-<nav><button class="on" data-t="overview">Overview</button><button data-t="investing">Investing</button><button data-t="mix">Investing overview</button><button data-t="spending">Spending</button></nav>
+<nav><button class="on" data-t="overview">Overview</button><button data-t="investing">Investing</button><button data-t="mix">Investing overview</button><button data-t="hist">Investing history</button><button data-t="spending">Spending</button></nav>
 
 <section id="overview" class="on">
  <div class="grid kpis" id="kpis"></div>
@@ -119,6 +127,12 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
   <div class="card"><h2>Company size</h2><p class="note">Share of your funds and shares by the size of company (Morningstar). Crypto and cash left out.</p><div id="csize"></div>
    <h2 style="margin-top:18px">What your funds cost</h2><p class="note" id="feenote"></p><div class="tw"><table id="fees"></table></div></div>
  </div>
+</section>
+
+<section id="hist">
+ <div class="card"><div class="head"><div><h2>How each investment has done</h2><p class="note" id="histnote"></p></div>
+  <div class="seg" id="histmode"><button data-m="annual" class="on">Per year</button><button data-m="total">Total change</button></div></div>
+  <div class="tw"><table id="histtab"></table></div><p class="note" id="histfoot" style="margin:10px 0 0"></p></div>
 </section>
 
 <section id="spending">
@@ -301,8 +315,33 @@ function drawMix(){
  document.getElementById('feenote').textContent=fees.length?'Fund charges (ongoing charges figure) taken from the fund each year. Your ii and Trading 212 platform fees are not included.':'No funds in this pot.';
 }
 
+/* investing history */
+let histMode='annual';
+document.querySelectorAll('#histmode button').forEach(b=>b.onclick=()=>{histMode=b.dataset.m;document.querySelectorAll('#histmode button').forEach(x=>x.classList.toggle('on',x===b));drawHist()});
+function pbar(x){
+ if(x==null||!isFinite(x))return '<div class="pb"><span class="num">-</span><span class="pt"></span></div>';
+ const f=Math.min(1,Math.abs(x)),pos=x>=0,col=pos?'var(--pos)':'var(--neg)';
+ const ov=Math.abs(x)>1?`<b class="ov" style="${pos?'left:calc(100% + 2px);border-left:6px solid '+col:'right:calc(100% + 2px);border-right:6px solid '+col}"></b>`:'';
+ return `<div class="pb"><span class="num ${pos?'pos':'neg'}">${(pos?'+':'−')+(Math.abs(x)*100).toFixed(1)}%</span><span class="pt"><span class="z"></span><i style="${pos?'left:50%':'right:50%'};width:${f*50}%;background:${col}"></i>${ov}</span></div>`;
+}
+function drawHist(){
+ const T=document.getElementById('histtab');if(!D.hist){T.innerHTML='<tr><td class="note">Price history not available yet.</td></tr>';return}
+ const A=D.hist.assets,Y=[1,3,5,10];const by={};
+ H.filter(h=>h.pkey&&A[h.pkey]).forEach(h=>{(by[h.pkey]=by[h.pkey]||{name:h.name,ticker:h.ticker,pots:new Set(),value:0}).pots.add(h.pot);by[h.pkey].value+=h.value});
+ const groups=[['Funds',k=>['GAC','USEQ','LS100'].includes(k)],['Shares',k=>by[k].ticker],['Crypto',k=>['BTC','ETH'].includes(k)]];
+ let html=`<tr><th>Investment</th><th class="hm">Where</th>${Y.map(y=>`<th class="n">${y} year${y>1?'s':''}</th>`).join('')}</tr>`;
+ groups.forEach(([g,test])=>{const ks=Object.keys(by).filter(test).sort((a,b)=>by[b].value-by[a].value);if(!ks.length)return;
+  html+=`<tr class="grp"><td colspan="${Y.length+2}">${g}</td></tr>`;
+  ks.forEach(k=>{const a=A[k],b=by[k];
+   html+=`<tr><td>${b.name}${b.ticker?` <span class="note">${b.ticker}</span>`:''}</td><td class="hm note">${[...b.pots].join(', ')}</td>`+Y.map(y=>{const p=a.periods&&a.periods[y];let x=p?p.change:null;if(x!=null&&histMode==='annual')x=Math.pow(1+x,1/y)-1;return `<td class="n" title="${p?'From '+fdate(p.start_date):'No price that far back'}">${pbar(x)}</td>`}).join('')+'</tr>'});
+ });
+ T.innerHTML=html;
+ document.getElementById('histnote').textContent=histMode==='annual'?'Average yearly change in price over each period. Full bar = 100% a year; an arrow means it went beyond that.':'Total change in price over each period. Full bar = 100%; an arrow means it went beyond that.';
+ document.getElementById('histfoot').textContent=`Price change only, to ${fdate(D.hist.updated)}. Your funds reinvest their income, so their prices include it; shares exclude dividends and are measured in their own currency (US dollars, or pence for Airtel Africa), so exchange-rate moves aren't included. Crypto in pounds. A dash means there is no price that far back. Sources: FT (funds and shares), Kraken (crypto). Hover over a figure to see the start date.`;
+}
+
 document.getElementById('foot').innerHTML=D.notes.map(n=>'<div>'+n+'</div>').join('');
-function draw(){drawNW();drawCF();drawGroups();drawMix()}
+function draw(){drawNW();drawCF();drawGroups();drawMix();drawHist()}
 draw();let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(draw,150)});
 };
 </script>
@@ -318,9 +357,10 @@ async function openWith(wk){
   const pk=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(LOCK.wrap.iv)},wk,ub(LOCK.wrap.ct));
   const priv=await crypto.subtle.importKey('pkcs8',pk,{name:'RSA-OAEP',hash:'SHA-256'},false,['decrypt']);
   const [enc,prices,funds]=await Promise.all([get('data.enc'),get('prices.json'),get('funds.json')]);
+  let hist=null;try{hist=await get('history.json')}catch(e){}
   const dk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(enc.k)),'AES-GCM',false,['decrypt']);
   const D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(enc.iv)},dk,ub(enc.ct))));
-  D.prices=prices;D.look=funds;
+  D.prices=prices;D.look=funds;D.hist=hist;
   let newY=false;if(!sessionStorage.getItem('wealth-skip-ynab'))try{const ye=await get('ynab.enc');const yk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(ye.k)),'AES-GCM',false,['decrypt']);D.ynab=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(ye.iv)},yk,ub(ye.ct))));newY=true}catch(e){}
   document.getElementById('login').hidden=true;document.getElementById('app').hidden=false;
   const prob=sessionStorage.getItem('wealth-problem');
