@@ -320,8 +320,8 @@ let histMode='annual';
 document.querySelectorAll('#histmode button').forEach(b=>b.onclick=()=>{histMode=b.dataset.m;document.querySelectorAll('#histmode button').forEach(x=>x.classList.toggle('on',x===b));drawHist()});
 function pbar(x){
  if(x==null||!isFinite(x))return '<div class="pb"><span class="num">-</span><span class="pt"></span></div>';
- const f=Math.min(1,Math.abs(x)),pos=x>=0,col=pos?'var(--pos)':'var(--neg)';
- const ov=Math.abs(x)>1?`<b class="ov" style="${pos?'left:calc(100% + 2px);border-left:6px solid '+col:'right:calc(100% + 2px);border-right:6px solid '+col}"></b>`:'';
+ const CAP=0.5,f=Math.min(1,Math.abs(x)/CAP),pos=x>=0,col=pos?'var(--pos)':'var(--neg)';
+ const ov=Math.abs(x)>CAP?`<b class="ov" style="${pos?'left:calc(100% + 2px);border-left:6px solid '+col:'right:calc(100% + 2px);border-right:6px solid '+col}"></b>`:'';
  return `<div class="pb"><span class="num ${pos?'pos':'neg'}">${(pos?'+':'−')+(Math.abs(x)*100).toFixed(1)}%</span><span class="pt"><span class="z"></span><i style="${pos?'left:50%':'right:50%'};width:${f*50}%;background:${col}"></i>${ov}</span></div>`;
 }
 function drawHist(){
@@ -336,7 +336,7 @@ function drawHist(){
    html+=`<tr><td>${b.name}${b.ticker?` <span class="note">${b.ticker}</span>`:''}</td><td class="hm note">${[...b.pots].join(', ')}</td>`+Y.map(y=>{const p=a.periods&&a.periods[y];let x=p?p.change:null;if(x!=null&&histMode==='annual')x=Math.pow(1+x,1/y)-1;return `<td class="n" title="${p?'From '+fdate(p.start_date):'No price that far back'}">${pbar(x)}</td>`}).join('')+'</tr>'});
  });
  T.innerHTML=html;
- document.getElementById('histnote').textContent=histMode==='annual'?'Average yearly change in price over each period. Full bar = 100% a year; an arrow means it went beyond that.':'Total change in price over each period. Full bar = 100%; an arrow means it went beyond that.';
+ document.getElementById('histnote').textContent=histMode==='annual'?'Average yearly change in price over each period. Full bar = 50% a year; an arrow means it went beyond that.':'Total change in price over each period. Full bar = 50%; an arrow means it went beyond that.';
  document.getElementById('histfoot').textContent=`Price change only, to ${fdate(D.hist.updated)}. Your funds reinvest their income, so their prices include it; shares exclude dividends and are measured in their own currency (US dollars, or pence for Airtel Africa), so exchange-rate moves aren't included. Crypto in pounds. A dash means there is no price that far back. Sources: FT (funds and shares), Kraken (crypto). Hover over a figure to see the start date.`;
 }
 
