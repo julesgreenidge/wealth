@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Wealth: set password</title>
+<style>
+:root{--bg:#f6f5f1;--panel:#fff;--fg:#1d1d1b;--muted:#6b6a65;--line:#e4e2db;--neg:#c2413b;--pos:#17855a}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#201f1d;--fg:#f0efe9;--muted:#a4a29a;--line:#34332f;--neg:#ef7a72;--pos:#3fbf86}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:16px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px 24px;width:100%;max-width:440px}
+h1{font:600 24px/1.2 Georgia,serif;margin:0 0 6px}
+p{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+label{font-size:13px;color:var(--muted)}
+input[type=password]{width:100%;font:inherit;font-size:16px;padding:10px 12px;margin:6px 0 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+button{width:100%;font:inherit;font-weight:600;padding:10px;border:0;border-radius:8px;background:var(--fg);color:var(--bg);cursor:pointer;margin-top:4px}
+button.sec{background:none;color:var(--fg);border:1px solid var(--line)}
+button:disabled{opacity:.6;cursor:wait}
+.msg{font-size:13px;min-height:20px;margin-top:10px}
+.err{color:var(--neg)}.ok{color:var(--pos)}
+textarea{width:100%;height:120px;font:12px/1.4 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);padding:8px;margin:8px 0}
+ol{padding-left:20px;font-size:13.5px;color:var(--muted);margin:0 0 14px}
+</style>
+</head>
+<body>
+<div class="box">
+<form id="f" method="post" action="" autocomplete="on">
+ <h1>Set your password</h1>
+ <p>Choose the password for your wealth page. It stays on this device: it is never sent anywhere, and nobody else, including Claude, will see it.</p>
+ <input type="text" name="username" value="jules" autocomplete="username" style="position:absolute;opacity:0;width:1px;height:1px" tabindex="-1" aria-hidden="true">
+ <label for="p1">New password (at least 12 characters)</label>
+ <input id="p1" name="new-password" type="password" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" required minlength="12">
+ <label for="p2">Type it again</label>
+ <input id="p2" type="password" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" required>
+ <button id="go" type="submit">Create my lock</button>
+ <div class="msg err" id="err" role="alert"></div>
+</form>
+<div id="done" hidden>
+ <h1>Done</h1>
+ <ol>
+  <li>Save the new password in your password manager now (username <b>jules</b>, website <b>wealth.greenidge.one</b>).</li>
+  <li>Download your lock file below and attach it to your chat with Claude. It is scrambled with your password, so it is safe to send.</li>
+ </ol>
+ <button id="dl" type="button">Download lock file</button>
+ <button id="cp" class="sec" type="button">Or copy it as text</button>
+ <textarea id="out" readonly></textarea>
+ <div class="msg ok" id="cpmsg"></div>
+</div>
+</div>
+<script>
+(function(){
+const b64=a=>{let s='';const u=new Uint8Array(a);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)};
+const f=document.getElementById('f'),err=document.getElementById('err'),go=document.getElementById('go');
+if(!window.crypto||!crypto.subtle){err.textContent='Open this page using https:// to continue.';go.disabled=true;return}
+f.onsubmit=async e=>{
+ e.preventDefault();err.textContent='';
+ const p1=document.getElementById('p1').value,p2=document.getElementById('p2').value;
+ if(p1.length<12){err.textContent='Please use at least 12 characters.';return}
+ if(p1!==p2){err.textContent='The two passwords don’t match.';return}
+ go.disabled=true;go.textContent='Creating…';
+ try{
+  const pair=await crypto.subtle.generateKey({name:'RSA-OAEP',modulusLength:3072,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['encrypt','decrypt']);
+  const pub=await crypto.subtle.exportKey('spki',pair.publicKey);
+  const priv=await crypto.subtle.exportKey('pkcs8',pair.privateKey);
+  const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),iter=600000;
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(p1),'PBKDF2',false,['deriveKey']);
+  const wk=await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt']);
+  const wrapped=await crypto.subtle.encrypt({name:'AES-GCM',iv},wk,priv);
+  const lock=JSON.stringify({v:2,kind:'wealth-lock',pub:b64(pub),wrap:{iter,salt:b64(salt),iv:b64(iv),ct:b64(wrapped)}});
+  document.getElementById('out').value=lock;
+  document.getElementById('dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([lock],{type:'application/json'}));a.download='wealth-lock.json';a.click()};
+  document.getElementById('cp').onclick=async()=>{try{await navigator.clipboard.writeText(lock);document.getElementById('cpmsg').textContent='Copied.'}catch(x){document.getElementById('out').select()}};
+  f.hidden=true;document.getElementById('done').hidden=false;
+ }catch(x){err.textContent='Something went wrong: '+x.message;go.disabled=false;go.textContent='Create my lock'}
+};
+})();
+</script>
+</body>
+</html>
