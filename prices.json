@@ -1,0 +1,102 @@
+{
+ "updated": "2026-11-11",
+ "fx": {
+  "usd": {
+   "rate": 1.3335,
+   "date": "2026-11-10",
+   "src": "Bank of England"
+  }
+ },
+ "items": {
+  "GAC": {
+   "price": 287.4478,
+   "date": "2026-11-10",
+   "cur": "GBP",
+   "src": "Fidelity"
+  },
+  "USEQ": {
+   "price": 1270.3253,
+   "date": "2026-11-10",
+   "cur": "GBP",
+   "src": "Fidelity"
+  },
+  "LS100": {
+   "price": 488.5587,
+   "date": "2026-11-10",
+   "cur": "GBP",
+   "src": "Fidelity"
+  },
+  "MSFT": {
+   "price": 530.61,
+   "date": "2026-11-06",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "AAPL": {
+   "price": 342.37,
+   "date": "2026-11-06",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "AMD": {
+   "price": 449.04,
+   "date": "2026-11-06",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "META": {
+   "price": 641.39,
+   "date": "2026-11-10",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "NVDA": {
+   "price": 178.67,
+   "date": "2026-11-09",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "AMZN": {
+   "price": 259.3,
+   "date": "2026-11-06",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "GOOGL": {
+   "price": 284.78,
+   "date": "2026-11-06",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "DIS": {
+   "price": 116.75,
+   "date": "2026-11-06",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "PEP": {
+   "price": 141.34,
+   "date": "2026-11-06",
+   "cur": "USD",
+   "src": "Stock Analysis / TipRanks"
+  },
+  "AAF": {
+   "price": 287.0,
+   "date": "2026-11-09",
+   "cur": "GBp",
+   "src": "MarketScreener"
+  },
+  "BTC": {
+   "price": 56046.67,
+   "date": "2026-11-11",
+   "cur": "GBP",
+   "src": "CoinGecko"
+  },
+  "ETH": {
+   "price": 1540.64,
+   "date": "2026-11-11",
+   "cur": "GBP",
+   "src": "CoinGecko"
+  }
+ }
+}

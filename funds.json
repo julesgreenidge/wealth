@@ -1,0 +1,189 @@
+{
+ "funds": {
+  "Vanguard FTSE Global All Cap": {
+   "countries": {
+    "United States": 62.53,
+    "Japan": 6.08,
+    "Taiwan": 3.51,
+    "United Kingdom": 3.11,
+    "Canada": 2.99,
+    "South Korea": 2.56,
+    "China": 2.28,
+    "Switzerland": 1.83,
+    "France": 1.81,
+    "Germany": 1.73,
+    "India": 1.6,
+    "Australia": 1.56,
+    "Netherlands": 1.12,
+    "Spain": 0.81,
+    "Italy": 0.74
+   },
+   "countries_src": "Vanguard UK, 30 Sep 2026 (top 15 countries)",
+   "sectors": {
+    "Technology": 32.03,
+    "Financial services": 15.78,
+    "Industrials": 10.91,
+    "Healthcare": 8.61,
+    "Consumer cyclical": 8.48,
+    "Communication services": 7.53,
+    "Consumer defensive": 4.38,
+    "Energy": 4.0,
+    "Basic materials": 3.86,
+    "Utilities": 2.26,
+    "Real estate": 2.16
+   },
+   "top": {
+    "Nvidia": 4.546,
+    "Apple": 4.107,
+    "Microsoft": 3.25,
+    "Amazon": 2.062,
+    "Alphabet": 3.092,
+    "TSMC": 1.618,
+    "Broadcom": 1.394,
+    "Meta Platforms": 1.361,
+    "Micron Technology": 1.024
+   },
+   "size": {
+    "Large": 75,
+    "Medium": 18,
+    "Small": 6
+   },
+   "ocf": 0.23,
+   "holdings": 7336,
+   "yield": 1.19
+  },
+  "Vanguard US Equity Index": {
+   "countries": {
+    "United States": 99.57,
+    "Canada": 0.02,
+    "Cash": 0.35
+   },
+   "countries_src": "Lloyds Bank fund centre, 10 Nov 2026",
+   "sectors": {
+    "Technology": 38.42,
+    "Financial services": 11.49,
+    "Healthcare": 9.91,
+    "Communication services": 9.17,
+    "Industrials": 8.78,
+    "Consumer cyclical": 8.73,
+    "Consumer defensive": 4.15,
+    "Energy": 3.55,
+    "Real estate": 2.12,
+    "Utilities": 1.86,
+    "Basic materials": 1.81
+   },
+   "top": {
+    "Nvidia": 7.446,
+    "Apple": 6.548,
+    "Microsoft": 5.131,
+    "Amazon": 3.295,
+    "Alphabet": 4.902,
+    "Broadcom": 2.251,
+    "Meta Platforms": 2.154,
+    "Micron Technology": 1.621,
+    "Tesla": 1.347
+   },
+   "size": {
+    "Large": 71,
+    "Medium": 20,
+    "Small": 9
+   },
+   "ocf": 0.1,
+   "holdings": 3498,
+   "yield": 0.82
+  },
+  "Vanguard LifeStrategy 100%": {
+   "countries": {
+    "United States": 53.38,
+    "United Kingdom": 19.88,
+    "Japan": 5.1,
+    "South Korea": 2.78,
+    "Taiwan": 2.43,
+    "China": 1.66,
+    "France": 1.58,
+    "Switzerland": 1.58,
+    "Germany": 1.5,
+    "Australia": 1.27
+   },
+   "countries_src": "Bank of Scotland fund centre, 10 Nov 2026 (top 10 countries)",
+   "sectors": {
+    "Technology": 26.95,
+    "Financial services": 17.85,
+    "Industrials": 11.43,
+    "Healthcare": 9.12,
+    "Consumer cyclical": 8.32,
+    "Communication services": 6.85,
+    "Consumer defensive": 5.9,
+    "Energy": 4.73,
+    "Basic materials": 4.33,
+    "Utilities": 2.62,
+    "Real estate": 1.9
+   },
+   "top_via": {
+    "Vanguard US Equity Index": 29.897
+   },
+   "size": {
+    "Large": 79,
+    "Medium": 17,
+    "Small": 4
+   },
+   "ocf": 0.2,
+   "holdings": 7,
+   "yield": 0.02
+  }
+ },
+ "stocks": {
+  "MSFT": [
+   "Microsoft",
+   "United States",
+   "Technology"
+  ],
+  "AAPL": [
+   "Apple",
+   "United States",
+   "Technology"
+  ],
+  "AMZN": [
+   "Amazon",
+   "United States",
+   "Consumer cyclical"
+  ],
+  "META": [
+   "Meta Platforms",
+   "United States",
+   "Communication services"
+  ],
+  "NVDA": [
+   "Nvidia",
+   "United States",
+   "Technology"
+  ],
+  "AAF": [
+   "Airtel Africa",
+   "Africa",
+   "Communication services"
+  ],
+  "AMD": [
+   "Advanced Micro Devices",
+   "United States",
+   "Technology"
+  ],
+  "GOOGL": [
+   "Alphabet",
+   "United States",
+   "Communication services"
+  ],
+  "DIS": [
+   "Walt Disney",
+   "United States",
+   "Communication services"
+  ],
+  "PEP": [
+   "PepsiCo",
+   "United States",
+   "Consumer defensive"
+  ]
+ },
+ "sources": "Sectors, biggest holdings and company size: Fidelity factsheets (Morningstar data), 30 Sep 2026. Countries: Vanguard UK, Lloyds Bank and Bank of Scotland fund centres. Charges: Vanguard, 3 Nov 2026.",
+ "updated": "2026-11-11"
+}
