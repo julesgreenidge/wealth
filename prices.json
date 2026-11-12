@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 21:24 UTC",
+ "updated": "2026-11-12 21:29 UTC",
  "fx": {
   "usd": {
    "rate": 1.3256,
@@ -27,88 +27,77 @@
    "src": "FT"
   },
   "MSFT": {
-   "price": 530.61,
-   "date": "2026-11-06",
+   "price": 523.0,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "AAPL": {
-   "price": 342.37,
-   "date": "2026-11-06",
+   "price": 354.84,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "AMD": {
-   "price": 449.04,
-   "date": "2026-11-06",
+   "price": 585.3,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "META": {
-   "price": 641.39,
-   "date": "2026-11-10",
+   "price": 623.61,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "NVDA": {
-   "price": 178.67,
-   "date": "2026-11-09",
+   "price": 166.19,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "AMZN": {
-   "price": 259.3,
-   "date": "2026-11-06",
+   "price": 267.44,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "GOOGL": {
-   "price": 284.78,
-   "date": "2026-11-06",
+   "price": 298.7,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "DIS": {
-   "price": 116.75,
-   "date": "2026-11-06",
+   "price": 118.23,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "PEP": {
-   "price": 141.34,
-   "date": "2026-11-06",
+   "price": 142.26,
+   "date": "2026-11-12",
    "cur": "USD",
-   "src": "Stock Analysis / TipRanks"
+   "src": "FT"
   },
   "AAF": {
-   "price": 287.0,
-   "date": "2026-11-09",
+   "price": 284.4,
+   "date": "2026-11-12",
    "cur": "GBp",
-   "src": "MarketScreener"
+   "src": "FT"
   },
   "BTC": {
-   "price": 53996.0,
+   "price": 54062.0,
    "date": "2026-11-12",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1522.2,
+   "price": 1525.1,
    "date": "2026-11-12",
    "cur": "GBP",
    "src": "CoinGecko"
   }
  },
- "failed": [
-  "MSFT",
-  "AAPL",
-  "AMD",
-  "META",
-  "NVDA",
-  "AMZN",
-  "GOOGL",
-  "DIS",
-  "PEP",
-  "AAF"
- ]
+ "failed": []
 }
