@@ -55,7 +55,7 @@ def from_api(token):
             cats[c['id']] = (group, name)
     accounts = {a['id']: a['name'] for a in get('/accounts')['accounts'] if not a.get('deleted')}
     rows = []
-    for t in get('/transactions')['transactions']:
+    for t in get('/transactions?since_date=2000-01-01')['transactions']:
         if t.get('deleted') or t['account_id'] not in accounts: continue
         base = dict(Account=accounts[t['account_id']], date=t['date'], Payee=t.get('payee_name') or '')
         subs = [s for s in (t.get('subtransactions') or []) if not s.get('deleted')]
@@ -64,6 +64,7 @@ def from_api(token):
             if s.get('transfer_account_id'): g = n = None
             rows.append(dict(base, **{'Category Group': g, 'Category': n, 'net': s['amount'] / 1000}))
     df = pd.DataFrame(rows); df['date'] = pd.to_datetime(df.date)
+    print('Transactions from', df.date.min().year, 'to', df.date.max().year)   # years only, no figures
     return df
 
 def from_csv(path):
