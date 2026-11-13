@@ -63,6 +63,8 @@ svg text{fill:var(--muted);font-size:11px}
 nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav button{flex:none;white-space:nowrap}
 .fin{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px 12px;align-items:center;font-size:13.5px}
 .fin h3{grid-column:1/-1;font-size:13px;margin:10px 0 0;color:var(--muted);font-weight:600}
+.fin input::-webkit-outer-spin-button,.fin input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.fin input[type=number]{-moz-appearance:textfield;appearance:textfield}
 .fin input{width:100%;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);text-align:right}
 .pot .v{font:600 22px/1.2 Georgia,serif;font-variant-numeric:tabular-nums}
 .tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);font-size:12px;padding:5px 8px;border-radius:6px;opacity:0;transition:opacity .1s;z-index:9}
