@@ -168,7 +168,7 @@ const PR=D.prices.items,FXo=D.prices.fx.usd;
 D.hold={fx:[FXo.rate,FXo.date,FXo.src],holdings:D.holdings.map(h=>{h={...h};if(h.pkey&&PR[h.pkey]){const p=PR[h.pkey];h.price=p.price;h.price_date=p.date;h.cur=p.cur==='USD'?'$':p.cur==='GBp'?'p':undefined;h.value=h.units*p.price/(p.cur==='USD'?FXo.rate:p.cur==='GBp'?100:1)}return h})};
 const Y=D.ynab,H=D.hold.holdings;
 /* accounts whose holdings aren't itemised (e.g. a workplace pension) keep their YNAB balance */
-const COVERED=/^(Interactive Investor SIPP|Interactive Investor S&S ISA|Trading212 S&S ISA)$/;
+const COVERED=/^(Interactive Investor SIPP|Interactive Investor S&S ISA|Trading212 S&S ISA|Aviva Pension - AICPA)$/;
 const EXTRA=(Y.accounts||[]).filter(a=>['Pensions','Stocks & shares ISAs'].includes(a.type)&&!COVERED.test(a.name)&&Math.abs(a.balance)>0.5);
 EXTRA.forEach(a=>H.push({pot:a.type==='Pensions'?'Pension':'Funds ISA',name:a.name,kind:'Fund (value from YNAB)',units:null,value:a.balance,ynab_date:a.updated,fund:/Aviva/i.test(a.name)?'Aviva Pensions US Equity S6':null}));
 const gbp=(v,dp=0)=>(v<0?'−':'')+'£'+Math.abs(v).toLocaleString('en-GB',{minimumFractionDigits:dp,maximumFractionDigits:dp});
@@ -303,7 +303,7 @@ function drawGroups(){
 const LT=D.look;const MIXP=[['All','all'],['Pension','Pension'],['Funds ISA','Funds ISA'],['Shares ISA','Shares ISA'],['Crypto','Crypto']];let mixSel='all';
 const MP=document.getElementById('mixpot');MIXP.forEach(([l,k])=>{const b=el('button',{},l);if(k===mixSel)b.classList.add('on');b.onclick=()=>{mixSel=k;MP.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));drawMix()};MP.appendChild(b)});
 const REG=c=>({'United States':'United States','United Kingdom':'United Kingdom','Japan':'Japan','Canada':'Other developed','Australia':'Other developed','South Korea':'Other developed','Switzerland':'Europe (ex UK)','France':'Europe (ex UK)','Germany':'Europe (ex UK)','Netherlands':'Europe (ex UK)','Spain':'Europe (ex UK)','Italy':'Europe (ex UK)','Taiwan':'Emerging markets','China':'Emerging markets','India':'Emerging markets','Africa':'Africa'})[c]||c;
-const RC={'United States':'--c1','United Kingdom':'--c3','Europe (ex UK)':'--c5','Japan':'--c7','Other developed':'--c8','Emerging markets':'--c2','Africa':'--c2','Crypto (no country)':'--c4','Cash':'--c6','Other countries':'--c6'};
+const RC={'United States':'--c1','United Kingdom':'--c3','Europe (ex UK)':'--c5','Japan':'--c7','Other developed':'--c8','North America':'--c1','Europe (ex UK) listed':'--c5','Emerging markets':'--c2','Africa':'--c2','Crypto (no country)':'--c4','Cash':'--c6','Other countries':'--c6'};
 function drawMix(){
  const hs=H.filter(h=>mixSel==='all'||h.pot===mixSel);const tot=hs.reduce((a,h)=>a+h.value,0);
  const geo={},sec={},top={},size={Large:0,Medium:0,Small:0};let sizeTot=0,unl=0;const fees=[];
@@ -320,7 +320,7 @@ function drawMix(){
   if(f.top)for(const k in f.top)add(top,k,v*f.top[k]/100);
   if(f.top_via)for(const fn in f.top_via){const g=LT.funds[fn];for(const k in g.top)add(top,k,v*f.top_via[fn]/100*g.top[k]/100)}
   const zt=f.size.Large+f.size.Medium+f.size.Small;for(const k in size)size[k]+=v*f.size[k]/zt;sizeTot+=v;
-  fees.push({n:h.name,pot:h.pot,v,ocf:f.ocf,n_h:f.holdings,y:f.yield});
+  fees.push({n:h.name,pot:h.pot,v,ocf:f.ocf,n_h:f.holdings,y:f.yield,note:f.ocf_note});
  });
  const toItems=(o,cmap,col)=>Object.entries(o).filter(([k,v])=>v>0.5).sort((a,b)=>(a[0].startsWith('Other c')||a[0]==='Cash')-(b[0].startsWith('Other c')||b[0]==='Cash')||b[1]-a[1]).map(([k,v])=>({k,v,c:`var(${(cmap&&cmap[k])||col})`}));
  bars(document.getElementById('geo'),toItems(geo,RC,'--c6'),tot);
@@ -332,8 +332,8 @@ function drawMix(){
  bars(document.getElementById('csize'),sizeTot?['Large','Medium','Small'].map(k=>({k,v:size[k],c:'var(--c1)'})):[],sizeTot);
  if(!sizeTot)document.getElementById('csize').innerHTML='<p class="note">Not applicable to this pot.</p>';
  const ft=fees.reduce((a,f)=>a+f.v*f.ocf/100,0);
- document.getElementById('fees').innerHTML=fees.length?'<tr><th>Fund</th><th class="n hm">Holdings</th><th class="n">Yearly charge</th><th class="n">Per year</th></tr>'+fees.map(f=>`<tr><td>${f.n} <span class="note">${f.pot}</span></td><td class="n hm">${f.n_h.toLocaleString('en-GB')}${f.n_h<20?' funds':''}</td><td class="n">${f.ocf.toFixed(2)}%</td><td class="n">${gbp(f.v*f.ocf/100)}</td></tr>`).join('')+`<tr class="grp"><td>Total</td><td class="hm"></td><td class="n">${(ft/fees.reduce((a,f)=>a+f.v,0)*100).toFixed(2)}%</td><td class="n">${gbp(ft)}</td></tr>`:'';
- document.getElementById('feenote').textContent=fees.length?'Fund charges (ongoing charges figure) taken from the fund each year. Your ii and Trading 212 platform fees are not included.':'No funds in this pot.';
+ document.getElementById('fees').innerHTML=fees.length?'<tr><th>Fund</th><th class="n hm">Holdings</th><th class="n">Yearly charge</th><th class="n">Per year</th></tr>'+fees.map(f=>`<tr><td>${f.n} <span class="note">${f.pot}</span></td><td class="n hm">${f.n_h==null?'-':f.n_h.toLocaleString('en-GB')+(f.n_h<20?' funds':'')}</td><td class="n" title="${f.note||''}">${f.ocf.toFixed(2)}%${f.note?'*':''}</td><td class="n">${gbp(f.v*f.ocf/100)}</td></tr>`).join('')+`<tr class="grp"><td>Total</td><td class="hm"></td><td class="n">${(ft/fees.reduce((a,f)=>a+f.v,0)*100).toFixed(2)}%</td><td class="n">${gbp(ft)}</td></tr>`:'';
+ document.getElementById('feenote').textContent=fees.length?'Fund charges (ongoing charges figure) taken from the fund each year. Your ii and Trading 212 platform fees are not included.'+(fees.some(f=>f.note)?' *Aviva\u2019s example charge; your workplace plan\u2019s charge may be lower.':''):'No funds in this pot.';
 }
 
 /* investing history */
@@ -349,7 +349,7 @@ function drawHist(){
  const T=document.getElementById('histtab');if(!D.hist){T.innerHTML='<tr><td class="note">Price history not available yet.</td></tr>';return}
  const A=D.hist.assets,Y=[1,3,5,10];const by={};
  H.filter(h=>h.pkey&&A[h.pkey]).forEach(h=>{(by[h.pkey]=by[h.pkey]||{name:h.name,ticker:h.ticker,pots:new Set(),value:0}).pots.add(h.pot);by[h.pkey].value+=h.value});
- const groups=[['Funds',k=>['GAC','USEQ','LS100'].includes(k)],['Shares',k=>by[k].ticker],['Crypto',k=>['BTC','ETH'].includes(k)]];
+ const groups=[['Funds',k=>['GAC','USEQ','LS100','AVUSEQ'].includes(k)],['Shares',k=>by[k].ticker],['Crypto',k=>['BTC','ETH'].includes(k)]];
  let html=`<tr><th>Investment</th><th class="hm">Where</th>${Y.map(y=>`<th class="n">${y} year${y>1?'s':''}</th>`).join('')}</tr>`;
  groups.forEach(([g,test])=>{const ks=Object.keys(by).filter(test).sort((a,b)=>by[b].value-by[a].value);if(!ks.length)return;
   html+=`<tr class="grp"><td colspan="${Y.length+2}">${g}</td></tr>`;

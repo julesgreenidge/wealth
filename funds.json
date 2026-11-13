@@ -130,6 +130,50 @@
    "ocf": 0.2,
    "holdings": 7,
    "yield": 0.02
+  },
+  "Aviva Pensions US Equity S6": {
+   "countries": {
+    "North America": 97.1,
+    "United Kingdom": 0.1,
+    "Other developed": 0.1,
+    "Cash": 0.1,
+    "Europe (ex UK)": 2.4
+   },
+   "countries_src": "Aviva factsheet, 30 Sep 2026 (asset allocation: North American equities 96.1% plus REITs 1.0%)",
+   "sectors": {
+    "Technology": 45.0,
+    "Consumer cyclical": 11.4,
+    "Financial services": 10.4,
+    "Industrials": 10.2,
+    "Healthcare": 8.4,
+    "Energy": 4.0,
+    "Consumer defensive": 3.2,
+    "Communication services": 2.1,
+    "Basic materials": 2.0,
+    "Real estate": 1.5,
+    "Utilities": 1.4
+   },
+   "sectors_note": "Aviva uses a different industry system (ICB), e.g. Alphabet and Meta count as Technology",
+   "top": {
+    "Nvidia": 7.8,
+    "Apple": 7.0,
+    "Microsoft": 5.6,
+    "Amazon": 3.5,
+    "Alphabet": 5.3,
+    "Broadcom": 2.4,
+    "Meta Platforms": 2.3,
+    "Micron Technology": 1.7,
+    "Tesla": 1.5
+   },
+   "size": {
+    "Large": 87.7,
+    "Medium": 1.1,
+    "Small": 0.2
+   },
+   "ocf": 0.61,
+   "ocf_note": "Aviva's example charge; your workplace plan's charge may differ",
+   "holdings": null,
+   "yield": null
   }
  },
  "stocks": {
@@ -184,6 +228,6 @@
    "Consumer defensive"
   ]
  },
- "sources": "Sectors, biggest holdings and company size: Fidelity factsheets (Morningstar data), 30 Sep 2026. Countries: Vanguard UK, Lloyds Bank and Bank of Scotland fund centres. Charges: Vanguard, 3 Nov 2026.",
+ "sources": "Sectors, biggest holdings and company size: Fidelity factsheets (Morningstar data), 30 Sep 2026. Countries: Vanguard UK, Lloyds Bank and Bank of Scotland fund centres. Charges: Vanguard, 3 Nov 2026. Aviva US Equity S6: Aviva factsheet, 30 Sep 2026.",
  "updated": "2026-11-11"
 }
