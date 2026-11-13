@@ -167,6 +167,10 @@ window.startApp=function(D){
 const PR=D.prices.items,FXo=D.prices.fx.usd;
 D.hold={fx:[FXo.rate,FXo.date,FXo.src],holdings:D.holdings.map(h=>{h={...h};if(h.pkey&&PR[h.pkey]){const p=PR[h.pkey];h.price=p.price;h.price_date=p.date;h.cur=p.cur==='USD'?'$':p.cur==='GBp'?'p':undefined;h.value=h.units*p.price/(p.cur==='USD'?FXo.rate:p.cur==='GBp'?100:1)}return h})};
 const Y=D.ynab,H=D.hold.holdings;
+/* accounts whose holdings aren't itemised (e.g. a workplace pension) keep their YNAB balance */
+const COVERED=/^(Interactive Investor SIPP|Interactive Investor S&S ISA|Trading212 S&S ISA)$/;
+const EXTRA=(Y.accounts||[]).filter(a=>['Pensions','Stocks & shares ISAs'].includes(a.type)&&!COVERED.test(a.name)&&Math.abs(a.balance)>0.5);
+EXTRA.forEach(a=>H.push({pot:a.type==='Pensions'?'Pension':'Funds ISA',name:a.name,kind:'Fund (value from YNAB)',units:null,value:a.balance,ynab_date:a.updated,fund:/Aviva/i.test(a.name)?'Aviva Pensions US Equity S6':null}));
 const gbp=(v,dp=0)=>(v<0?'−':'')+'£'+Math.abs(v).toLocaleString('en-GB',{minimumFractionDigits:dp,maximumFractionDigits:dp});
 const sgn=v=>(v>=0?'+':'−')+'£'+Math.abs(Math.round(v)).toLocaleString('en-GB');
 const pct=(v,dp=1)=>(v*100).toFixed(dp)+'%';
@@ -248,7 +252,7 @@ const AT=document.getElementById('accts');AT.innerHTML='<tr><th>Account</th><th 
 
 /* investing */
 const PC={'Pension':'--c1','Funds ISA':'--c2','Shares ISA':'--c3','Crypto':'--c4'};
-const PD={'Pension':'Interactive Investor SIPP','Funds ISA':'Interactive Investor ISA','Shares ISA':'Trading 212 ISA','Crypto':'Bitcoin, Ethereum and others'};
+const PD={'Pension':'Interactive Investor SIPP'+(EXTRA.some(a=>a.type==='Pensions')?' + '+EXTRA.filter(a=>a.type==='Pensions').map(a=>a.name.split(' ')[0]).join(', '):''),'Funds ISA':'Interactive Investor ISA','Shares ISA':'Trading 212 ISA','Crypto':'Bitcoin, Ethereum and others'};
 const PT=document.getElementById('pots');
 Object.keys(PC).forEach(p=>{PT.appendChild(el('div',{class:'card kpi pot',style:`border-top:3px solid var(${PC[p]})`},`<div class="l">${p}</div><div class="v">${gbp(potVal[p])}</div><div class="d">${PD[p]} · ${pct(potVal[p]/invTotal)}</div>`))});
 const HT=document.getElementById('hold');
@@ -257,7 +261,7 @@ Object.keys(PC).forEach(p=>{const rows=H.filter(h=>h.pot===p).sort((a,b)=>b.valu
  hh+=`<tr class="grp"><td>${p}</td><td class="hm"></td><td></td><td class="n">${gbp(potVal[p])}</td><td class="hm"></td><td></td><td class="hm"></td></tr>`;
  rows.forEach(h=>{const g=h.cost!=null?h.value-h.cost:null;
   const price=h.price==null?'':h.cur==='p'?h.price.toFixed(1)+'p':h.cur==='$'?'$'+h.price.toFixed(2):'£'+h.price.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
-  hh+=`<tr><td>${h.name}${h.ticker?` <span class="note">${h.ticker}</span>`:''}</td><td class="n hm">${h.units==null?'':(+h.units).toLocaleString('en-GB',{maximumFractionDigits:4})}</td><td class="n" title="${h.price_date?'Price on '+fdate(h.price_date):''}">${price}</td><td class="n">${gbp(h.value)}</td><td class="n hm">${h.cost!=null?gbp(h.cost):''}</td><td class="n ${g==null?'':g>=0?'pos':'neg'}">${g==null?'':sgn(g)+'<span class="hm"> ('+(g>=0?'+':'−')+pct(Math.abs(g/h.cost))+')</span>'}</td><td class="n hm">${pct(h.value/potVal[p])}</td></tr>`})});
+  hh+=`<tr><td>${h.name}${h.ynab_date?' <span class="note">YNAB balance</span>':''}${h.ticker?` <span class="note">${h.ticker}</span>`:''}</td><td class="n hm">${h.units==null?'':(+h.units).toLocaleString('en-GB',{maximumFractionDigits:4})}</td><td class="n" title="${h.price_date?'Price on '+fdate(h.price_date):''}">${price}</td><td class="n">${gbp(h.value)}</td><td class="n hm">${h.cost!=null?gbp(h.cost):''}</td><td class="n ${g==null?'':g>=0?'pos':'neg'}">${g==null?'':sgn(g)+'<span class="hm"> ('+(g>=0?'+':'−')+pct(Math.abs(g/h.cost))+')</span>'}</td><td class="n hm">${pct(h.value/potVal[p])}</td></tr>`})});
 HT.innerHTML=hh;
 document.getElementById('hnote').textContent=`US shares converted at $${(+D.hold.fx[0]).toFixed(4)} to the pound (${D.hold.fx[2]}, ${fdate(D.hold.fx[1])}). "Paid" is the average cost of the units you hold, from your Vanguard, ii and Trading 212 records and Koinly for crypto (to 22 Jul 2026). For funds you switched into, the cost is what the switch bought them for.`;
 const sec={};H.filter(h=>h.sector).forEach(h=>sec[h.sector]=(sec[h.sector]||0)+h.value);
@@ -308,7 +312,8 @@ function drawMix(){
   if(h.kind==='Cash'){add(geo,'Cash',v);add(sec,'Cash',v);return}
   if(h.kind==='Crypto'){add(geo,'Crypto (no country)',v);add(sec,'Crypto',v);return}
   if(h.ticker){const s=LT.stocks[h.ticker];add(geo,REG(s[1]),v);add(sec,s[2],v);add(top,s[0],v);size.Large+=v;sizeTot+=v;return}
-  const f=LT.funds[h.name];if(!f)return;
+  if(h.fund&&!LT.funds[h.fund]){add(geo,/US/.test(h.fund)?'United States':'Other countries',v);add(sec,'Not broken down',v);return}
+  const f=LT.funds[h.fund||h.name];if(!f)return;
   let listed=0;for(const c in f.countries){const w=f.countries[c]/100;listed+=w;add(geo,c==='Cash'?'Cash':REG(c),v*w)}
   if(listed<0.999){add(geo,'Other countries',v*(1-listed));unl+=v*(1-listed)}
   const st=Object.values(f.sectors).reduce((a,b)=>a+b,0);for(const k in f.sectors)add(sec,k,v*f.sectors[k]/st);
@@ -319,7 +324,7 @@ function drawMix(){
  });
  const toItems=(o,cmap,col)=>Object.entries(o).filter(([k,v])=>v>0.5).sort((a,b)=>(a[0].startsWith('Other c')||a[0]==='Cash')-(b[0].startsWith('Other c')||b[0]==='Cash')||b[1]-a[1]).map(([k,v])=>({k,v,c:`var(${(cmap&&cmap[k])||col})`}));
  bars(document.getElementById('geo'),toItems(geo,RC,'--c6'),tot);
- document.getElementById('geonote').textContent='Fund factsheets only list their biggest countries, so a small slice of the funds is shown as "Other countries". Airtel Africa is UK-listed but does its business in Africa.';
+ document.getElementById('geonote').textContent='Fund factsheets only list their biggest countries, so a small slice of the funds is shown as "Other countries". Airtel Africa is UK-listed but does its business in Africa.'+(H.some(h=>h.fund&&!LT.funds[h.fund])?' Your Aviva pension is counted as United States from its fund name; its factsheet breakdown isn\u2019t available yet.':'');
  bars(document.getElementById('sect'),toItems(sec,{'Crypto':'--c4','Cash':'--c6'},'--c5'),tot);
  const ti=Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([k,v])=>({k,v,c:'var(--c1)'}));
  if(ti.length){bars(document.getElementById('topco'),ti,tot)}else document.getElementById('topco').innerHTML='<p class="note">No company-level data for this pot.</p>';
