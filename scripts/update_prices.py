@@ -5,7 +5,7 @@ import json, re, datetime as dt, urllib.request, urllib.parse, csv, io, sys
 UA = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
       'Accept-Language': 'en-GB,en;q=0.9'}
 FUNDS = {'GAC': 'GB00BD3RZ582', 'USEQ': 'GB00B5B71Q71', 'LS100': 'GB00B41XG308', 'AVUSEQ': 'GB00B0ZY5X49'}
-US = {'MSFT': 'NSQ', 'AAPL': 'NSQ', 'AMD': 'NSQ', 'META': 'NSQ', 'NVDA': 'NSQ', 'AMZN': 'NSQ', 'GOOGL': 'NSQ', 'DIS': 'NYQ', 'PEP': 'NSQ'}
+US = {'MSFT': 'NSQ', 'AAPL': 'NSQ', 'AMD': 'NSQ', 'META': 'NSQ', 'NVDA': 'NSQ', 'AMZN': 'NSQ', 'GOOGL': 'NSQ', 'DIS': 'NYQ', 'PEP': 'NSQ', 'MU': 'NSQ', 'AVGO': 'NSQ'}
 CRYPTO = {'BTC': 'bitcoin', 'ETH': 'ethereum'}
 
 def get(url, timeout=25):

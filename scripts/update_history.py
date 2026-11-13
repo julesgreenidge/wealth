@@ -7,7 +7,7 @@ FT = {  # key: (FT symbol, kind)
  'GAC': ('GB00BD3RZ582:GBP', 'funds'), 'AVUSEQ': ('GB00B0ZY5X49:GBP', 'funds'), 'USEQ': ('GB00B5B71Q71:GBP', 'funds'), 'LS100': ('GB00B41XG308:GBP', 'funds'),
  'MSFT': ('MSFT:NSQ', 'equities'), 'AAPL': ('AAPL:NSQ', 'equities'), 'AMD': ('AMD:NSQ', 'equities'), 'META': ('META:NSQ', 'equities'),
  'NVDA': ('NVDA:NSQ', 'equities'), 'AMZN': ('AMZN:NSQ', 'equities'), 'GOOGL': ('GOOGL:NSQ', 'equities'), 'DIS': ('DIS:NYQ', 'equities'),
- 'PEP': ('PEP:NSQ', 'equities'), 'AAF': ('AAF:LSE', 'equities')}
+ 'PEP': ('PEP:NSQ', 'equities'), 'MU': ('MU:NSQ', 'equities'), 'AVGO': ('AVGO:NSQ', 'equities'), 'AAF': ('AAF:LSE', 'equities')}
 KRAKEN = {'BTC': 'XBTGBP', 'ETH': 'ETHGBP'}
 YEARS = [1, 3, 5, 10]
 
