@@ -4,7 +4,7 @@ import json, re, datetime as dt, urllib.request, sys, time
 
 UA = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15'}
 FT = {  # key: (FT symbol, kind)
- 'GAC': ('GB00BD3RZ582:GBP', 'funds'), 'USEQ': ('GB00B5B71Q71:GBP', 'funds'), 'LS100': ('GB00B41XG308:GBP', 'funds'),
+ 'GAC': ('GB00BD3RZ582:GBP', 'funds'), 'AVUSEQ': ('GB00B0ZY5X49:GBP', 'funds'), 'USEQ': ('GB00B5B71Q71:GBP', 'funds'), 'LS100': ('GB00B41XG308:GBP', 'funds'),
  'MSFT': ('MSFT:NSQ', 'equities'), 'AAPL': ('AAPL:NSQ', 'equities'), 'AMD': ('AMD:NSQ', 'equities'), 'META': ('META:NSQ', 'equities'),
  'NVDA': ('NVDA:NSQ', 'equities'), 'AMZN': ('AMZN:NSQ', 'equities'), 'GOOGL': ('GOOGL:NSQ', 'equities'), 'DIS': ('DIS:NYQ', 'equities'),
  'PEP': ('PEP:NSQ', 'equities'), 'AAF': ('AAF:LSE', 'equities')}
