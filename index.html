@@ -368,12 +368,12 @@ function drawHist(){
 /* forecast */
 const FC_KEY='wealth-forecast';
 const pensionNow=potVal['Pension'],isaNow=potVal['Funds ISA']+potVal['Shares ISA'],cryptoNow=potVal['Crypto'];
-const FC_DEF={v:3,age:47,to:75,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:1226,c_isa:410,c_cash:0,draw_age:67,draw:0,draw_mode:'amount',draw_pct:4,tfc:'no',tfc_age:57,tfc_pct:25,sp_age:68,sp:12548,tax:'yes'};
+const FC_DEF={v:3,age:47,to:85,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:1226,c_isa:400,c_cry:200,c_cash:0,draw_age:67,draw:0,draw_mode:'amount',draw_pct:4,tfc:'no',tfc_age:57,tfc_pct:25,sp_age:68,sp:12548,tax:'yes'};
 let FC={...FC_DEF};try{const sv=JSON.parse(localStorage.getItem(FC_KEY)||'{}');if(!sv.v){delete sv.g_cry;delete sv.g_cash}sv.v=3;Object.assign(FC,sv)}catch(e){}
 const FC_SEL={draw_mode:[['amount','£ a year'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, and spend it']],tax:[['yes','Include'],['no','Leave out']]};
 const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1]]],
  ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1]]],
- ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1]]],
+ ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1],['c_cry','Crypto',1]]],
  ['Spending your savings',[['draw_age','Start drawing at age',1],['draw_mode','Spend'],['draw','Amount a year (£, today’s money)',100],['draw_pct','Share of savings a year (%)',0.1]]],
  ['Tax-free cash from your pension',[['tfc','Take a lump sum'],['tfc_age','At age (57 at the earliest)',1],['tfc_pct','Share of pension (max 25%)',1]]],
  ['State Pension',[['sp_age','State Pension age',1],['sp','State Pension a year (£, today’s money)',100]]],
@@ -416,7 +416,7 @@ function fcRun(shift,noDraw){
    Object.assign(flow,{spend:drawY,sp,...w,tax:T(sp+w.pen*frac),short:p0(need)});plan=w}
   for(const k in pots)pots[k]*=1+r(k);
   const ageM=FC.age+m/12;
-  if(ageM<=FC.stop){pots.pen+=FC.c_pen;pots.isa+=FC.c_isa}
+  if(ageM<=FC.stop){pots.pen+=FC.c_pen;pots.isa+=FC.c_isa;pots.cry+=FC.c_cry}
   if(plan)for(const k in plan){const t=Math.min(plan[k]/12,p0(pots[k]));pots[k]-=t}
   if(m%12===0)snap(Math.round(ageM))}
  return out}
@@ -443,7 +443,7 @@ function drawFC(){
  /* chart */
  const box=document.getElementById('fcchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?220:300,P={l:56,r:10,t:10,b:24};
  const keys=[['pen','Pension','--c1'],['isa','ISAs','--c2'],['cry','Crypto','--c4']];
- const mx=Math.max(...hi.map(p=>p.total),...nd.map(p=>p.total),...mid.map(p=>p.pen+p.isa+p.cash+p.cry))*1.05;
+ const mx=Math.max(...hi.map(p=>p.total) ,...mid.map(p=>p.pen+p.isa+p.cash+p.cry))*1.05;
  const x=i=>P.l+(W-P.l-P.r)*i/Math.max(1,mid.length-1),y=v=>P.t+(Hh-P.t-P.b)*(1-Math.max(0,v)/mx);
  let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Forecast of wealth by age">`;const st=niceStep(mx);
  for(let v=0;v<=mx;v+=st)svg+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l-6}" y="${y(v)+4}" text-anchor="end">£${v>=1e6?(v/1e6).toFixed(1)+'m':Math.round(v/1000)+'k'}</text>`;
@@ -452,11 +452,11 @@ function drawFC(){
  svg+=`<path d="M${hi.map((p,i)=>x(i)+','+y(p.total)).join('L')}L${lo.map((p,i)=>x(lo.length-1-i)+','+y(lo[lo.length-1-i].total)).join('L')}Z" fill="var(--fg)" opacity=".08"/>`;
  svg+=`<path d="M${mid.map((p,i)=>x(i)+','+y(p.total)).join('L')}" fill="none" stroke="var(--fg)" stroke-width="2"/>`;
  const drew=nd.some((p,i)=>Math.abs(p.total-mid[i].total)>1);
- if(drew)svg+=`<path d="M${nd.map((p,i)=>x(i)+','+y(p.total)).join('L')}" fill="none" stroke="var(--fg)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".7"/>`;
+
  const lab=Math.max(1,Math.round(mid.length/(W<500?4:8)));mid.forEach((p,i)=>{if(i%lab===0||i===mid.length-1)svg+=`<text x="${x(i)}" y="${Hh-6}" text-anchor="${i===0?'start':i===mid.length-1?'end':'middle'}">${p.age}</text>`});
  svg+=`<rect x="${P.l}" y="0" width="${W-P.l-P.r}" height="${Hh}" fill="transparent" id="fchit"/></svg>`;box.innerHTML=svg;
  const hit=box.querySelector('#fchit');hit.onmousemove=e=>{const rc=e.target.getBoundingClientRect();const i=Math.max(0,Math.min(mid.length-1,Math.round((e.clientX-rc.left)/rc.width*(mid.length-1))));const p=mid[i];showTip(e,`Age ${p.age}: <b>${gbp(p.total)}</b><br>Range ${gbp(lo[i].total)} to ${gbp(hi[i].total)}`+(Math.abs(nd[i].total-p.total)>1?`<br>Without spending ${gbp(nd[i].total)}`:''))};hit.onmouseleave=hideTip;
- document.getElementById('fcleg').innerHTML=keys.map(([,l,c])=>`<span style="--k:var(${c})">${l}</span>`).join('')+'<span style="--k:var(--fg)">Total</span>'+(drew?'<span style="--k:transparent;border-top:2px dashed var(--fg);padding-left:4px">Without spending</span>':'');
+ document.getElementById('fcleg').innerHTML=keys.map(([,l,c])=>`<span style="--k:var(${c})">${l}</span>`).join('')+'<span style="--k:var(--fg)">Total</span>';
  drawIncome(mid);
  /* table */
  const rows=mid.filter(p=>p.age%5===0||p===mid[0]||p===end);
