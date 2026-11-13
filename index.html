@@ -61,6 +61,9 @@ svg text{fill:var(--muted);font-size:11px}
 .pt .ov{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent}
 @media (max-width:600px){.pt{display:none}.pb .num{min-width:0}}
 nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav button{flex:none;white-space:nowrap}
+.fin{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px 12px;align-items:center;font-size:13.5px}
+.fin h3{grid-column:1/-1;font-size:13px;margin:10px 0 0;color:var(--muted);font-weight:600}
+.fin input{width:100%;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);text-align:right}
 .pot .v{font:600 22px/1.2 Georgia,serif;font-variant-numeric:tabular-nums}
 .tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);font-size:12px;padding:5px 8px;border-radius:6px;opacity:0;transition:opacity .1s;z-index:9}
 #login{min-height:100vh;display:grid;place-items:center;padding:16px}
@@ -93,7 +96,7 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
 </div>
 <div class="wrap" id="app" hidden>
 <header><div><h1>Wealth</h1><div class="sub" id="asof"></div></div><button class="lock" id="lock" type="button">Lock</button></header>
-<nav><button class="on" data-t="overview">Overview</button><button data-t="investing">Investing</button><button data-t="mix">Investing overview</button><button data-t="hist">Investing history</button><button data-t="spending">Spending</button></nav>
+<nav><button class="on" data-t="overview">Overview</button><button data-t="investing">Investing</button><button data-t="mix">Investing overview</button><button data-t="hist">Investing history</button><button data-t="fc">Forecast</button><button data-t="spending">Spending</button></nav>
 
 <section id="overview" class="on">
  <div class="grid kpis" id="kpis"></div>
@@ -133,6 +136,17 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
  <div class="card"><div class="head"><div><h2>How each investment has done</h2><p class="note" id="histnote"></p></div>
   <div class="seg" id="histmode"><button data-m="annual" class="on">Per year</button><button data-m="total">Total change</button></div></div>
   <div class="tw"><table id="histtab"></table></div><p class="note" id="histfoot" style="margin:10px 0 0"></p></div>
+</section>
+
+<section id="fc">
+ <div class="grid kpis" id="fckpis"></div>
+ <div class="card"><div class="head"><div><h2>Your wealth by age</h2><p class="note">An estimate in today's money: growth rates are after inflation and fund charges. The shaded band shows growth 2% a year lower and higher than your settings.</p></div></div>
+  <div id="fcchart"></div><div class="legend" id="fcleg"></div></div>
+ <div class="grid two">
+  <div class="card"><h2>Your assumptions</h2><p class="note">Change any of these; the forecast updates as you type. Saved on this device.</p><div id="fcin"></div>
+   <button type="button" class="lock" id="fcreset" style="margin-top:12px">Reset to defaults</button></div>
+  <div class="card"><h2>Every 5 years</h2><p class="note">Today's money.</p><div class="tw"><table id="fctab"></table></div></div>
+ </div>
 </section>
 
 <section id="spending">
@@ -340,8 +354,62 @@ function drawHist(){
  document.getElementById('histfoot').textContent=`Price change only, to ${fdate(D.hist.updated)}. Your funds reinvest their income, so their prices include it; shares exclude dividends and are measured in their own currency (US dollars, or pence for Airtel Africa), so exchange-rate moves aren't included. Crypto in pounds. A dash means there is no price that far back. Sources: FT (funds and shares), Kraken (crypto). Hover over a figure to see the start date.`;
 }
 
+/* forecast */
+const FC_KEY='wealth-forecast';
+const pensionNow=potVal['Pension'],isaNow=potVal['Funds ISA']+potVal['Shares ISA'],cryptoNow=potVal['Crypto'];
+const FC_DEF={age:47,to:75,stop:67,g_pen:5,g_isa:5,g_cry:0,g_cash:0,c_pen:1226,c_isa:410,c_cash:0,draw_age:67,draw:0};
+let FC={...FC_DEF};try{Object.assign(FC,JSON.parse(localStorage.getItem(FC_KEY)||'{}'))}catch(e){}
+const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1]]],
+ ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1],['g_cash','Cash',0.1]]],
+ ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1],['c_cash','Cash savings',1]]],
+ ['Spending your savings',[['draw_age','Start drawing at age',1],['draw','Amount a year (£, today’s money)',100]]]];
+function fcInputs(){const box=document.getElementById('fcin');box.innerHTML='';const g=el('div',{class:'fin'});
+ FC_FIELDS.forEach(([h,fs])=>{g.appendChild(el('h3',{},h));fs.forEach(([k,l,st])=>{g.appendChild(el('label',{for:'fc_'+k},l));const i=el('input',{id:'fc_'+k,type:'number',step:st,inputmode:'decimal',value:FC[k]});
+  i.oninput=()=>{const v=parseFloat(i.value);if(isFinite(v)){FC[k]=v;try{localStorage.setItem(FC_KEY,JSON.stringify(FC))}catch(e){}drawFC()}};g.appendChild(i)})});box.appendChild(g)}
+document.getElementById('fcreset').onclick=()=>{FC={...FC_DEF};try{localStorage.removeItem(FC_KEY)}catch(e){}fcInputs();drawFC()};
+function fcRun(shift){
+ const pots={pen:pensionNow,isa:isaNow,cry:cryptoNow,cash:cashNow},debt=debtNow,out=[];
+ const r=k=>Math.pow(1+(FC['g_'+k]+shift)/100,1/12)-1;
+ const months=Math.max(0,Math.round((FC.to-FC.age)*12));
+ const snap=age=>out.push({age,pen:pots.pen,isa:pots.isa,cry:pots.cry,cash:pots.cash,total:pots.pen+pots.isa+pots.cry+pots.cash+debt});
+ snap(FC.age);
+ for(let m=1;m<=months;m++){const age=FC.age+m/12;
+  for(const k in pots)pots[k]*=1+r(k);
+  if(age<=FC.stop){pots.pen+=FC.c_pen;pots.isa+=FC.c_isa;pots.cash+=FC.c_cash}
+  if(age>FC.draw_age&&FC.draw>0){let need=FC.draw/12;for(const k of ['cash','isa','pen','cry']){if(k==='pen'&&age<57)continue;const t=Math.min(need,Math.max(0,pots[k]));pots[k]-=t;need-=t;if(need<=0)break}}
+  if(m%12===0)snap(Math.round(age))}
+ return out}
+function drawFC(){
+ const mid=fcRun(0),lo=fcRun(-2),hi=fcRun(2),end=mid[mid.length-1];
+ const K=document.getElementById('fckpis');K.innerHTML='';
+ kpi(K,`Wealth at ${end.age}`,gbp(end.total),`Range ${gbp(lo[lo.length-1].total)} to ${gbp(hi[hi.length-1].total)}`);
+ const at=a=>mid.find(p=>p.age===a);
+ const p57=at(57);if(p57)kpi(K,'Pension at 57',gbp(p57.pen),'The earliest you can take it under current rules');
+ const ps=at(Math.round(FC.stop));if(ps)kpi(K,`Wealth when you stop paying in (${Math.round(FC.stop)})`,gbp(ps.total),'');
+ kpi(K,'Wealth today',gbp(mid[0].total),'Investments at live prices, cash from YNAB');
+ /* chart */
+ const box=document.getElementById('fcchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?220:300,P={l:56,r:10,t:10,b:24};
+ const keys=[['pen','Pension','--c1'],['isa','ISAs','--c2'],['cash','Cash','--c5'],['cry','Crypto','--c4']];
+ const mx=Math.max(...hi.map(p=>p.total),...mid.map(p=>p.pen+p.isa+p.cash+p.cry))*1.05;
+ const x=i=>P.l+(W-P.l-P.r)*i/Math.max(1,mid.length-1),y=v=>P.t+(Hh-P.t-P.b)*(1-Math.max(0,v)/mx);
+ let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Forecast of wealth by age">`;const st=niceStep(mx);
+ for(let v=0;v<=mx;v+=st)svg+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l-6}" y="${y(v)+4}" text-anchor="end">£${v>=1e6?(v/1e6).toFixed(1)+'m':Math.round(v/1000)+'k'}</text>`;
+ const base=mid.map(()=>0);
+ keys.forEach(([k,,c])=>{const top=mid.map((p,i)=>base[i]+Math.max(0,p[k]));svg+=`<path d="M${mid.map((p,i)=>x(i)+','+y(top[i])).join('L')}L${mid.map((p,i)=>x(mid.length-1-i)+','+y(base[mid.length-1-i])).join('L')}Z" fill="var(${c})" opacity=".55"/>`;top.forEach((v,i)=>base[i]=v)});
+ svg+=`<path d="M${hi.map((p,i)=>x(i)+','+y(p.total)).join('L')}L${lo.map((p,i)=>x(lo.length-1-i)+','+y(lo[lo.length-1-i].total)).join('L')}Z" fill="var(--fg)" opacity=".08"/>`;
+ svg+=`<path d="M${mid.map((p,i)=>x(i)+','+y(p.total)).join('L')}" fill="none" stroke="var(--fg)" stroke-width="2"/>`;
+ const lab=Math.max(1,Math.round(mid.length/(W<500?4:8)));mid.forEach((p,i)=>{if(i%lab===0||i===mid.length-1)svg+=`<text x="${x(i)}" y="${Hh-6}" text-anchor="${i===0?'start':i===mid.length-1?'end':'middle'}">${p.age}</text>`});
+ svg+=`<rect x="${P.l}" y="0" width="${W-P.l-P.r}" height="${Hh}" fill="transparent" id="fchit"/></svg>`;box.innerHTML=svg;
+ const hit=box.querySelector('#fchit');hit.onmousemove=e=>{const rc=e.target.getBoundingClientRect();const i=Math.max(0,Math.min(mid.length-1,Math.round((e.clientX-rc.left)/rc.width*(mid.length-1))));const p=mid[i];showTip(e,`Age ${p.age}: <b>${gbp(p.total)}</b><br>Range ${gbp(lo[i].total)} to ${gbp(hi[i].total)}`)};hit.onmouseleave=hideTip;
+ document.getElementById('fcleg').innerHTML=keys.map(([,l,c])=>`<span style="--k:var(${c})">${l}</span>`).join('')+'<span style="--k:var(--fg)">Total (after debts)</span>';
+ /* table */
+ const rows=mid.filter(p=>p.age%5===0||p===mid[0]||p===end);
+ document.getElementById('fctab').innerHTML='<tr><th>Age</th><th class="n">Pension</th><th class="n hm">ISAs</th><th class="n hm">Cash</th><th class="n hm">Crypto</th><th class="n">Total</th></tr>'+rows.map(p=>`<tr><td>${p.age}</td><td class="n">${gbp(p.pen)}</td><td class="n hm">${gbp(p.isa)}</td><td class="n hm">${gbp(p.cash)}</td><td class="n hm">${gbp(p.cry)}</td><td class="n"><b style="font-weight:600">${gbp(p.total)}</b></td></tr>`).join('');
+}
+fcInputs();
+
 document.getElementById('foot').innerHTML=D.notes.map(n=>'<div>'+n+'</div>').join('');
-function draw(){drawNW();drawCF();drawGroups();drawMix();drawHist()}
+function draw(){drawNW();drawCF();drawGroups();drawMix();drawHist();drawFC()}
 draw();let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(draw,150)});
 };
 </script>
