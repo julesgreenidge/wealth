@@ -142,7 +142,7 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
 
 <section id="fc">
  <div class="grid kpis" id="fckpis"></div>
- <div class="card"><div class="head"><div><h2>Your wealth by age</h2><p class="note">An estimate in today's money: growth rates are after inflation and fund charges. The shaded band shows growth 2% a year lower and higher than your settings.</p></div></div>
+ <div class="card"><div class="head"><div><h2>Your wealth by age</h2><p class="note">An estimate in today's money of your pension, ISAs and crypto (cash and debts left out). Growth rates are after inflation and fund charges. The shaded band shows growth 2% a year lower and higher than your settings.</p></div></div>
   <div id="fcchart"></div><div class="legend" id="fcleg"></div></div>
  <div class="card"><h2>Where your money comes from in retirement</h2><p class="note" id="fcincnote"></p><div class="tw"><table id="fcinc"></table></div></div>
  <div class="grid two">
@@ -372,8 +372,8 @@ const FC_DEF={v:3,age:47,to:75,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:
 let FC={...FC_DEF};try{const sv=JSON.parse(localStorage.getItem(FC_KEY)||'{}');if(!sv.v){delete sv.g_cry;delete sv.g_cash}sv.v=3;Object.assign(FC,sv)}catch(e){}
 const FC_SEL={draw_mode:[['amount','£ a year'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, and spend it']],tax:[['yes','Include'],['no','Leave out']]};
 const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1]]],
- ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1],['g_cash','Cash',0.1]]],
- ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1],['c_cash','Cash savings',1]]],
+ ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1]]],
+ ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1]]],
  ['Spending your savings',[['draw_age','Start drawing at age',1],['draw_mode','Spend'],['draw','Amount a year (£, today’s money)',100],['draw_pct','Share of savings a year (%)',0.1]]],
  ['Tax-free cash from your pension',[['tfc','Take a lump sum'],['tfc_age','At age (57 at the earliest)',1],['tfc_pct','Share of pension (max 25%)',1]]],
  ['State Pension',[['sp_age','State Pension age',1],['sp','State Pension a year (£, today’s money)',100]]],
@@ -394,8 +394,8 @@ function itax(x){if(x<=0)return 0;const pa=x>100000?Math.max(0,12570-(x-100000)/
  return 0.2*Math.min(Math.max(0,x-pa),37700)+0.4*Math.max(0,Math.min(x,125140)-pa-37700)+0.45*Math.max(0,x-125140)}
 const PEN_ACCESS=57,LSA=268275;
 function fcRun(shift,noDraw){
- const pots={pen:pensionNow,isa:isaNow,cry:cryptoNow,cash:cashNow},debt=debtNow,out=[];
- const r=k=>Math.pow(1+(FC['g_'+k]+shift)/100,1/12)-1;
+ const pots={pen:pensionNow,isa:isaNow,cry:cryptoNow,cash:0},debt=0,out=[];
+ const r=k=>k==='cash'?0:Math.pow(1+(FC['g_'+k]+shift)/100,1/12)-1;
  const months=Math.max(0,Math.round((FC.to-FC.age)*12));
  const T=x=>FC.tax==='yes'?itax(x):0,p0=v=>Math.max(0,v);
  const tfcAge=Math.max(PEN_ACCESS,Math.round(FC.tfc_age));let tfcTaken=false,plan=null,flow=null;
@@ -416,7 +416,7 @@ function fcRun(shift,noDraw){
    Object.assign(flow,{spend:drawY,sp,...w,tax:T(sp+w.pen*frac),short:p0(need)});plan=w}
   for(const k in pots)pots[k]*=1+r(k);
   const ageM=FC.age+m/12;
-  if(ageM<=FC.stop){pots.pen+=FC.c_pen;pots.isa+=FC.c_isa;pots.cash+=FC.c_cash}
+  if(ageM<=FC.stop){pots.pen+=FC.c_pen;pots.isa+=FC.c_isa}
   if(plan)for(const k in plan){const t=Math.min(plan[k]/12,p0(pots[k]));pots[k]-=t}
   if(m%12===0)snap(Math.round(ageM))}
  return out}
@@ -424,10 +424,10 @@ function drawIncome(mid){
  const rows=mid.filter(p=>p.flow&&(p.flow.spend>0||p.flow.tfc>0));const T=document.getElementById('fcinc'),N=document.getElementById('fcincnote');
  if(!rows.length){T.innerHTML='';N.textContent='Set "Spending your savings" or take tax-free cash to see where your money comes from each year.';return}
  const tx=FC.tax==='yes';
- N.textContent=`Each year from age ${rows[0].age-1}, in today's money. Spending comes from your State Pension first, then cash, then ISAs, then your pension (from 57), then crypto. `+(tx?'Tax uses today\u2019s income tax bands; '+(FC.tfc==='yes'?'after the lump sum, pension withdrawals are fully taxable.':'a quarter of each pension withdrawal is tax-free.'):'Income tax is left out.');
- const cols=[['spend','Spending',1],['sp','State Pension'],['cash','From cash',0,1],['isa','From ISAs',0,1],['pen','From pension'],['tax','Tax'],['cry','From crypto',0,1],['tfc','Lump sum']].filter(([k,,always])=>always||(k!=='tax'||tx)&&rows.some(p=>p.flow[k]>0.5));
+ N.textContent=`Each year from age ${rows[0].age-1}, in today's money. Spending comes from your State Pension first, then ISAs, then your pension (from 57), then crypto. `+(tx?'Tax uses today\u2019s income tax bands; '+(FC.tfc==='yes'?'after the lump sum, pension withdrawals are fully taxable.':'a quarter of each pension withdrawal is tax-free.'):'Income tax is left out.');
+ const cols=[['sp','State Pension'],['isa','From ISAs',0,1],['pen','From pension'],['cry','From crypto',0,1],['tfc','Lump sum'],['tax','Tax'],['spend','Spending',1]].filter(([k,,always])=>always||(k!=='tax'||tx)&&rows.some(p=>p.flow[k]>0.5));
  T.innerHTML='<tr><th>Age</th>'+cols.map(([k,l,,h])=>`<th class="n${h?' hm':''}">${l}</th>`).join('')+'<th class="n">Savings left</th></tr>'+
-  rows.map(p=>{const f=p.flow;return `<tr${f.short>1?' style="color:var(--neg)"':''}><td>${p.age-1}</td>`+cols.map(([k,,,h])=>`<td class="n${h?' hm':''}">${f[k]>0.5?gbp(f[k]):'-'}</td>`).join('')+`<td class="n">${gbp(p.total)}${f.short>1?' *':''}</td></tr>`}).join('');
+  rows.map(p=>{const f=p.flow;return `<tr${f.short>1?' style="color:var(--neg)"':''}><td>${p.age-1}</td>`+cols.map(([k,,,h])=>`<td class="n${h?' hm':''}${k==='tax'&&f[k]>0.5?' neg':''}">${f[k]>0.5?(k==='tax'?gbp(-f[k]):gbp(f[k])):'-'}</td>`).join('')+`<td class="n">${gbp(p.total)}${f.short>1?' *':''}</td></tr>`}).join('');
 }
 function drawFC(){
  const mid=fcRun(0),lo=fcRun(-2),hi=fcRun(2),nd=fcRun(0,true),end=mid[mid.length-1];
@@ -438,11 +438,11 @@ function drawFC(){
  const at=a=>mid.find(p=>p.age===a);
  const p57=at(57);if(p57)kpi(K,'Pension at 57',gbp(p57.pen),'The earliest you can take it under current rules');
  const ps=at(Math.round(FC.stop));if(ps)kpi(K,`Wealth when you stop paying in (${Math.round(FC.stop)})`,gbp(ps.total),'');
- kpi(K,'Wealth today',gbp(mid[0].total),'Investments at live prices, cash from YNAB');
+ kpi(K,'Investments today',gbp(mid[0].total),'Pension, ISAs and crypto at live prices. Cash and debts are left out');
  kpi(K,`State Pension from ${FC.sp_age}`,gbp(FC.sp)+' a year',(FC.draw_mode==='pct'?FC.draw_pct>0:FC.draw>0)?'Pays part of your yearly spending, so less comes from savings':'Set "Spending your savings" to see how it reduces what you draw');
  /* chart */
  const box=document.getElementById('fcchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?220:300,P={l:56,r:10,t:10,b:24};
- const keys=[['pen','Pension','--c1'],['isa','ISAs','--c2'],['cash','Cash','--c5'],['cry','Crypto','--c4']];
+ const keys=[['pen','Pension','--c1'],['isa','ISAs','--c2'],['cry','Crypto','--c4']];
  const mx=Math.max(...hi.map(p=>p.total),...nd.map(p=>p.total),...mid.map(p=>p.pen+p.isa+p.cash+p.cry))*1.05;
  const x=i=>P.l+(W-P.l-P.r)*i/Math.max(1,mid.length-1),y=v=>P.t+(Hh-P.t-P.b)*(1-Math.max(0,v)/mx);
  let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Forecast of wealth by age">`;const st=niceStep(mx);
@@ -456,11 +456,11 @@ function drawFC(){
  const lab=Math.max(1,Math.round(mid.length/(W<500?4:8)));mid.forEach((p,i)=>{if(i%lab===0||i===mid.length-1)svg+=`<text x="${x(i)}" y="${Hh-6}" text-anchor="${i===0?'start':i===mid.length-1?'end':'middle'}">${p.age}</text>`});
  svg+=`<rect x="${P.l}" y="0" width="${W-P.l-P.r}" height="${Hh}" fill="transparent" id="fchit"/></svg>`;box.innerHTML=svg;
  const hit=box.querySelector('#fchit');hit.onmousemove=e=>{const rc=e.target.getBoundingClientRect();const i=Math.max(0,Math.min(mid.length-1,Math.round((e.clientX-rc.left)/rc.width*(mid.length-1))));const p=mid[i];showTip(e,`Age ${p.age}: <b>${gbp(p.total)}</b><br>Range ${gbp(lo[i].total)} to ${gbp(hi[i].total)}`+(Math.abs(nd[i].total-p.total)>1?`<br>Without spending ${gbp(nd[i].total)}`:''))};hit.onmouseleave=hideTip;
- document.getElementById('fcleg').innerHTML=keys.map(([,l,c])=>`<span style="--k:var(${c})">${l}</span>`).join('')+'<span style="--k:var(--fg)">Total (after debts)</span>'+(drew?'<span style="--k:transparent;border-top:2px dashed var(--fg);padding-left:4px">Without spending</span>':'');
+ document.getElementById('fcleg').innerHTML=keys.map(([,l,c])=>`<span style="--k:var(${c})">${l}</span>`).join('')+'<span style="--k:var(--fg)">Total</span>'+(drew?'<span style="--k:transparent;border-top:2px dashed var(--fg);padding-left:4px">Without spending</span>':'');
  drawIncome(mid);
  /* table */
  const rows=mid.filter(p=>p.age%5===0||p===mid[0]||p===end);
- document.getElementById('fctab').innerHTML='<tr><th>Age</th><th class="n">Pension</th><th class="n hm">ISAs</th><th class="n hm">Cash</th><th class="n hm">Crypto</th><th class="n">Total</th></tr>'+rows.map(p=>`<tr><td>${p.age}</td><td class="n">${gbp(p.pen)}</td><td class="n hm">${gbp(p.isa)}</td><td class="n hm">${gbp(p.cash)}</td><td class="n hm">${gbp(p.cry)}</td><td class="n"><b style="font-weight:600">${gbp(p.total)}</b></td></tr>`).join('');
+ document.getElementById('fctab').innerHTML='<tr><th>Age</th><th class="n">Pension</th><th class="n hm">ISAs</th><th class="n hm">Crypto</th><th class="n">Total</th></tr>'+rows.map(p=>`<tr><td>${p.age}</td><td class="n">${gbp(p.pen)}</td><td class="n hm">${gbp(p.isa)}</td><td class="n hm">${gbp(p.cry)}</td><td class="n"><b style="font-weight:600">${gbp(p.total)}</b></td></tr>`).join('');
 }
 fcInputs();
 
