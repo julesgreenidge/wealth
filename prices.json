@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-13 21:15 UTC",
+ "updated": "2026-11-13 21:23 UTC",
  "fx": {
   "usd": {
    "rate": 1.3227,
@@ -27,13 +27,13 @@
    "src": "FT"
   },
   "MSFT": {
-   "price": 524.31,
+   "price": 523.88,
    "date": "2026-11-13",
    "cur": "USD",
    "src": "FT"
   },
   "AAPL": {
-   "price": 356.43,
+   "price": 356.27,
    "date": "2026-11-13",
    "cur": "USD",
    "src": "FT"
@@ -45,7 +45,7 @@
    "src": "FT"
   },
   "META": {
-   "price": 641.98,
+   "price": 641.69,
    "date": "2026-11-13",
    "cur": "USD",
    "src": "FT"
@@ -63,13 +63,13 @@
    "src": "FT"
   },
   "GOOGL": {
-   "price": 295.81,
+   "price": 295.77,
    "date": "2026-11-13",
    "cur": "USD",
    "src": "FT"
   },
   "DIS": {
-   "price": 118.99,
+   "price": 118.97,
    "date": "2026-11-13",
    "cur": "USD",
    "src": "FT"
@@ -87,13 +87,13 @@
    "src": "FT"
   },
   "BTC": {
-   "price": 51884.0,
+   "price": 51719.0,
    "date": "2026-11-13",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1466.7,
+   "price": 1460.22,
    "date": "2026-11-13",
    "cur": "GBP",
    "src": "CoinGecko"
@@ -102,6 +102,18 @@
    "price": 11.14,
    "date": "2026-11-13",
    "cur": "GBP",
+   "src": "FT"
+  },
+  "MU": {
+   "price": 778.31,
+   "date": "2026-11-13",
+   "cur": "USD",
+   "src": "FT"
+  },
+  "AVGO": {
+   "price": 347.01,
+   "date": "2026-11-13",
+   "cur": "USD",
    "src": "FT"
   }
  },
