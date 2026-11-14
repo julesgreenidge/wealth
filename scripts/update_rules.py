@@ -28,7 +28,7 @@ try:
     br = re.search(r'Basic rate\s+£([\d,]+) to £([\d,]+)\s+(\d+)\s?%', t)
     hr = re.search(r'Higher rate\s+£([\d,]+) to £([\d,]+)\s+(\d+)\s?%', t)
     ar = re.search(r'Additional rate\s+(?:over|above) £([\d,]+)\s+(\d+)\s?%', t)
-    tp = re.search(r'£1 for every £2 of (?:income|adjusted net income) (?:above|over) £([\d,]+)', t)
+    tp = re.search(r'£1 for every £2[^£]{0,60}(?:above|over) £([\d,]+)', t)
     if not all([pa, br, hr, ar, tp]): problems.append('income tax figures not found')
     else:
         P = num(pa[1]); new['income_tax'] = {'pa': P, 'basic_to': num(br[2]), 'higher_to': num(hr[2]),
@@ -36,8 +36,8 @@ try:
 except Exception as e: problems.append('income tax page: %s' % e)
 try:
     t = text('new-state-pension/what-youll-get')
-    if DEBUG: print('state pension:'); show(t, ['full new State Pension'])
-    m = re.search(r'full new State Pension is £([\d.,]+) (?:per|a) week', t)
+    if DEBUG: print('state pension:'); show(t, ['per week', 'a week', 'State Pension is'])
+    m = re.search(r'full (?:new )?State Pension[^£]{0,40}£([\d.,]+) (?:per|a) week', t)
     if not m: problems.append('State Pension figure not found')
     else: new['state_pension_week'] = num(m[1])
 except Exception as e: problems.append('State Pension page: %s' % e)
