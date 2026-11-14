@@ -371,10 +371,10 @@ const pensionNow=potVal['Pension'],isaNow=potVal['Funds ISA']+potVal['Shares ISA
 const FC_DEF={v:3,age:47,to:85,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:1226,c_isa:400,c_cry:200,c_cash:0,draw_age:67,draw:0,draw_mode:'amount',draw_pct:4,draw_cpct:4,tfc:'no',tfc_age:57,tfc_pct:25,sp_age:68,sp:12548,tax:'yes'};
 let FC={...FC_DEF};try{const sv=JSON.parse(localStorage.getItem(FC_KEY)||'{}');if(!sv.v){delete sv.g_cry;delete sv.g_cash}sv.v=3;Object.assign(FC,sv)}catch(e){}
 const FC_SEL={draw_mode:[['amount','£ a year'],['classic','Classic drawdown'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, and spend it']],tax:[['yes','Include'],['no','Leave out']]};
-const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1]]],
+const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1],['draw_age','Start drawing at age',1]]],
  ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1]]],
  ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1],['c_cry','Crypto',1]]],
- ['Spending your savings',[['draw_age','Start drawing at age',1],['draw_mode','Spend'],['draw','Amount a year (£, today’s money)',100],['draw_cpct','Share of savings when you start (%), then the same amount each year',0.1],['draw_pct','Share of savings each year (%)',0.1]]],
+ ['Spending your savings',[['draw_mode','Spend'],['draw','Amount a year (£, today’s money)',100],['draw_cpct','Share of savings when you start (%), then the same amount each year',0.1],['draw_pct','Share of savings each year (%)',0.1]]],
  ['Tax-free cash from your pension',[['tfc','Take a lump sum'],['tfc_age','At age (57 at the earliest)',1],['tfc_pct','Share of pension (max 25%)',1]]],
  ['State Pension',[['sp_age','State Pension age',1],['sp','State Pension a year (£, today’s money)',100]]],
  ['Income tax',[['tax','Tax on pension and State Pension']]]];
