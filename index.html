@@ -368,20 +368,20 @@ function drawHist(){
 /* forecast */
 const FC_KEY='wealth-forecast';
 const pensionNow=potVal['Pension'],isaNow=potVal['Funds ISA']+potVal['Shares ISA'],cryptoNow=potVal['Crypto'];
-const FC_DEF={v:3,age:47,to:85,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:1226,c_isa:400,c_cry:200,c_cash:0,draw_age:67,draw:0,draw_mode:'amount',draw_pct:4,tfc:'no',tfc_age:57,tfc_pct:25,sp_age:68,sp:12548,tax:'yes'};
+const FC_DEF={v:3,age:47,to:85,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:1226,c_isa:400,c_cry:200,c_cash:0,draw_age:67,draw:0,draw_mode:'amount',draw_pct:4,draw_cpct:4,tfc:'no',tfc_age:57,tfc_pct:25,sp_age:68,sp:12548,tax:'yes'};
 let FC={...FC_DEF};try{const sv=JSON.parse(localStorage.getItem(FC_KEY)||'{}');if(!sv.v){delete sv.g_cry;delete sv.g_cash}sv.v=3;Object.assign(FC,sv)}catch(e){}
-const FC_SEL={draw_mode:[['amount','£ a year'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, and spend it']],tax:[['yes','Include'],['no','Leave out']]};
+const FC_SEL={draw_mode:[['amount','£ a year'],['classic','Classic drawdown'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, and spend it']],tax:[['yes','Include'],['no','Leave out']]};
 const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1]]],
  ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1]]],
  ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1],['c_cry','Crypto',1]]],
- ['Spending your savings',[['draw_age','Start drawing at age',1],['draw_mode','Spend'],['draw','Amount a year (£, today’s money)',100],['draw_pct','Share of savings a year (%)',0.1]]],
+ ['Spending your savings',[['draw_age','Start drawing at age',1],['draw_mode','Spend'],['draw','Amount a year (£, today’s money)',100],['draw_cpct','Share of savings when you start (%), then the same amount each year',0.1],['draw_pct','Share of savings each year (%)',0.1]]],
  ['Tax-free cash from your pension',[['tfc','Take a lump sum'],['tfc_age','At age (57 at the earliest)',1],['tfc_pct','Share of pension (max 25%)',1]]],
  ['State Pension',[['sp_age','State Pension age',1],['sp','State Pension a year (£, today’s money)',100]]],
  ['Income tax',[['tax','Tax on pension and State Pension']]]];
 const fcSave=()=>{try{localStorage.setItem(FC_KEY,JSON.stringify(FC))}catch(e){}};
 function fcInputs(){const box=document.getElementById('fcin');box.innerHTML='';const g=el('div',{class:'fin'});
  FC_FIELDS.forEach(([h,fs])=>{g.appendChild(el('h3',{},h));fs.forEach(([k,l,st])=>{
-  if((k==='draw'&&FC.draw_mode==='pct')||(k==='draw_pct'&&FC.draw_mode!=='pct'))return;
+  if((k==='draw'&&FC.draw_mode!=='amount')||(k==='draw_pct'&&FC.draw_mode!=='pct')||(k==='draw_cpct'&&FC.draw_mode!=='classic'))return;
   if((k==='tfc_age'||k==='tfc_pct')&&FC.tfc!=='yes')return;
   g.appendChild(el('label',{for:'fc_'+k},l));
   if(FC_SEL[k]){const sel=el('select',{id:'fc_'+k},FC_SEL[k].map(([v,t])=>`<option value="${v}">${t}</option>`).join(''));sel.value=FC[k];sel.style.cssText='font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);width:100%';
@@ -398,14 +398,15 @@ function fcRun(shift,noDraw){
  const r=k=>k==='cash'?0:Math.pow(1+(FC['g_'+k]+shift)/100,1/12)-1;
  const months=Math.max(0,Math.round((FC.to-FC.age)*12));
  const T=x=>FC.tax==='yes'?itax(x):0,p0=v=>Math.max(0,v);
- const tfcAge=Math.max(PEN_ACCESS,Math.round(FC.tfc_age));let tfcTaken=false,plan=null,flow=null;
+ const tfcAge=Math.max(PEN_ACCESS,Math.round(FC.tfc_age));let tfcTaken=false,plan=null,flow=null,classicAmt=null;
  const snap=age=>out.push({age,pen:pots.pen,isa:pots.isa,cry:pots.cry,cash:pots.cash,total:pots.pen+pots.isa+pots.cry+pots.cash+debt,flow});
  snap(FC.age);
  for(let m=1;m<=months;m++){
   if((m-1)%12===0){const ageY=Math.round(FC.age+(m-1)/12);flow={spend:0,sp:0,cash:0,isa:0,pen:0,cry:0,tax:0,tfc:0,short:0};
    if(!noDraw&&FC.tfc==='yes'&&!tfcTaken&&ageY>=tfcAge){const amt=Math.min(p0(pots.pen)*Math.min(25,Math.max(0,FC.tfc_pct))/100,LSA);pots.pen-=amt;flow.tfc=amt;tfcTaken=true}
    const total=p0(pots.pen)+p0(pots.isa)+p0(pots.cry)+p0(pots.cash);
-   const drawY=noDraw||ageY<FC.draw_age?0:(FC.draw_mode==='pct'?FC.draw_pct/100*total:FC.draw);
+   if(!noDraw&&ageY>=FC.draw_age&&classicAmt===null)classicAmt=FC.draw_cpct/100*total;
+   const drawY=noDraw||ageY<FC.draw_age?0:(FC.draw_mode==='pct'?FC.draw_pct/100*total:FC.draw_mode==='classic'?classicAmt:FC.draw);
    const sp=ageY>=FC.sp_age?FC.sp:0,frac=tfcTaken?1:0.75;
    const w={cash:0,isa:0,pen:0,cry:0};let need=drawY>0?drawY-(sp-T(sp)):0;
    if(need>0){w.cash=Math.min(need,p0(pots.cash));need-=w.cash}
@@ -439,7 +440,7 @@ function drawFC(){
  const p57=at(57);if(p57)kpi(K,'Pension at 57',gbp(p57.pen),'The earliest you can take it under current rules');
  const ps=at(Math.round(FC.stop));if(ps)kpi(K,`Wealth when you stop paying in (${Math.round(FC.stop)})`,gbp(ps.total),'');
  kpi(K,'Investments today',gbp(mid[0].total),'Pension, ISAs and crypto at live prices. Cash and debts are left out');
- kpi(K,`State Pension from ${FC.sp_age}`,gbp(FC.sp)+' a year',(FC.draw_mode==='pct'?FC.draw_pct>0:FC.draw>0)?'Pays part of your yearly spending, so less comes from savings':'Set "Spending your savings" to see how it reduces what you draw');
+ kpi(K,`State Pension from ${FC.sp_age}`,gbp(FC.sp)+' a year',(FC.draw_mode==='pct'?FC.draw_pct>0:FC.draw_mode==='classic'?FC.draw_cpct>0:FC.draw>0)?'Pays part of your yearly spending, so less comes from savings':'Set "Spending your savings" to see how it reduces what you draw');
  /* chart */
  const box=document.getElementById('fcchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?220:300,P={l:56,r:10,t:10,b:24};
  const keys=[['pen','Pension','--c1'],['isa','ISAs','--c2'],['cry','Crypto','--c4']];
