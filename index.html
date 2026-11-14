@@ -435,7 +435,7 @@ function drawFC(){
  const K=document.getElementById('fckpis');K.innerHTML='';
  const runOut=mid.find(p=>p.flow&&p.flow.short>1);
  if(runOut){const c=el('div',{class:'card kpi',style:'border-color:var(--neg)'},`<div class="l">Warning</div><div class="v neg">Savings run out at ${runOut.age-1}</div><div class="d">From then on your savings can't cover the spending you've set. Try spending less, starting later or paying in more.</div>`);K.appendChild(c)}
- kpi(K,`Wealth at ${end.age}`,gbp(end.total),`Range ${gbp(lo[lo.length-1].total)} to ${gbp(hi[hi.length-1].total)}`+(nd[nd.length-1].total-end.total>1?`<br>${gbp(nd[nd.length-1].total)} without spending`:''));
+ kpi(K,`Wealth at ${end.age}`,gbp(end.total),`Range ${gbp(lo[lo.length-1].total)} to ${gbp(hi[hi.length-1].total)}`);
  const at=a=>mid.find(p=>p.age===a);
  const p57=at(57);if(p57)kpi(K,'Pension at 57',gbp(p57.pen),'The earliest you can take it under current rules');
  const ps=at(Math.round(FC.stop));if(ps)kpi(K,`Wealth when you stop paying in (${Math.round(FC.stop)})`,gbp(ps.total),'');
@@ -456,7 +456,7 @@ function drawFC(){
 
  const lab=Math.max(1,Math.round(mid.length/(W<500?4:8)));mid.forEach((p,i)=>{if(i%lab===0||i===mid.length-1)svg+=`<text x="${x(i)}" y="${Hh-6}" text-anchor="${i===0?'start':i===mid.length-1?'end':'middle'}">${p.age}</text>`});
  svg+=`<rect x="${P.l}" y="0" width="${W-P.l-P.r}" height="${Hh}" fill="transparent" id="fchit"/></svg>`;box.innerHTML=svg;
- const hit=box.querySelector('#fchit');hit.onmousemove=e=>{const rc=e.target.getBoundingClientRect();const i=Math.max(0,Math.min(mid.length-1,Math.round((e.clientX-rc.left)/rc.width*(mid.length-1))));const p=mid[i];showTip(e,`Age ${p.age}: <b>${gbp(p.total)}</b><br>Range ${gbp(lo[i].total)} to ${gbp(hi[i].total)}`+(Math.abs(nd[i].total-p.total)>1?`<br>Without spending ${gbp(nd[i].total)}`:''))};hit.onmouseleave=hideTip;
+ const hit=box.querySelector('#fchit');hit.onmousemove=e=>{const rc=e.target.getBoundingClientRect();const i=Math.max(0,Math.min(mid.length-1,Math.round((e.clientX-rc.left)/rc.width*(mid.length-1))));const p=mid[i];showTip(e,`Age ${p.age}: <b>${gbp(p.total)}</b><br>Range ${gbp(lo[i].total)} to ${gbp(hi[i].total)}`)};hit.onmouseleave=hideTip;
  document.getElementById('fcleg').innerHTML=keys.map(([,l,c])=>`<span style="--k:var(${c})">${l}</span>`).join('')+'<span style="--k:var(--fg)">Total</span>';
  drawIncome(mid);
  /* table */
