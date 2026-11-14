@@ -1,0 +1,27 @@
+{
+ "income_tax": {
+  "pa": 12570.0,
+  "basic_to": 50270.0,
+  "higher_to": 125140.0,
+  "rates": [
+   20.0,
+   40.0,
+   45.0
+  ],
+  "taper_from": 100000.0
+ },
+ "state_pension_week": 241.3,
+ "lsa": 268275.0,
+ "tax_year": "2026/27",
+ "checked": "2026-11-14",
+ "pension_access": [
+  {
+   "from": "2000-01-01",
+   "age": 55
+  },
+  {
+   "from": "2028-04-06",
+   "age": 57
+  }
+ ]
+}
