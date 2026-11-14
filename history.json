@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-13",
+ "updated": "2026-11-14",
  "assets": {
   "GAC": {
    "now": 291.18,
@@ -7,14 +7,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 258.67,
-     "start_date": "2025-11-13",
-     "change": 0.125681
+     "start": 258.56,
+     "start_date": "2025-11-14",
+     "change": 0.12616
     },
     "3": {
-     "start": 182.19,
-     "start_date": "2023-11-13",
-     "change": 0.598222
+     "start": 182.92,
+     "start_date": "2023-11-14",
+     "change": 0.591843
     },
     "5": {
      "start": 185.01,
@@ -22,9 +22,9 @@
      "change": 0.573861
     },
     "10": {
-     "start": 98.53,
-     "start_date": "2016-11-11",
-     "change": 1.955242
+     "start": 99.33,
+     "start_date": "2016-11-14",
+     "change": 1.931441
     }
    }
   },
@@ -34,14 +34,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 10.02,
-     "start_date": "2025-11-13",
-     "change": 0.111776
+     "start": 9.8,
+     "start_date": "2025-11-14",
+     "change": 0.136735
     },
     "3": {
-     "start": 6.72,
-     "start_date": "2023-11-13",
-     "change": 0.657738
+     "start": 6.69,
+     "start_date": "2023-11-14",
+     "change": 0.665172
     },
     "5": {
      "start": 6.33,
@@ -49,36 +49,36 @@
      "change": 0.759874
     },
     "10": {
-     "start": 2.89,
-     "start_date": "2016-11-11",
-     "change": 2.854671
+     "start": 2.87,
+     "start_date": "2016-11-14",
+     "change": 2.881533
     }
    }
   },
   "USEQ": {
-   "now": 1289.9,
-   "now_date": "2026-11-12",
+   "now": 1286.49,
+   "now_date": "2026-11-13",
    "src": "FT",
    "periods": {
     "1": {
-     "start": 1137.28,
-     "start_date": "2025-11-13",
-     "change": 0.134197
+     "start": 1141.7,
+     "start_date": "2025-11-14",
+     "change": 0.12682
     },
     "3": {
-     "start": 789.03,
-     "start_date": "2023-11-13",
-     "change": 0.634792
+     "start": 793.73,
+     "start_date": "2023-11-14",
+     "change": 0.620816
     },
     "5": {
      "start": 783.1,
      "start_date": "2021-11-12",
-     "change": 0.647171
+     "change": 0.642817
     },
     "10": {
-     "start": 358.49,
-     "start_date": "2016-11-11",
-     "change": 2.598148
+     "start": 363.09,
+     "start_date": "2016-11-14",
+     "change": 2.543171
     }
    }
   },
@@ -88,14 +88,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 436.62,
-     "start_date": "2025-11-13",
-     "change": 0.132999
+     "start": 435.75,
+     "start_date": "2025-11-14",
+     "change": 0.135261
     },
     "3": {
-     "start": 306.96,
-     "start_date": "2023-11-13",
-     "change": 0.611578
+     "start": 308.16,
+     "start_date": "2023-11-14",
+     "change": 0.605302
     },
     "5": {
      "start": 305.64,
@@ -103,9 +103,9 @@
      "change": 0.618538
     },
     "10": {
-     "start": 173.01,
-     "start_date": "2016-11-11",
-     "change": 1.859314
+     "start": 174.14,
+     "start_date": "2016-11-14",
+     "change": 1.84076
     }
    }
   },
@@ -115,14 +115,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 503.29,
-     "start_date": "2025-11-13",
-     "change": 0.040911
+     "start": 510.18,
+     "start_date": "2025-11-14",
+     "change": 0.026853
     },
     "3": {
-     "start": 366.68,
-     "start_date": "2023-11-13",
-     "change": 0.428712
+     "start": 370.27,
+     "start_date": "2023-11-14",
+     "change": 0.414859
     },
     "5": {
      "start": 336.72,
@@ -130,9 +130,9 @@
      "change": 0.555833
     },
     "10": {
-     "start": 59.02,
-     "start_date": "2016-11-11",
-     "change": 7.876313
+     "start": 58.12,
+     "start_date": "2016-11-14",
+     "change": 8.013765
     }
    }
   },
@@ -142,14 +142,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 272.95,
-     "start_date": "2025-11-13",
-     "change": 0.305257
+     "start": 272.41,
+     "start_date": "2025-11-14",
+     "change": 0.307845
     },
     "3": {
-     "start": 184.8,
-     "start_date": "2023-11-13",
-     "change": 0.927868
+     "start": 187.44,
+     "start_date": "2023-11-14",
+     "change": 0.900715
     },
     "5": {
      "start": 149.99,
@@ -157,9 +157,9 @@
      "change": 1.375292
     },
     "10": {
-     "start": 27.11,
-     "start_date": "2016-11-11",
-     "change": 12.141645
+     "start": 26.43,
+     "start_date": "2016-11-14",
+     "change": 12.479758
     }
    }
   },
@@ -169,14 +169,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 247.96,
-     "start_date": "2025-11-13",
-     "change": 1.153815
+     "start": 246.81,
+     "start_date": "2025-11-14",
+     "change": 1.163851
     },
     "3": {
-     "start": 116.79,
-     "start_date": "2023-11-13",
-     "change": 3.572823
+     "start": 119.88,
+     "start_date": "2023-11-14",
+     "change": 3.454955
     },
     "5": {
      "start": 147.89,
@@ -184,9 +184,9 @@
      "change": 2.611198
     },
     "10": {
-     "start": 6.69,
-     "start_date": "2016-11-11",
-     "change": 78.829596
+     "start": 6.79,
+     "start_date": "2016-11-14",
+     "change": 77.653903
     }
    }
   },
@@ -196,14 +196,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 609.89,
-     "start_date": "2025-11-13",
-     "change": 0.052141
+     "start": 609.46,
+     "start_date": "2025-11-14",
+     "change": 0.052883
     },
     "3": {
-     "start": 329.19,
-     "start_date": "2023-11-13",
-     "change": 0.9493
+     "start": 336.31,
+     "start_date": "2023-11-14",
+     "change": 0.908031
     },
     "5": {
      "start": 340.89,
@@ -211,9 +211,9 @@
      "change": 0.882396
     },
     "10": {
-     "start": 119.02,
-     "start_date": "2016-11-11",
-     "change": 4.391447
+     "start": 115.08,
+     "start_date": "2016-11-14",
+     "change": 4.576034
     }
    }
   },
@@ -223,14 +223,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 186.86,
-     "start_date": "2025-11-13",
-     "change": -0.128492
+     "start": 190.17,
+     "start_date": "2025-11-14",
+     "change": -0.143661
     },
     "3": {
-     "start": 48.62,
-     "start_date": "2023-11-13",
-     "change": 2.349445
+     "start": 49.66,
+     "start_date": "2023-11-14",
+     "change": 2.279299
     },
     "5": {
      "start": 30.39,
@@ -238,36 +238,36 @@
      "change": 4.358671
     },
     "10": {
-     "start": 2.2,
-     "start_date": "2016-11-11",
-     "change": 73.022727
+     "start": 2.09,
+     "start_date": "2016-11-14",
+     "change": 76.91866
     }
    }
   },
   "AMZN": {
-   "now": 266.64,
+   "now": 266.66,
    "now_date": "2026-11-13",
    "src": "FT",
    "periods": {
     "1": {
-     "start": 237.58,
-     "start_date": "2025-11-13",
-     "change": 0.122317
+     "start": 234.69,
+     "start_date": "2025-11-14",
+     "change": 0.136222
     },
     "3": {
-     "start": 142.59,
-     "start_date": "2023-11-13",
-     "change": 0.869977
+     "start": 145.8,
+     "start_date": "2023-11-14",
+     "change": 0.828944
     },
     "5": {
      "start": 176.26,
      "start_date": "2021-11-12",
-     "change": 0.512765
+     "change": 0.512879
     },
     "10": {
-     "start": 36.95,
-     "start_date": "2016-11-11",
-     "change": 6.216238
+     "start": 35.95,
+     "start_date": "2016-11-14",
+     "change": 6.417524
     }
    }
   },
@@ -277,14 +277,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 278.57,
-     "start_date": "2025-11-13",
-     "change": 0.061744
+     "start": 276.41,
+     "start_date": "2025-11-14",
+     "change": 0.070041
     },
     "3": {
-     "start": 132.09,
-     "start_date": "2023-11-13",
-     "change": 1.239155
+     "start": 133.62,
+     "start_date": "2023-11-14",
+     "change": 1.213516
     },
     "5": {
      "start": 148.68,
@@ -292,9 +292,9 @@
      "change": 0.989306
     },
     "10": {
-     "start": 38.59,
-     "start_date": "2016-11-11",
-     "change": 6.664421
+     "start": 37.66,
+     "start_date": "2016-11-14",
+     "change": 6.853691
     }
    }
   },
@@ -304,14 +304,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 107.61,
-     "start_date": "2025-11-13",
-     "change": 0.105566
+     "start": 105.8,
+     "start_date": "2025-11-14",
+     "change": 0.12448
     },
     "3": {
-     "start": 89.44,
-     "start_date": "2023-11-13",
-     "change": 0.330165
+     "start": 91.07,
+     "start_date": "2023-11-14",
+     "change": 0.306358
     },
     "5": {
      "start": 159.63,
@@ -319,9 +319,9 @@
      "change": -0.254714
     },
     "10": {
-     "start": 97.68,
-     "start_date": "2016-11-11",
-     "change": 0.217957
+     "start": 97.92,
+     "start_date": "2016-11-14",
+     "change": 0.214971
     }
    }
   },
@@ -331,14 +331,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 145.02,
-     "start_date": "2025-11-13",
-     "change": 0.002896
+     "start": 145.85,
+     "start_date": "2025-11-14",
+     "change": -0.002811
     },
     "3": {
-     "start": 167.77,
-     "start_date": "2023-11-13",
-     "change": -0.133099
+     "start": 168.11,
+     "start_date": "2023-11-14",
+     "change": -0.134852
     },
     "5": {
      "start": 162.65,
@@ -346,9 +346,9 @@
      "change": -0.10581
     },
     "10": {
-     "start": 103.19,
-     "start_date": "2016-11-11",
-     "change": 0.409439
+     "start": 101.39,
+     "start_date": "2016-11-14",
+     "change": 0.434461
     }
    }
   },
@@ -358,14 +358,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 236.95,
-     "start_date": "2025-11-13",
-     "change": 2.284701
+     "start": 246.83,
+     "start_date": "2025-11-14",
+     "change": 2.153223
     },
     "3": {
-     "start": 74.78,
-     "start_date": "2023-11-13",
-     "change": 9.407997
+     "start": 77.17,
+     "start_date": "2023-11-14",
+     "change": 9.085655
     },
     "5": {
      "start": 77.3,
@@ -373,9 +373,9 @@
      "change": 9.068693
     },
     "10": {
-     "start": 17.67,
-     "start_date": "2016-11-11",
-     "change": 43.046972
+     "start": 17.71,
+     "start_date": "2016-11-14",
+     "change": 42.947487
     }
    }
   },
@@ -385,14 +385,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 339.98,
-     "start_date": "2025-11-13",
-     "change": 0.020678
+     "start": 342.46,
+     "start_date": "2025-11-14",
+     "change": 0.013286
     },
     "3": {
-     "start": 94.69,
-     "start_date": "2023-11-13",
-     "change": 2.664695
+     "start": 97.3,
+     "start_date": "2023-11-14",
+     "change": 2.566393
     },
     "5": {
      "start": 56.32,
@@ -400,9 +400,9 @@
      "change": 5.161399
     },
     "10": {
-     "start": 16.75,
-     "start_date": "2016-11-11",
-     "change": 19.717015
+     "start": 16.38,
+     "start_date": "2016-11-14",
+     "change": 20.184982
     }
    }
   },
@@ -412,14 +412,14 @@
    "src": "FT",
    "periods": {
     "1": {
-     "start": 311.4,
-     "start_date": "2025-11-13",
-     "change": -0.084778
+     "start": 306.8,
+     "start_date": "2025-11-14",
+     "change": -0.071056
     },
     "3": {
-     "start": 113.7,
-     "start_date": "2023-11-13",
-     "change": 1.506596
+     "start": 114.2,
+     "start_date": "2023-11-14",
+     "change": 1.495622
     },
     "5": {
      "start": 134.7,
@@ -430,56 +430,56 @@
    }
   },
   "BTC": {
-   "now": 51719.0,
-   "now_date": "2026-11-13",
+   "now": 51665.0,
+   "now_date": "2026-11-14",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 77498.5,
      "start_date": "2025-11-12",
-     "change": -0.332645
+     "change": -0.333342
     },
     "3": {
      "start": 29014.2,
      "start_date": "2023-11-08",
-     "change": 0.782541
+     "change": 0.78068
     },
     "5": {
      "start": 48471.4,
      "start_date": "2021-11-10",
-     "change": 0.067
+     "change": 0.065886
     },
     "10": {
      "start": 581.1,
      "start_date": "2016-11-09",
-     "change": 88.001893
+     "change": 87.908966
     }
    }
   },
   "ETH": {
-   "now": 1460.22,
-   "now_date": "2026-11-13",
+   "now": 1460.31,
+   "now_date": "2026-11-14",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 2602.27,
      "start_date": "2025-11-12",
-     "change": -0.438867
+     "change": -0.438832
     },
     "3": {
      "start": 1538.5,
      "start_date": "2023-11-08",
-     "change": -0.050881
+     "change": -0.050822
     },
     "5": {
      "start": 3458.75,
      "start_date": "2021-11-10",
-     "change": -0.577819
+     "change": -0.577793
     },
     "10": {
      "start": 9.05,
      "start_date": "2016-11-09",
-     "change": 160.350276
+     "change": 160.360221
     }
    }
   }
