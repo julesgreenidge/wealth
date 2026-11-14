@@ -61,6 +61,13 @@ svg text{fill:var(--muted);font-size:11px}
 .pt .ov{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent}
 @media (max-width:600px){.pt{display:none}.pb .num{min-width:0}}
 nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav button{flex:none;white-space:nowrap}
+.fclayout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:12px;align-items:start}
+.fcside{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+.fcside summary{cursor:pointer;list-style:none}.fcside summary::-webkit-details-marker{display:none}
+.fcside .fgrid{grid-template-columns:1fr}
+.fcmain>*+*{margin-top:12px}
+@media (min-width:1000px){.fcside summary{pointer-events:none}}
+@media (max-width:999px){.fclayout{grid-template-columns:1fr}.fcside{position:static;max-height:none}.fcside summary::after{content:" \25BE";color:var(--muted)}.fcside .fgrid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 24px}
 .fin{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px 12px;align-items:center;font-size:13.5px;align-content:start}
 .fin h3{grid-column:1/-1;font-size:13px;margin:10px 0 0;color:var(--muted);font-weight:600}
@@ -142,12 +149,18 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
 </section>
 
 <section id="fc">
- <div class="card"><div class="head"><div><h2>Your assumptions</h2><p class="note">Change any of these; the forecast updates as you type. Saved on this device.</p></div><button type="button" class="lock" id="fcreset">Reset to defaults</button></div><div id="fcin"></div></div>
+<div class="fclayout">
+ <details class="card fcside" id="fcside" open><summary><h2 style="display:inline">Your assumptions</h2></summary>
+  <p class="note" style="margin-top:6px">Change any of these; the forecast updates as you type. Saved on this device.</p>
+  <div id="fcin"></div><button type="button" class="lock" id="fcreset" style="margin-top:14px">Reset to defaults</button></details>
+ <div class="fcmain">
  <div class="grid kpis" id="fckpis"></div>
  <div class="card"><div class="head"><div><h2>Your wealth by age</h2><p class="note">An estimate in today's money of your pension, ISAs and crypto (cash and debts left out). Growth rates are after inflation and fund charges. The shaded band shows growth 2% a year lower and higher than your settings.</p></div></div>
   <div id="fcchart"></div><div class="legend" id="fcleg"></div></div>
  <div class="card"><h2>Where your money comes from in retirement</h2><p class="note" id="fcincnote"></p><div class="tw"><table id="fcinc"></table></div></div>
  <div class="card"><h2>Every 5 years</h2><p class="note">Today's money.</p><div class="tw"><table id="fctab"></table></div></div>
+ </div>
+</div>
 </section>
 
 <section id="spending">
@@ -462,6 +475,7 @@ function drawFC(){
  document.getElementById('fctab').innerHTML='<tr><th>Age</th><th class="n">Pension</th><th class="n hm">ISAs</th><th class="n hm">Crypto</th><th class="n">Total</th></tr>'+rows.map(p=>`<tr><td>${p.age}</td><td class="n">${gbp(p.pen)}</td><td class="n hm">${gbp(p.isa)}</td><td class="n hm">${gbp(p.cry)}</td><td class="n"><b style="font-weight:600">${gbp(p.total)}</b></td></tr>`).join('');
 }
 fcInputs();
+if(matchMedia('(max-width:999px)').matches)document.getElementById('fcside').open=false;
 
 document.getElementById('foot').innerHTML=D.notes.map(n=>'<div>'+n+'</div>').join('');
 function draw(){drawNW();drawCF();drawGroups();drawMix();drawHist();drawFC()}
