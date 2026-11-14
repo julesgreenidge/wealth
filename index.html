@@ -61,7 +61,8 @@ svg text{fill:var(--muted);font-size:11px}
 .pt .ov{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent}
 @media (max-width:600px){.pt{display:none}.pb .num{min-width:0}}
 nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav button{flex:none;white-space:nowrap}
-.fin{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px 12px;align-items:center;font-size:13.5px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 24px}
+.fin{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px 12px;align-items:center;font-size:13.5px;align-content:start}
 .fin h3{grid-column:1/-1;font-size:13px;margin:10px 0 0;color:var(--muted);font-weight:600}
 .fin input::-webkit-outer-spin-button,.fin input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .fin input[type=number]{-moz-appearance:textfield;appearance:textfield}
@@ -141,15 +142,12 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
 </section>
 
 <section id="fc">
+ <div class="card"><div class="head"><div><h2>Your assumptions</h2><p class="note">Change any of these; the forecast updates as you type. Saved on this device.</p></div><button type="button" class="lock" id="fcreset">Reset to defaults</button></div><div id="fcin"></div></div>
  <div class="grid kpis" id="fckpis"></div>
  <div class="card"><div class="head"><div><h2>Your wealth by age</h2><p class="note">An estimate in today's money of your pension, ISAs and crypto (cash and debts left out). Growth rates are after inflation and fund charges. The shaded band shows growth 2% a year lower and higher than your settings.</p></div></div>
   <div id="fcchart"></div><div class="legend" id="fcleg"></div></div>
  <div class="card"><h2>Where your money comes from in retirement</h2><p class="note" id="fcincnote"></p><div class="tw"><table id="fcinc"></table></div></div>
- <div class="grid two">
-  <div class="card"><h2>Your assumptions</h2><p class="note">Change any of these; the forecast updates as you type. Saved on this device.</p><div id="fcin"></div>
-   <button type="button" class="lock" id="fcreset" style="margin-top:12px">Reset to defaults</button></div>
-  <div class="card"><h2>Every 5 years</h2><p class="note">Today's money.</p><div class="tw"><table id="fctab"></table></div></div>
- </div>
+ <div class="card"><h2>Every 5 years</h2><p class="note">Today's money.</p><div class="tw"><table id="fctab"></table></div></div>
 </section>
 
 <section id="spending">
@@ -370,7 +368,7 @@ const FC_KEY='wealth-forecast';
 const pensionNow=potVal['Pension'],isaNow=potVal['Funds ISA']+potVal['Shares ISA'],cryptoNow=potVal['Crypto'];
 const FC_DEF={v:3,age:47,to:85,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:1226,c_isa:400,c_cry:200,c_cash:0,draw_age:67,draw:0,draw_mode:'amount',draw_pct:4,draw_cpct:4,tfc:'no',tfc_age:57,tfc_pct:25,sp_age:68,sp:12548,tax:'yes'};
 let FC={...FC_DEF};try{const sv=JSON.parse(localStorage.getItem(FC_KEY)||'{}');if(!sv.v){delete sv.g_cry;delete sv.g_cash}sv.v=3;Object.assign(FC,sv)}catch(e){}
-const FC_SEL={draw_mode:[['amount','£ a year'],['classic','Classic drawdown'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, and spend it']],tax:[['yes','Include'],['no','Leave out']]};
+const FC_SEL={draw_mode:[['amount','£ a year'],['classic','Classic drawdown'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, spent']],tax:[['yes','Include'],['no','Leave out']]};
 const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1],['draw_age','Start drawing at age',1]]],
  ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1]]],
  ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1],['c_cry','Crypto',1]]],
@@ -379,15 +377,15 @@ const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['
  ['State Pension',[['sp_age','State Pension age',1],['sp','State Pension a year (£, today’s money)',100]]],
  ['Income tax',[['tax','Tax on pension and State Pension']]]];
 const fcSave=()=>{try{localStorage.setItem(FC_KEY,JSON.stringify(FC))}catch(e){}};
-function fcInputs(){const box=document.getElementById('fcin');box.innerHTML='';const g=el('div',{class:'fin'});
- FC_FIELDS.forEach(([h,fs])=>{g.appendChild(el('h3',{},h));fs.forEach(([k,l,st])=>{
+function fcInputs(){const box=document.getElementById('fcin');box.innerHTML='';const wrap=el('div',{class:'fgrid'});
+ FC_FIELDS.forEach(([h,fs])=>{const g=el('div',{class:'fin'});wrap.appendChild(g);g.appendChild(el('h3',{},h));fs.forEach(([k,l,st])=>{
   if((k==='draw'&&FC.draw_mode!=='amount')||(k==='draw_pct'&&FC.draw_mode!=='pct')||(k==='draw_cpct'&&FC.draw_mode!=='classic'))return;
   if((k==='tfc_age'||k==='tfc_pct')&&FC.tfc!=='yes')return;
   g.appendChild(el('label',{for:'fc_'+k},l));
   if(FC_SEL[k]){const sel=el('select',{id:'fc_'+k},FC_SEL[k].map(([v,t])=>`<option value="${v}">${t}</option>`).join(''));sel.value=FC[k];sel.style.cssText='font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);width:100%';
    sel.onchange=()=>{FC[k]=sel.value;fcSave();fcInputs();drawFC()};g.appendChild(sel);return}
   const i=el('input',{id:'fc_'+k,type:'number',step:st,inputmode:'decimal',value:FC[k]});
-  i.oninput=()=>{const v=parseFloat(i.value);if(isFinite(v)){FC[k]=v;fcSave();drawFC()}};g.appendChild(i)})});box.appendChild(g)}
+  i.oninput=()=>{const v=parseFloat(i.value);if(isFinite(v)){FC[k]=v;fcSave();drawFC()}};g.appendChild(i)})});box.appendChild(wrap)}
 document.getElementById('fcreset').onclick=()=>{FC={...FC_DEF};try{localStorage.removeItem(FC_KEY)}catch(e){}fcInputs();drawFC()};
 /* UK income tax, 2026/27 bands, held level in today's money */
 function itax(x){if(x<=0)return 0;const pa=x>100000?Math.max(0,12570-(x-100000)/2):12570;
