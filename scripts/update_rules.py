@@ -37,7 +37,7 @@ except Exception as e: problems.append('income tax page: %s' % e)
 try:
     t = text('new-state-pension/what-youll-get')
     if DEBUG: print('state pension:'); show(t, ['per week', 'a week', 'State Pension is'])
-    m = re.search(r'full (?:new )?State Pension[^£]{0,40}£([\d.,]+) (?:per|a) week', t)
+    m = re.search(r'full (?:rate of )?(?:the )?(?:new )?State Pension[^£]{0,40}£([\d.,]+) (?:per|a) week', t)
     if not m: problems.append('State Pension figure not found')
     else: new['state_pension_week'] = num(m[1])
 except Exception as e: problems.append('State Pension page: %s' % e)
