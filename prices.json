@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 01:32 UTC",
+ "updated": "2026-11-14 17:49 UTC",
  "fx": {
   "usd": {
    "rate": 1.3227,
@@ -9,8 +9,8 @@
  },
  "items": {
   "GAC": {
-   "price": 291.18,
-   "date": "2026-11-12",
+   "price": 290.54,
+   "date": "2026-11-13",
    "cur": "GBP",
    "src": "FT"
   },
@@ -21,8 +21,8 @@
    "src": "FT"
   },
   "LS100": {
-   "price": 494.69,
-   "date": "2026-11-12",
+   "price": 494.38,
+   "date": "2026-11-13",
    "cur": "GBP",
    "src": "FT"
   },
@@ -87,13 +87,13 @@
    "src": "FT"
   },
   "BTC": {
-   "price": 51665.0,
+   "price": 49833.0,
    "date": "2026-11-14",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1460.31,
+   "price": 1398.4,
    "date": "2026-11-14",
    "cur": "GBP",
    "src": "CoinGecko"

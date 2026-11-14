@@ -2,29 +2,29 @@
  "updated": "2026-11-14",
  "assets": {
   "GAC": {
-   "now": 291.18,
-   "now_date": "2026-11-12",
+   "now": 290.54,
+   "now_date": "2026-11-13",
    "src": "FT",
    "periods": {
     "1": {
      "start": 258.56,
      "start_date": "2025-11-14",
-     "change": 0.12616
+     "change": 0.123685
     },
     "3": {
      "start": 182.92,
      "start_date": "2023-11-14",
-     "change": 0.591843
+     "change": 0.588345
     },
     "5": {
      "start": 185.01,
      "start_date": "2021-11-12",
-     "change": 0.573861
+     "change": 0.570402
     },
     "10": {
      "start": 99.33,
      "start_date": "2016-11-14",
-     "change": 1.931441
+     "change": 1.924997
     }
    }
   },
@@ -83,29 +83,29 @@
    }
   },
   "LS100": {
-   "now": 494.69,
-   "now_date": "2026-11-12",
+   "now": 494.38,
+   "now_date": "2026-11-13",
    "src": "FT",
    "periods": {
     "1": {
      "start": 435.75,
      "start_date": "2025-11-14",
-     "change": 0.135261
+     "change": 0.13455
     },
     "3": {
      "start": 308.16,
      "start_date": "2023-11-14",
-     "change": 0.605302
+     "change": 0.604296
     },
     "5": {
      "start": 305.64,
      "start_date": "2021-11-12",
-     "change": 0.618538
+     "change": 0.617524
     },
     "10": {
      "start": 174.14,
      "start_date": "2016-11-14",
-     "change": 1.84076
+     "change": 1.83898
     }
    }
   },
@@ -430,56 +430,56 @@
    }
   },
   "BTC": {
-   "now": 51665.0,
+   "now": 49833.0,
    "now_date": "2026-11-14",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 77498.5,
      "start_date": "2025-11-12",
-     "change": -0.333342
+     "change": -0.356981
     },
     "3": {
      "start": 29014.2,
      "start_date": "2023-11-08",
-     "change": 0.78068
+     "change": 0.717538
     },
     "5": {
      "start": 48471.4,
      "start_date": "2021-11-10",
-     "change": 0.065886
+     "change": 0.028091
     },
     "10": {
      "start": 581.1,
      "start_date": "2016-11-09",
-     "change": 87.908966
+     "change": 84.756324
     }
    }
   },
   "ETH": {
-   "now": 1460.31,
+   "now": 1398.4,
    "now_date": "2026-11-14",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 2602.27,
      "start_date": "2025-11-12",
-     "change": -0.438832
+     "change": -0.462623
     },
     "3": {
      "start": 1538.5,
      "start_date": "2023-11-08",
-     "change": -0.050822
+     "change": -0.091063
     },
     "5": {
      "start": 3458.75,
      "start_date": "2021-11-10",
-     "change": -0.577793
+     "change": -0.595692
     },
     "10": {
      "start": 9.05,
      "start_date": "2016-11-09",
-     "change": 160.360221
+     "change": 153.519337
     }
    }
   }
