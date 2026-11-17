@@ -60,12 +60,14 @@ def from_api(token):
     rows = []
     for t in get('/transactions?since_date=2000-01-01')['transactions']:
         if t.get('deleted') or t['account_id'] not in accounts: continue
-        base = dict(Account=accounts[t['account_id']], date=t['date'], Payee=t.get('payee_name') or '')
+        base = dict(Account=accounts[t['account_id']], date=t['date'], Payee=t.get('payee_name') or '',
+                    Tag=' '.join(filter(None, [t.get('flag_name'), t.get('memo'), ' '.join(x.get('name', '') for x in (t.get('tags') or []) if isinstance(x, dict))])))
         subs = [s for s in (t.get('subtransactions') or []) if not s.get('deleted')]
         for s in (subs or [t]):
             g, n = cats.get(s.get('category_id'), (None, None))
             if s.get('transfer_account_id'): g = n = None
-            rows.append(dict(base, **{'Category Group': g, 'Category': n, 'net': s['amount'] / 1000}))
+            rows.append(dict(base, **{'Category Group': g, 'Category': n, 'net': s['amount'] / 1000,
+                                      'Tag': ' '.join(filter(None, [base['Tag'], s.get('memo'), n or '']))}))
     df = pd.DataFrame(rows); df['date'] = pd.to_datetime(df.date)
     print('Transactions from', df.date.min().year, 'to', df.date.max().year)   # years only, no figures
     df.attrs['emergency'] = round(sum(emerg), 2) if emerg else None   # money available in the Emergency Fund category (ring-fenced in the forecast)
@@ -135,6 +137,13 @@ if __name__ == '__main__':
     i = df[(df.date >= ty) & (df.date <= today) & df.Account.str.contains('ISA') & ~df.Account.str.contains('JISA')
            & df.Payee.str.startswith('Transfer') & ~df.Payee.str.contains('ISA')]
     data['isa_used'] = round(float(i.net.sum()), 2); data['isa_from'] = str(ty.date())
+    # Savings interest by tax year: inflows tagged "Taxed interest" (YNAB flag name, memo, tag or category)
+    ti = df[df.Tag.str.contains('taxed interest', case=False, na=False) & (df.net > 0) & (df.date <= today)].copy()
+    if len(ti):
+        ti['ty'] = ti.date.apply(lambda d: d.year if (d.month, d.day) >= (4, 6) else d.year - 1)
+        data['interest'] = {f'{y}/{str(y + 1)[2:]}': dict(total=round(float(g.net.sum()), 2), by={k: round(float(v), 2) for k, v in g.groupby('Account').net.sum().items()})
+                            for y, g in ti.groupby('ty')}
+    print('Taxed interest found this tax year:', 'yes' if len(ti) and (ti.date >= ty).any() else 'no')   # yes/no only
     try: data['family'] = family_spending(token, today)
     except Exception as e: print('Family budget not read:', type(e).__name__)
     seal(data, 'lock.json', 'ynab.enc')
