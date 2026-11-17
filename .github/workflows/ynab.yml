@@ -25,4 +25,4 @@ jobs:
           git config user.name "ynab-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [ -f ynab.enc ]; then git add ynab.enc; fi
-          git diff --cached --quiet || (git commit -m "Update YNAB figures" && git pull --quiet --rebase origin main && git push)
+          git diff --cached --quiet || (git commit -m "Update YNAB figures" && git pull --quiet --rebase -X theirs origin main && git push)

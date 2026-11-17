@@ -27,5 +27,5 @@ jobs:
           git config user.name "funds-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add funds.json
-          git diff --cached --quiet || (git commit -m "Update fund make-up" && git pull --quiet --rebase origin main && git push)
+          git diff --cached --quiet || (git commit -m "Update fund make-up" && git pull --quiet --rebase -X theirs origin main && git push)
           exit $s
