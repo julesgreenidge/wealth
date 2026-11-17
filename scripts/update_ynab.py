@@ -138,7 +138,7 @@ if __name__ == '__main__':
            & df.Payee.str.startswith('Transfer') & ~df.Payee.str.contains('ISA')]
     data['isa_used'] = round(float(i.net.sum()), 2); data['isa_from'] = str(ty.date())
     # Savings interest by tax year: inflows tagged "Taxed interest" (YNAB flag name, memo, tag or category)
-    ti = df[df.Tag.str.contains('taxed interest', case=False, na=False) & (df.net > 0) & (df.date <= today)].copy()
+    ti = df[df.Tag.str.contains(r'(?<![a-z])taxed interest', case=False, na=False, regex=True) & (df.net > 0) & (df.date <= today)].copy()
     if len(ti):
         ti['ty'] = ti.date.apply(lambda d: d.year if (d.month, d.day) >= (4, 6) else d.year - 1)
         data['interest'] = {f'{y}/{str(y + 1)[2:]}': dict(total=round(float(g.net.sum()), 2), by={k: round(float(v), 2) for k, v in g.groupby('Account').net.sum().items()})
