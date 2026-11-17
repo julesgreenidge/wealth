@@ -61,13 +61,14 @@ def from_api(token):
     for t in get('/transactions?since_date=2000-01-01')['transactions']:
         if t.get('deleted') or t['account_id'] not in accounts: continue
         base = dict(Account=accounts[t['account_id']], date=t['date'], Payee=t.get('payee_name') or '',
-                    Tag=' '.join(filter(None, [t.get('flag_name'), t.get('memo'), ' '.join(x.get('name', '') for x in (t.get('tags') or []) if isinstance(x, dict))])))
+                    Flag=t.get('flag_name') or '', Memo=t.get('memo') or '',
+                    Tags=' '.join((x.get('name') or '') if isinstance(x, dict) else str(x) for x in (t.get('tags') or [])))
         subs = [s for s in (t.get('subtransactions') or []) if not s.get('deleted')]
         for s in (subs or [t]):
             g, n = cats.get(s.get('category_id'), (None, None))
             if s.get('transfer_account_id'): g = n = None
             rows.append(dict(base, **{'Category Group': g, 'Category': n, 'net': s['amount'] / 1000,
-                                      'Tag': ' '.join(filter(None, [base['Tag'], s.get('memo'), n or '']))}))
+                                      'Memo': ' '.join(filter(None, [base['Memo'], s.get('memo') if s is not t else None]))}))
     df = pd.DataFrame(rows); df['date'] = pd.to_datetime(df.date)
     print('Transactions from', df.date.min().year, 'to', df.date.max().year)   # years only, no figures
     df.attrs['emergency'] = round(sum(emerg), 2) if emerg else None   # money available in the Emergency Fund category (ring-fenced in the forecast)
@@ -137,13 +138,22 @@ if __name__ == '__main__':
     i = df[(df.date >= ty) & (df.date <= today) & df.Account.str.contains('ISA') & ~df.Account.str.contains('JISA')
            & df.Payee.str.startswith('Transfer') & ~df.Payee.str.contains('ISA')]
     data['isa_used'] = round(float(i.net.sum()), 2); data['isa_from'] = str(ty.date())
-    # Savings interest by tax year: inflows tagged "Taxed interest" (YNAB flag name, memo, tag or category)
-    ti = df[df.Tag.str.contains(r'(?<![a-z])taxed interest', case=False, na=False, regex=True) & (df.net > 0) & (df.date <= today)].copy()
-    if len(ti):
-        ti['ty'] = ti.date.apply(lambda d: d.year if (d.month, d.day) >= (4, 6) else d.year - 1)
-        data['interest'] = {f'{y}/{str(y + 1)[2:]}': dict(total=round(float(g.net.sum()), 2), by={k: round(float(v), 2) for k, v in g.groupby('Account').net.sum().items()})
-                            for y, g in ti.groupby('ty')}
-    print('Taxed interest found this tax year:', 'yes' if len(ti) and (ti.date >= ty).any() else 'no')   # yes/no only
+    # Tax items by tax year, from transactions you tag (YNAB flag name, tag or memo; not the category):
+    # "Taxed interest" (savings interest; "Untaxed interest" e.g. Premium Bonds is left out) and "Charity" (Gift Aid donations)
+    def tagged(word, sign):
+        hit = pd.Series(False, index=df.index)
+        for col in ('Flag', 'Tags', 'Memo'):
+            if col in df: hit |= df[col].astype(str).str.contains(r'(?<![a-z])' + word + r'(?![a-z])', case=False, regex=True)
+        x = df[hit & (df.date <= today)].copy()
+        x['v'] = x.net * sign
+        x['ty'] = x.date.apply(lambda d: d.year if (d.month, d.day) >= (4, 6) else d.year - 1)
+        out = {f'{y}/{str(y + 1)[2:]}': dict(total=round(float(g.v.sum()), 2), n=int(len(g)),
+               by={k: round(float(v), 2) for k, v in g.groupby('Account').v.sum().items()}) for y, g in x.groupby('ty')}
+        where = [c for c in ('Flag', 'Tags', 'Memo') if c in df and df.loc[hit, c].astype(str).str.contains(word, case=False).any()]
+        print(f'"{word}" found this tax year:', 'yes' if (x.date >= ty).any() else 'no', '| tagged via:', ', '.join(where) or 'none')  # no amounts
+        return out
+    data['interest'] = tagged('taxed interest', 1)
+    data['charity'] = tagged('charity', -1)
     try: data['family'] = family_spending(token, today)
     except Exception as e: print('Family budget not read:', type(e).__name__)
     seal(data, 'lock.json', 'ynab.enc')

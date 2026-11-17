@@ -672,15 +672,15 @@ function drawTax(){
  const n=T.now,R=RULES.income_tax,pa=R.pa,band=R.basic_to-pa;
  const yi=((D.ynab||{}).interest||{})[n.y],INT=yi?{a:yi.total,s:'YNAB: tagged "Taxed interest", so far this tax year ('+Object.keys(yi.by).join(', ')+')',act:true}:{...n.interest,act:false};
  const empl=n.income.reduce((a,x)=>a+x.a,0),actual=n.income.filter(x=>x.act).reduce((a,x)=>a+x.a,0);
- const pens=n.pension.reduce((a,x)=>a+x[2],0),gross=pens*1.25;
- const nonSav=empl+(n.staking.a||0),taxable=Math.max(0,nonSav-pa),bandX=band+gross;
+ const pens=n.pension.reduce((a,x)=>a+x[2],0),gross=pens*1.25,yc=((D.ynab||{}).charity||{})[n.y],ga=yc?yc.total:0,gaG=ga*1.25;
+ const nonSav=empl+(n.staking.a||0),taxable=Math.max(0,nonSav-pa),bandX=band+gross+gaG;
  const basic=Math.min(taxable,bandX),higher=Math.max(0,taxable-bandX);
  const savTax=Math.max(0,INT.a-(higher>0?500:1000))*(higher>0?.4:.2);
  const it=basic*R.rates[0]/100+higher*R.rates[1]/100+savTax;
- const over=nonSav-R.basic_to-gross;
+ const over=nonSav-R.basic_to-gross-gaG;
  N.textContent=`Tax year ${n.y} (6 April 2026 to 5 April 2027), so far. Actual figures come from your payslips, P45s and exports; anything marked "estimate" is my projection to April. Updated ${fdate(n.updated)}. This is a guide, not tax advice.`;
  kpi(K,'Taxable income (estimate)',gbp(nonSav+INT.a+n.dividends.a),`${gbp(actual)} actual so far, the rest estimated`);
- kpi(K,'Over the higher-rate line',over>0?gbp(over):'No',over>0?`Income above ${gbp(R.basic_to)} after your pension payments`:'You are under it');
+ kpi(K,'Over the higher-rate line',over>0?gbp(over):'No',over>0?`Income above ${gbp(R.basic_to)} after your pension payments and Gift Aid`:'You are under it');
  kpi(K,'Income tax for the year (estimate)',gbp(it),`PAYE so far ${gbp(n.paye.so_far,2)} (to ${n.paye.to})`);
  const nx=n.payments.find(p=>p[0]>=new Date().toISOString().slice(0,10));
  if(nx)kpi(K,'Next payment',nx[2]!=null?gbp(nx[2],2):'To be worked out',`${fdate(nx[0])}: ${nx[1]}`);
@@ -690,8 +690,9 @@ function drawTax(){
  r+=`<tr><td>Crypto staking rewards</td><td class="n est">-</td><td class="s">${n.staking.s}</td></tr>`;
  r+=`<tr class="t"><td>Total (estimate)</td><td class="n">${gbp(nonSav+INT.a+n.dividends.a)}</td><td></td></tr>`;
  let pr='<tr><th>Date</th><th>Paid into</th><th class="n">You paid</th><th class="n">With basic-rate relief</th></tr>'+n.pension.map(([d,w,a])=>`<tr><td>${fdate(d)}</td><td>${w}</td><td class="n">${gbp(a,2)}</td><td class="n">${gbp(a*1.25,2)}</td></tr>`).join('');
- pr+=`<tr class="t"><td colspan="2">Total</td><td class="n">${gbp(pens,2)}</td><td class="n">${gbp(gross,2)}</td></tr>`;
- const pnote=`Enter ${gbp(gross,2)} on your return to claim about ${gbp(gross*.2,2)} of extra higher-rate relief. Salary sacrifice isn't included here, as it already reduces your pay.`+(over>0?` To bring your income down to ${gbp(R.basic_to)}, you'd need to pay in about ${gbp(over/1.25)} more before 5 April 2027 (${gbp(over)} with relief). That's information, not advice.`:'');
+ pr+=`<tr class="t"><td colspan="2">Total pension payments</td><td class="n">${gbp(pens,2)}</td><td class="n">${gbp(gross,2)}</td></tr>`;
+ pr+=`<tr><td colspan="2">Gift Aid donations <span class="note">tagged "Charity" in YNAB${yc?', '+yc.n+' payment'+(yc.n===1?'':'s'):', none yet'}</span></td><td class="n">${gbp(ga,2)}</td><td class="n">${gbp(gaG,2)}</td></tr>`;
+ const pnote=`On your return, enter ${gbp(gross,2)} for pension payments and ${gbp(ga,2)} for Gift Aid (the amount you gave; HMRC adds the 25%). Together they give about ${gbp((gross+gaG)*.2,2)} of extra higher-rate relief. Salary sacrifice isn't included here, as it already reduces your pay.`+(over>0?` To bring your income down to ${gbp(R.basic_to)}, you'd need to pay in about ${gbp(over/1.25)} more before 5 April 2027 (${gbp(over)} with relief). That's information, not advice.`:'');
  let gr='<tr><th>Sale</th><th class="n">Sales</th><th class="n">Proceeds</th><th class="n">Gain</th></tr>'+n.gains.map(x=>`<tr><td>${x.n}<br><span class="note">${x.s}</span></td><td class="n">${x.disposals}</td><td class="n">${gbp(x.proceeds,2)}</td><td class="n">${x.gain==null?'Tiny':gbp(x.gain,2)}</td></tr>`).join('');
  const gt=n.gains.reduce((a,x)=>a+(x.gain||0),0),aea=(RULES.cgt||{}).aea||3000;
  gr+=`<tr class="t"><td>Total gains</td><td></td><td class="n">${gbp(n.gains.reduce((a,x)=>a+x.proceeds,0),2)}</td><td class="n">${gbp(gt,2)}</td></tr>`;
@@ -701,7 +702,7 @@ function drawTax(){
  const py='<tr><th>Due</th><th>What</th><th class="n">Amount</th></tr>'+n.payments.map(([d,w,a,nt])=>`<tr><td>${fdate(d)}</td><td>${w}<br><span class="note">${nt}</span></td><td class="n">${a==null?'-':gbp(a,2)}</td></tr>`).join('');
  const chk=n.checks||[];
  B.innerHTML=card('Income','Estimates are in grey italics.',tab(r))
-  +`<div class="grid two" style="margin-top:12px">${card('Pension payments','Personal payments into your SIPP this tax year (ii adds basic-rate relief).',tab(pr)+`<p class="note" style="margin:10px 0 0">${pnote}</p>`)}${card(`Tax code: ${c.code}`,`Since ${fdate(c.from)}. Previously ${c.prev}. ${c.note}`,tab(cr))}</div>`
+  +`<div class="grid two" style="margin-top:12px">${card('Pension payments and Gift Aid','Personal payments into your SIPP (ii adds basic-rate relief) and Gift Aid donations this tax year.',tab(pr)+`<p class="note" style="margin:10px 0 0">${pnote}</p>`)}${card(`Tax code: ${c.code}`,`Since ${fdate(c.from)}. Previously ${c.prev}. ${c.note}`,tab(cr))}</div>`
   +`<div class="grid two" style="margin-top:12px">${card('Capital gains','Sales of shares and crypto outside ISAs and pensions.',tab(gr)+`<p class="note" style="margin:10px 0 0">${gnote}</p>`)}${card('Payments and deadlines','',tab(py))}</div>`
   +`<div class="card" style="margin-top:12px"><h2>To check</h2><ul class="chk">${chk.map(x=>`<li>${x}</li>`).join('')}</ul><p class="note" style="margin:10px 0 0">Income tax estimate: ${gbp(basic)} at ${R.rates[0]}% and ${gbp(higher)} at ${R.rates[1]}% after your ${gbp(pa)} personal allowance, plus tax on savings interest over your allowance. National Insurance isn't included (it isn't on your return).</p></div>`;
 }
