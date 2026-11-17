@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Wealth</title>
+<style>
+:root{--bg:#f6f5f1;--panel:#fff;--fg:#1d1d1b;--muted:#6b6a65;--line:#e4e2db;--accent:#2a6fdb;--pos:#17855a;--neg:#c2413b;
+--c1:#2a6fdb;--c2:#e07a2f;--c3:#c24a87;--c4:#7b5cd6;--c5:#1aa38a;--c6:#9a9890;--c7:#d4a017;--c8:#5f8f3a}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#201f1d;--fg:#f0efe9;--muted:#a4a29a;--line:#34332f;--accent:#6aa0ff;--pos:#3fbf86;--neg:#ef7a72;
+--c1:#5b93f0;--c2:#f0924a;--c3:#e070a8;--c4:#9a85ec;--c5:#35c3a6;--c6:#8a887f;--c7:#e6b93a;--c8:#7fb356}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{font:600 26px/1.2 Georgia,"Times New Roman",serif;margin:0}
+.sub{color:var(--muted);font-size:13px;margin-top:4px}
+button{font:inherit;color:inherit}
+.lock{background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--muted);font-size:13px}
+nav{display:flex;gap:4px;margin:20px 0 16px;border-bottom:1px solid var(--line)}
+nav button{background:none;border:0;padding:10px 14px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;font-weight:500}
+nav button.on{color:var(--fg);border-color:var(--fg)}
+.grid{display:grid;gap:12px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.card h2{font-size:15px;margin:0 0 4px;font-weight:600}
+.note{color:var(--muted);font-size:12.5px;margin:0 0 12px}
+.kpi .l{color:var(--muted);font-size:13px}
+.kpi .v{font:600 26px/1.2 Georgia,serif;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12.5px;color:var(--muted)}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+section{display:none}section.on{display:block}
+section>.grid+.grid,section>.card,section>.grid+.card,section>.card+.grid,section>.card+.card{margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+th{text-align:left;color:var(--muted);font-weight:500;font-size:12px;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr.bf td{font-style:italic;color:var(--muted)}tr.bf td.pos{color:var(--pos)}tr.bf td.neg{color:var(--neg)}
+tr.grp td{font-weight:600;background:color-mix(in srgb,var(--fg) 6%,var(--panel))}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ytab tr.jg{cursor:pointer}.ytab tr.jg td:first-child::before{content:'\25B8  ';color:var(--muted)}.ytab tr.jg.open td:first-child::before{content:'\25BE  '}.ytab tr.jc td{font-size:13px;color:var(--muted)}.ytab tr.jc td.neg{color:var(--neg)}.ytab tr.jc td.pos{color:var(--pos)}.ytab tr.jc td:first-child{padding-left:26px}.ytab tr.jt td{font-weight:600;border-top:1px solid var(--line)}
+#fcinc th,#fcinc td{padding:6px 6px;white-space:nowrap}#fcinc .sub{background:color-mix(in srgb,var(--fg) 4%,transparent)}#fcinc th.sub{white-space:normal;min-width:70px}#fcinc td.sub.neg{color:var(--neg);opacity:.8}
+.txt{font:inherit;font-weight:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}#fcinc th{white-space:normal;vertical-align:bottom}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;min-width:60px}
+.bar i{display:block;height:100%;border-radius:4px}
+.row{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(60px,2fr) 130px;gap:10px;align-items:center;padding:6px 0;font-size:13.5px}
+.row .lab{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .val{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:none;border:0;padding:4px 10px;font-size:12.5px;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--fg);color:var(--bg)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{fill:var(--muted);font-size:11px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--k);margin-right:5px;vertical-align:-1px}
+.pb{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.pb .num{min-width:62px;text-align:right;font-variant-numeric:tabular-nums}
+.pt{position:relative;width:64px;height:8px;background:var(--line);border-radius:4px;flex:none}
+.pt i{position:absolute;top:0;bottom:0;border-radius:4px}
+.pt .z{position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--muted)}
+.pt .ov{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent}
+@media (max-width:600px){.pt{display:none}.pb .num{min-width:0}}
+nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav button{flex:none;white-space:nowrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
+.seg button{font:inherit;font-size:13px;padding:6px 10px;border:0;background:none;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.stale{margin-top:6px;font-size:13px;color:#8a5a00;background:#fdf3dc;border:1px solid #f0d9a0;border-radius:8px;padding:6px 10px;max-width:640px}
+@media (prefers-color-scheme:dark){.stale{color:#f3c86b;background:#3a2f17;border-color:#5c4a22}}
+.fclayout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:12px;align-items:start}
+.fcside{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+.fcside summary{cursor:pointer;list-style:none}.fcside summary::-webkit-details-marker{display:none}
+.fcside .fgrid{grid-template-columns:1fr}
+.fcmain>*+*{margin-top:12px}
+@media (min-width:1100px){.fcside summary{pointer-events:none}}
+@media (max-width:1099px){.fclayout{grid-template-columns:minmax(0,1fr)}.fcside{min-width:0}.fcside{position:static;max-height:none}.fcside summary::after{content:" \25BE";color:var(--muted)}.fcside .fgrid{grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr))}}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 24px}
+.fin{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px 12px;align-items:center;font-size:13.5px;align-content:start}
+.lumps{font-size:13.5px}.lumps h3{font-size:13px;margin:10px 0 4px;color:var(--muted);font-weight:600}.lumps .note{margin:0 0 8px}
+.lrow{display:grid;grid-template-columns:56px minmax(0,1fr) 92px 28px;gap:6px;align-items:center;margin-top:6px}
+.lrow input,.lrow select{width:100%;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+.lrow input{text-align:right;-moz-appearance:textfield;appearance:textfield}.lrow input::-webkit-outer-spin-button,.lrow input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.lhead{font-size:12px;color:var(--muted);margin-top:4px}.lx{border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;height:32px;cursor:pointer;font-size:16px;line-height:1}
+.lwarn{color:var(--neg);margin:2px 0 0!important;font-size:12px}.lwarn:empty{display:none}.ladd{margin-top:10px}
+.fin h3{grid-column:1/-1;font-size:13px;margin:10px 0 0;color:var(--muted);font-weight:600}
+.fin input::-webkit-outer-spin-button,.fin input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.fin input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.fin input{width:100%;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);text-align:right}
+.pot .v{font:600 22px/1.2 Georgia,serif;font-variant-numeric:tabular-nums}
+.tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);font-size:12px;padding:5px 8px;border-radius:6px;opacity:0;transition:opacity .1s;z-index:9}
+#login{min-height:100vh;display:grid;place-items:center;padding:16px}
+#login form{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px 24px;width:100%;max-width:360px}
+#login p{color:var(--muted);font-size:13px;margin:0 0 18px}
+#login label{font-size:13px;color:var(--muted)}
+#login input[type=password]{width:100%;font:inherit;font-size:16px;padding:10px 12px;margin:6px 0 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+#login .chk{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+#go{width:100%;font-weight:600;padding:10px;border:0;border-radius:8px;background:var(--fg);color:var(--bg);cursor:pointer}
+#go:disabled{opacity:.6;cursor:wait}
+#taxyr{flex-wrap:wrap;flex-shrink:1;max-width:100%}.taxt td:first-child{white-space:normal}.taxt td.s{color:var(--muted);font-size:12.5px;white-space:normal}.taxt tr.t td{font-weight:600;border-top:1px solid var(--line)}.taxt .est{color:var(--muted);font-style:italic}.chk{margin:0;padding-left:18px;font-size:13.5px}.chk li{margin:4px 0}
+#err{color:var(--neg);font-size:13px;min-height:20px;margin-top:10px}
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0;opacity:0}
+[hidden]{display:none!important}
+footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
+@media (max-width:600px){.kpi .v{font-size:22px}nav button{padding:10px 10px}.hm{display:none}table{font-size:12.5px}td,th{padding:6px 5px}.row{grid-template-columns:105px minmax(40px,1fr) 118px;gap:8px}}
+</style>
+</head>
+<body>
+<div id="login" style="visibility:hidden">
+<form id="f" method="post" action="" autocomplete="on">
+<h1>Wealth</h1>
+<p id="lmsg">Private. Enter your password to unlock.</p>
+<label for="user" class="vh">Username</label><input id="user" class="vh" type="text" name="username" value="jules" autocomplete="username" tabindex="-1" aria-hidden="true">
+<label for="pw">Password</label>
+<input id="pw" name="password" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" required autofocus>
+<div class="chk"><input type="checkbox" id="rem"><label for="rem" style="margin:0">Keep me unlocked on this device for 30 days</label></div>
+<button id="go" type="submit">Unlock</button>
+<div id="err" role="alert"></div>
+</form>
+</div>
+<div class="wrap" id="app" hidden>
+<header><div><h1>Wealth</h1><div class="sub" id="asof"></div><div class="stale" id="stale" hidden></div></div><button class="lock" id="lock" type="button">Lock</button></header>
+<nav><button class="on" data-t="overview">Overview</button><button data-t="investing">Investing</button><button data-t="mix">Investing overview</button><button data-t="hist">Investing history</button><button data-t="fc">Forecast</button><button data-t="spending">Spending</button><button data-t="joint">Joint spending</button><button data-t="tax">Tax</button></nav>
+
+<section id="overview" class="on">
+ <div class="grid kpis" id="kpis"></div>
+ <div class="card"><div class="head"><div><h2>Net worth over time</h2><p class="note">Month-end figures from YNAB. Today's figure uses live prices for investments.</p></div>
+  <div class="seg" id="nwr"><button data-r="12">1 year</button><button data-r="60" class="on">5 years</button><button data-r="999">All</button></div></div>
+  <div id="nwchart"></div><div class="legend" id="nwleg"></div></div>
+ <div class="grid two">
+  <div class="card"><h2>Where it is today</h2><p class="note">Investments at live prices, everything else from YNAB.</p><div id="where"></div></div>
+  <div class="card"><h2>Accounts</h2><p class="note">Balances as last updated in YNAB.</p><p class="note" id="guessnote" hidden style="color:#8a5a00"></p><div class="tw"><table id="accts"></table></div></div>
+ </div>
+</section>
+
+<section id="investing">
+ <div class="grid kpis" id="pots"></div>
+ <div class="card"><h2>Holdings</h2><p class="note" id="hnote"></p><div class="tw"><table id="hold"></table></div></div>
+ <div class="card"><h2>Tax-year allowances 2026/27</h2><p class="note">6 April 2026 to 5 April 2027.</p><div id="allow"></div></div>
+</section>
+
+<section id="mix">
+ <div class="card"><div class="head"><div><h2>What your investments are made of</h2><p class="note">Looks inside your funds using their factsheets, then adds your own shares and crypto.</p></div>
+  <div class="seg" id="mixpot"></div></div></div>
+ <div class="grid two">
+  <div class="card"><h2>Where in the world</h2><p class="note" id="geonote"></p><div id="geo"></div></div>
+  <div class="card"><h2>Which industries</h2><p class="note">By the industry of each company.</p><div id="sect"></div></div>
+ </div>
+ <div class="grid two">
+  <div class="card"><h2>Your biggest companies</h2><p class="note" id="topnote"></p><div id="topco"></div></div>
+  <div class="card"><h2>Company size</h2><p class="note">Share of your funds and shares by the size of company (Morningstar). Crypto and cash left out.</p><div id="csize"></div>
+   <h2 style="margin-top:18px">What your funds cost</h2><p class="note" id="feenote"></p><div class="tw"><table id="fees"></table></div></div>
+ </div>
+</section>
+
+<section id="hist">
+ <div class="card"><div class="head"><div><h2>How each investment has done</h2><p class="note" id="histnote"></p></div>
+  <div class="seg" id="histmode"><button data-m="annual" class="on">Per year</button><button data-m="total">Total change</button></div></div>
+  <div class="tw"><table id="histtab"></table></div><p class="note" id="histfoot" style="margin:10px 0 0"></p></div>
+</section>
+
+<section id="fc">
+<div class="fclayout">
+ <details class="card fcside" id="fcside" open><summary><h2 style="display:inline">Your assumptions</h2></summary>
+  <p class="note" style="margin-top:6px">Change any of these; the forecast updates as you type. Saved on this device.</p>
+  <div id="fcin"></div><button type="button" class="lock" id="fcreset" style="margin-top:14px">Reset to defaults</button><p class="note" id="fcrules" style="margin:12px 0 0"></p></details>
+ <div class="fcmain">
+ <div class="grid kpis" id="fckpis"></div>
+ <div class="card"><div class="head"><div><h2>Your wealth by age</h2><p class="note">An estimate in today's money of your pension, ISAs and crypto (cash and debts left out). Growth rates are after inflation and fund charges. The shaded band shows growth 2% a year lower and higher than your settings.</p></div><div class="seg" id="fcscale" role="group" aria-label="Chart scale"><button type="button" data-v="fit">Fit forecast</button><button type="button" data-v="full">Full range</button></div></div>
+  <div id="fcchart"></div><p class="note" id="fcclip" style="margin:4px 0 0"></p><div class="legend" id="fcleg"></div></div>
+ <div class="card"><h2>Where your money comes from in retirement</h2><p class="note" id="fcincnote"></p><div class="tw"><table id="fcinc"></table></div></div>
+ <div class="card"><h2>Every 5 years</h2><p class="note">Today's money.</p><div class="tw"><table id="fctab"></table></div></div>
+ </div>
+</div>
+</section>
+
+<section id="spending">
+ <div class="grid kpis" id="skpis"></div>
+ <div class="card"><h2>Money in and out each month</h2><p class="note">Income is money assigned in YNAB; spending is categorised spending, excluding transfers to savings and investments. The latest month is so far.</p>
+  <div id="cfchart"></div><div class="legend"><span style="--k:var(--pos)">Income</span><span style="--k:var(--c2)">Spending</span></div></div>
+ <div class="card"><h2>Spending by category group</h2><p class="note" id="snote"></p>
+  <div class="tw"><table id="stab" class="ytab"></table></div></div>
+</section>
+<section id="joint">
+ <div class="grid kpis" id="jkpis"></div>
+ <div class="card"><h2>Joint account spending by year</h2><p class="note" id="jnote"></p>
+  <div class="tw"><table id="jtab" class="ytab"></table></div></div>
+</section>
+
+<section id="tax">
+ <div class="card"><div class="head"><div><h2>Self Assessment</h2><p class="note" id="taxnote"></p></div><div class="seg" id="taxyr"></div></div></div>
+ <div class="grid kpis" id="taxkpis"></div>
+ <div id="taxbody"></div>
+</section>
+<footer id="foot"></footer>
+</div>
+<div class="tip" id="tip"></div>
+<script>
+window.startApp=function(D){
+const PR=D.prices.items,FXo=D.prices.fx.usd;
+D.hold={fx:[FXo.rate,FXo.date,FXo.src],holdings:D.holdings.map(h=>{h={...h};if(h.pkey&&PR[h.pkey]){const p=PR[h.pkey];h.price=p.price;h.price_date=p.date;h.cur=p.cur==='USD'?'$':p.cur==='GBp'?'p':undefined;h.value=h.units*p.price/(p.cur==='USD'?FXo.rate:p.cur==='GBp'?100:1)}return h})};
+const Y=D.ynab,H=D.hold.holdings;
+/* accounts whose holdings aren't itemised (e.g. a workplace pension) keep their YNAB balance */
+const COVERED=new Set(D.covered||[]);COVERED.test=n=>COVERED.has(n);
+const EXTRA=(Y.accounts||[]).filter(a=>['Pensions','Stocks & shares ISAs'].includes(a.type)&&!COVERED.test(a.name)&&Math.abs(a.balance)>0.5);
+EXTRA.forEach(a=>H.push({pot:a.type==='Pensions'?'Pension':'Funds ISA',name:a.name,kind:'Fund (value from YNAB)',units:null,value:a.balance,ynab_date:a.updated,fund:/Aviva/i.test(a.name)?'Aviva Pensions US Equity S6':null}));
+const gbp=(v,dp=0)=>(v<0?'−':'')+'£'+Math.abs(v).toLocaleString('en-GB',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+const sgn=v=>(v>=0?'+':'−')+'£'+Math.abs(Math.round(v)).toLocaleString('en-GB');
+const pct=(v,dp=1)=>(v*100).toFixed(dp)+'%';
+const mname=m=>{if(!m)return '';const[y,mo]=m.split('-');return new Date(+y,+mo-1,1).toLocaleDateString('en-GB',{month:'short',year:'numeric'})};
+const fdate=s=>new Date(s+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const el=(t,a={},h='')=>{const e=document.createElement(t);for(const k in a)e.setAttribute(k,a[k]);e.innerHTML=h;return e};
+const tip=document.getElementById('tip');
+const showTip=(e,t)=>{tip.innerHTML=t;tip.style.opacity=1;const x=Math.min(e.clientX+12,innerWidth-tip.offsetWidth-8);tip.style.left=x+'px';tip.style.top=(e.clientY-36)+'px'};
+const hideTip=()=>tip.style.opacity=0;
+
+/* tabs */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.t));
+ try{localStorage.setItem('wealth-tab',b.dataset.t)}catch(e){} draw();});
+setTimeout(()=>{try{const t=localStorage.getItem('wealth-tab');if(t)document.querySelector('nav button[data-t="'+t+'"]')?.click()}catch(e){}},0);
+document.getElementById('lock').onclick=()=>{try{['wealth-wk','wealth-skip-ynab','wealth-problem'].forEach(k=>sessionStorage.removeItem(k));localStorage.removeItem('wealth-wk')}catch(e){} location.reload()};
+
+/* today's figures */
+const POT={'Pension':'Pensions','Funds ISA':'Stocks & shares ISAs','Shares ISA':'Stocks & shares ISAs','Crypto':'Crypto'};
+const potVal={};H.forEach(h=>potVal[h.pot]=(potVal[h.pot]||0)+h.value);
+const invTotal=Object.values(potVal).reduce((a,b)=>a+b,0);
+const last=i=>Y.months.length-1-i;
+const typeNow={};for(const k in Y.bytype)typeNow[k]=Y.bytype[k][last(0)];
+const live={...typeNow};['Pensions','Stocks & shares ISAs','Crypto'].forEach(k=>delete live[k]);
+live['Pensions']=potVal['Pension'];live['Stocks & shares ISAs']=potVal['Funds ISA']+potVal['Shares ISA'];live['Crypto']=potVal['Crypto'];
+const nwNow=Object.values(live).reduce((a,b)=>a+b,0);
+const cashNow=['Current accounts','Cash savings','Cash ISAs'].reduce((a,k)=>a+(live[k]||0),0);
+const debtNow=['Credit cards','Loans'].reduce((a,k)=>a+(live[k]||0),0);
+const iLastFull=last(1); /* last complete month */
+const nwYearAgo=Y.nw[iLastFull-12], nwLastFull=Y.nw[iLastFull];
+
+const pdates=[...new Set(H.filter(h=>h.price_date).map(h=>h.price_date))].sort();
+document.getElementById('asof').textContent=`YNAB to ${fdate(Y.cutoff)} · prices ${fdate(pdates[0])} to ${fdate(pdates[pdates.length-1])}`;
+/* freshness check: prices older than 5 days (allows for weekends and bank holidays) or YNAB older than 3 days */
+{const age=d=>(Date.now()-new Date(d+'T12:00:00Z'))/864e5,old=H.filter(h=>h.price_date&&age(h.price_date)>5),msgs=[];
+ if(old.length)msgs.push(`Some prices haven't updated since ${fdate([...old].sort((a,b)=>a.price_date<b.price_date?-1:1)[0].price_date)}: ${[...new Set(old.map(h=>h.name))].join(', ')}. Values for these may be out of date.`);
+ if(age(Y.cutoff)>3)msgs.push(`YNAB figures are from ${fdate(Y.cutoff)}; the daily update may have stopped.`);
+ const st=document.getElementById('stale');if(msgs.length){st.textContent=msgs.join(' ');st.hidden=false}}
+
+function kpi(box,l,v,d){const c=el('div',{class:'card kpi'},`<div class="l">${l}</div><div class="v">${v}</div><div class="d">${d||''}</div>`);box.appendChild(c)}
+const K=document.getElementById('kpis');
+kpi(K,'Net worth today',gbp(nwNow),`<span class="${nwNow-nwYearAgo>=0?'pos':'neg'}">${sgn(nwNow-nwYearAgo)}</span> on end of ${mname(Y.months[iLastFull-12])}`);
+kpi(K,'Investments',gbp(invTotal),`${pct(invTotal/nwNow,0)} of net worth`);
+kpi(K,'Cash',gbp(cashNow),`About ${Math.round(cashNow/avg(Y.cf.spending,iLastFull,12))} months of spending`);
+kpi(K,'Debts',gbp(debtNow),'Cards and personal borrowing');
+function avg(a,end,n){let s=0;for(let i=end-n+1;i<=end;i++)s+=a[i];return s/n}
+
+/* net worth chart: stacked areas of positive types + line */
+const TYPES=['Pensions','Stocks & shares ISAs','Cash ISAs','Cash savings','Current accounts','Crypto','Shares (GIA)','Other assets'];
+const TC={'Pensions':'--c1','Stocks & shares ISAs':'--c2','Cash ISAs':'--c5','Cash savings':'--c8','Current accounts':'--c6','Crypto':'--c4','Shares (GIA)':'--c3','Other assets':'--c7'};
+let nwRange=60;
+document.querySelectorAll('#nwr button').forEach(b=>b.onclick=()=>{nwRange=+b.dataset.r;document.querySelectorAll('#nwr button').forEach(x=>x.classList.toggle('on',x===b));drawNW()});
+function drawNW(){
+ const box=document.getElementById('nwchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?220:280,P={l:52,r:10,t:10,b:24};
+ const n=Y.months.length;const s=Math.max(0,n-nwRange-1);const idx=[];for(let i=s;i<n;i++)idx.push(i);
+ const pts=idx.map(i=>({m:Y.months[i],nw:i===n-1?nwNow:Y.nw[i],t:TYPES.map(k=>Math.max(0,i===n-1?(live[k]||0):((Y.bytype[k]||[])[i]||0)))}));
+ const maxV=Math.max(...pts.map(p=>p.t.reduce((a,b)=>a+b,0)),...pts.map(p=>p.nw))*1.05;
+ const minV=Math.min(0,...pts.map(p=>p.nw));
+ const x=i=>P.l+(W-P.l-P.r)*i/(pts.length-1),y=v=>P.t+(Hh-P.t-P.b)*(1-(v-minV)/(maxV-minV));
+ let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Net worth over time">`;
+ const step=niceStep(maxV-minV);for(let v=Math.ceil(minV/step)*step;v<=maxV;v+=step){svg+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l-6}" y="${y(v)+4}" text-anchor="end">£${v>=1e6?(v/1e6).toFixed(1)+'m':Math.round(v/1000)+'k'}</text>`}
+ const base=pts.map(()=>0);
+ TYPES.forEach((k,ti)=>{const top=pts.map((p,i)=>base[i]+p.t[ti]);if(top.every((v,i)=>v===base[i]))return;
+  let d='M'+pts.map((p,i)=>x(i)+','+y(top[i])).join('L')+'L'+pts.map((p,i)=>x(pts.length-1-i)+','+y(base[pts.length-1-i])).join('L')+'Z';
+  svg+=`<path d="${d}" fill="var(${TC[k]})" opacity=".55"/>`;top.forEach((v,i)=>base[i]=v)});
+ svg+=`<path d="M${pts.map((p,i)=>x(i)+','+y(p.nw)).join('L')}" fill="none" stroke="var(--fg)" stroke-width="2" stroke-linejoin="round"/>`;
+ const lab=Math.max(1,Math.round(pts.length/(W<500?3:6)));pts.forEach((p,i)=>{if(i%lab===0||i===pts.length-1)svg+=`<text x="${x(i)}" y="${Hh-6}" text-anchor="${i===0?'start':i===pts.length-1?'end':'middle'}">${i===pts.length-1?'Today':mname(p.m)}</text>`});
+ svg+=`<circle cx="${x(pts.length-1)}" cy="${y(nwNow)}" r="4" fill="var(--fg)"/><rect x="${P.l}" y="0" width="${W-P.l-P.r}" height="${Hh}" fill="transparent" id="nwhit"/></svg>`;
+ box.innerHTML=svg;
+ box.querySelector('#nwhit').onmousemove=e=>{const r=e.target.getBoundingClientRect();const i=Math.round((e.clientX-r.left)/r.width*(pts.length-1));const p=pts[Math.max(0,Math.min(pts.length-1,i))];showTip(e,`${i>=pts.length-1?'Today':mname(p.m)}: <b>${gbp(p.nw)}</b>`)};
+ box.querySelector('#nwhit').onmouseleave=hideTip;
+ document.getElementById('nwleg').innerHTML=TYPES.filter(k=>pts.some(p=>p.t[TYPES.indexOf(k)]>0)).map(k=>`<span style="--k:var(${TC[k]})">${k}</span>`).join('')+'<span style="--k:var(--fg)">Net worth</span>';
+}
+function niceStep(r){const e=Math.pow(10,Math.floor(Math.log10(r/4)));const f=r/4/e;return (f<1.5?1:f<3?2:f<7?5:10)*e}
+
+/* where it is */
+function bars(box,items,total,fmt){box.innerHTML='';const mx=Math.max(...items.map(i=>Math.abs(i.v)));items.forEach(i=>{box.appendChild(el('div',{class:'row'},`<span class="lab" title="${i.k}">${i.k}</span><span class="bar"><i style="width:${Math.abs(i.v)/mx*100}%;background:${i.c||'var(--c1)'}"></i></span><span class="val">${fmt?fmt(i):gbp(i.v)+(total?` <span class="note" style="margin:0">${pct(i.v/total,0)}</span>`:'')}</span>`))})}
+const whereItems=Object.entries(live).filter(([k,v])=>Math.abs(v)>1).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({k,v,c:v<0?'var(--neg)':`var(${TC[k]||'--c6'})`}));
+bars(document.getElementById('where'),whereItems,nwNow);
+
+/* accounts */
+{const gs=(Y.accounts||[]).filter(a=>a.guess);if(gs.length){const n=document.getElementById('guessnote');n.textContent=`Counted as current accounts because their names don't say what they are: ${gs.map(a=>a.name).join(', ')}. If any of these is a savings, ISA, pension or investment account, tell Claude so it's counted in the right place.`;n.hidden=false}}
+const AT=document.getElementById('accts');AT.innerHTML='<tr><th>Account</th><th class="hm">Type</th><th class="n">Balance</th><th class="n">Updated</th></tr>'+Y.accounts.map(a=>`<tr><td>${a.name}</td><td class="hm">${a.type}</td><td class="n ${a.balance<0?'neg':''}">${gbp(a.balance)}</td><td class="n">${new Date(a.updated+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}${a.updated<Y.cutoff.slice(0,4)?' '+a.updated.slice(0,4):''}</td></tr>`).join('');
+
+/* investing */
+const PC={'Pension':'--c1','Funds ISA':'--c2','Shares ISA':'--c3','Crypto':'--c4'};
+const PD={...(D.pot_desc||{})};if(EXTRA.some(a=>a.type==='Pensions'))PD.Pension=(PD.Pension||'')+' + '+EXTRA.filter(a=>a.type==='Pensions').map(a=>a.name.split(' ')[0]).join(', ');
+const PT=document.getElementById('pots');
+Object.keys(PC).forEach(p=>{PT.appendChild(el('div',{class:'card kpi pot',style:`border-top:3px solid var(${PC[p]})`},`<div class="l">${p}</div><div class="v">${gbp(potVal[p])}</div><div class="d">${PD[p]} · ${pct(potVal[p]/invTotal)}</div>`))});
+const HT=document.getElementById('hold');
+let hh='<tr><th>Holding</th><th class="n hm">Units</th><th class="n">Price</th><th class="n">Value</th><th class="n hm">Paid</th><th class="n">Gain</th><th class="n hm">Share of pot</th></tr>';
+Object.keys(PC).forEach(p=>{const rows=H.filter(h=>h.pot===p).sort((a,b)=>b.value-a.value);
+ {const known=rows.filter(h=>h.cost!=null),cashR=rows.filter(h=>h.kind==='Cash'),unk=rows.filter(h=>h.cost==null&&h.kind!=='Cash');
+  const cashV=cashR.reduce((a,h)=>a+h.value,0),cost=known.reduce((a,h)=>a+h.cost,0),paid=cost+cashV,gain=known.reduce((a,h)=>a+h.value-h.cost,0);
+  const note=unk.length?` title="Excludes ${unk.map(h=>h.name).join(', ')} (${gbp(unk.reduce((a,h)=>a+h.value,0))}), whose cost isn't known"`:'';
+  hh+=`<tr class="grp"><td>${p}</td><td class="hm"></td><td></td><td class="n">${gbp(potVal[p])}</td><td class="n hm"${note}>${gbp(paid)}${unk.length?'*':''}</td><td class="n ${gain>=0?'pos':'neg'}"${note}>${sgn(gain)}<span class="hm"> (${gain>=0?'+':'−'}${cost?pct(Math.abs(gain/cost)):'0.0%'})</span></td><td class="hm"></td></tr>`;}
+ rows.forEach(h=>{const g=h.cost!=null?h.value-h.cost:null;
+  const price=h.price==null?'':h.cur==='p'?h.price.toFixed(1)+'p':h.cur==='$'?'$'+h.price.toFixed(2):'£'+h.price.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
+  hh+=`<tr><td>${h.name}${h.ynab_date?' <span class="note">YNAB balance</span>':''}${h.ticker?` <span class="note">${h.ticker}</span>`:''}</td><td class="n hm">${h.units==null?'':(+h.units).toLocaleString('en-GB',{maximumFractionDigits:4})}</td><td class="n" title="${h.price_date?'Price on '+fdate(h.price_date):''}">${price}</td><td class="n">${gbp(h.value)}</td><td class="n hm">${h.cost!=null?gbp(h.cost):''}</td><td class="n ${g==null?'':g>=0?'pos':'neg'}">${g==null?'':sgn(g)+'<span class="hm"> ('+(g>=0?'+':'−')+pct(Math.abs(g/h.cost))+')</span>'}</td><td class="n hm">${pct(h.value/potVal[p])}</td></tr>`});
+});
+HT.innerHTML=hh;
+document.getElementById('hnote').textContent=`US shares converted at $${(+D.hold.fx[0]).toFixed(4)} to the pound (${D.hold.fx[2]}, ${fdate(D.hold.fx[1])}). "Paid" is the average cost of the units you hold, from your Vanguard, ii and Trading 212 records and Koinly for crypto (to 14 Nov 2026). For funds you switched into, the cost is what the switch bought them for.`;
+const AL=document.getElementById('allow');
+/* the ISA figure is worked out daily from YNAB when available (payments in minus withdrawals since 6 April) */
+if(Y.isa_used!=null){const i=D.allow.find(a=>a.name==='ISA');if(i){i.used=Y.isa_used;const left=i.limit-i.used;i.note=`${left>=0?gbp(left)+' left':gbp(-left)+' over the limit'}. Worked out daily from YNAB: money paid into your ISAs since 6 April, minus withdrawals (your Trading 212 ISAs are flexible, so withdrawals give allowance back). Moves between ISAs, interest and growth don't count.`}}
+D.allow.forEach(a=>{AL.appendChild(el('div',{style:'margin-bottom:14px'},`<div class="head" style="font-size:14px"><b style="font-weight:600">${a.name}</b><span>${gbp(a.used)} of ${gbp(a.limit)}</span></div><div class="bar" style="margin:6px 0"><i style="width:${Math.min(100,a.used/a.limit*100)}%;background:var(--c2)"></i></div><p class="note" style="margin:0">${a.note}</p>`))});
+
+/* spending */
+const SK=document.getElementById('skpis');const iNow=last(0);
+const avg12=avg(Y.cf.spending,iLastFull,12), inc12=avg(Y.cf.income,iLastFull,12);
+kpi(SK,`${mname(Y.months[iNow])} so far`,gbp(Y.cf.spending[iNow]),`Spent to ${fdate(Y.cutoff)}`);
+kpi(SK,`${mname(Y.months[iLastFull])}`,gbp(Y.cf.spending[iLastFull]),`<span class="${Y.cf.spending[iLastFull]<=avg12?'pos':'neg'}">${sgn(Y.cf.spending[iLastFull]-avg12)}</span> on your 12-month average`);
+kpi(SK,'Average month (last 12)',gbp(avg12),`${mname(Y.months[iLastFull-11])} to ${mname(Y.months[iLastFull])}`);
+kpi(SK,'Saved in the last 12 months',gbp(inc12*12-avg12*12),`Income ${gbp(inc12*12)} less spending`);
+function drawCF(){
+ const box=document.getElementById('cfchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?200:240,P={l:46,r:6,t:10,b:24};
+ const idx=[];for(let i=Math.max(0,iNow-12);i<=iNow;i++)idx.push(i);
+ const mx=Math.max(...idx.map(i=>Math.max(Y.cf.income[i],Y.cf.spending[i])))*1.08;
+ const bw=(W-P.l-P.r)/idx.length,y=v=>P.t+(Hh-P.t-P.b)*(1-v/mx);
+ let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Income and spending by month">`;const st=niceStep(mx);
+ for(let v=0;v<=mx;v+=st)svg+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l-6}" y="${y(v)+4}" text-anchor="end">£${Math.round(v/1000)}k</text>`;
+ idx.forEach((i,j)=>{const x0=P.l+j*bw+bw*.15,w=bw*.35;
+  svg+=`<rect x="${x0}" y="${y(Y.cf.income[i])}" width="${w}" height="${y(0)-y(Y.cf.income[i])}" rx="2" fill="var(--pos)" opacity=".8"/><rect x="${x0+w}" y="${y(Y.cf.spending[i])}" width="${w}" height="${y(0)-y(Y.cf.spending[i])}" rx="2" fill="var(--c2)"/>`;
+  if(j%2===0||j===idx.length-1)svg+=`<text x="${x0+w}" y="${Hh-6}" text-anchor="middle">${new Date(Y.months[i]+'-01').toLocaleDateString('en-GB',{month:'short'})}</text>`;
+  svg+=`<rect x="${P.l+j*bw}" y="0" width="${bw}" height="${Hh}" fill="transparent" data-i="${i}" class="hit"/>`});
+ box.innerHTML=svg+'</svg>';
+ box.querySelectorAll('.hit').forEach(r=>{r.onmousemove=e=>{const i=+r.dataset.i;showTip(e,`${mname(Y.months[i])}${i===iNow?' (so far)':''}<br>In ${gbp(Y.cf.income[i])} · Out ${gbp(Y.cf.spending[i])}`)};r.onmouseleave=hideTip});
+}
+
+/* joint account spending (the Family Budget in YNAB) */
+/* shared: spending by calendar year, plus the last 12 complete months against the 12 before; groups open to show categories */
+function yearTable(F,T){
+ const M=F.months,cy=+M[M.length-1].slice(0,4),L=M.length-2,has=L>=23;   /* L: last complete month; the current month is still running */
+ const years=[];for(let y=Math.max(+M[0].slice(0,4)+1,cy-5);y<cy;y++)years.push(y);
+ const sumIf=(a,f)=>M.reduce((t,m,i)=>f(m,i)?t+a[i]:t,0),inYear=y=>m=>+m.slice(0,4)===y,win=k=>(m,i)=>i>L-12*(k+1)&&i<=L-12*k;
+ const ml=m=>new Date(+m.slice(0,4),+m.slice(5,7)-1,1).toLocaleDateString('en-GB',{month:'short',year:'numeric'});
+ const nowL=has?`${ml(M[L-11])} to ${ml(M[L])}`:'',prevL=has?`${ml(M[L-23])} to ${ml(M[L-12])}`:'';
+ const row=a=>({ys:years.map(y=>sumIf(a,inYear(y))),ytd:sumIf(a,inYear(cy)),now:has?sumIf(a,win(0)):0,prev:has?sumIf(a,win(1)):0});
+ const pct=(d,b)=>b>0.5?((d>=0?'+':'−')+Math.abs(Math.round(d/b*100))+'%'):'-';
+ const ch=(a,b)=>{const d=a-b,c=d>0.5?'neg':d<-0.5?'pos':'';return `<td class="n ${c}">${Math.abs(d)<0.5?'-':sgn(d)}</td><td class="n ${c}">${pct(d,b)}</td>`};
+ const cells=r=>r.ys.map(v=>`<td class="n">${Math.abs(v)<0.5?'-':gbp(v)}</td>`).join('')+`<td class="n">${Math.abs(r.ytd)<0.5?'-':gbp(r.ytd)}</td>`+(has?`<td class="n">${Math.abs(r.prev)<0.5?'-':gbp(r.prev)}</td><td class="n">${Math.abs(r.now)<0.5?'-':gbp(r.now)}</td>`+ch(r.now,r.prev):'');
+ const key=r=>has?r.now:(r.ys[r.ys.length-1]||0);
+ const groups=Object.entries(F.groups).map(([g,a])=>({g,...row(a)})).filter(r=>r.ys.some(v=>Math.abs(v)>0.5)||Math.abs(r.ytd)>0.5||Math.abs(r.now)>0.5||Math.abs(r.prev)>0.5).sort((a,b)=>key(b)-key(a));
+ const tot=row(M.map((_,i)=>Object.values(F.groups).reduce((t,a)=>t+a[i],0)));
+ let html=`<tr><th>Group</th>${years.map(y=>`<th class="n">${y}</th>`).join('')}<th class="n" title="1 Jan ${cy} to today">${cy} so far</th>${has?`<th class="n" title="${prevL}">Prior 12m</th><th class="n" title="${nowL}">Last 12m</th><th class="n">Change</th><th class="n">%</th>`:''}</tr>`;
+ groups.forEach((r,gi)=>{html+=`<tr class="jg" data-g="${gi}"><td>${r.g}</td>${cells(r)}</tr>`;
+  Object.entries(F.cats).filter(([c])=>c.startsWith(r.g+': ')).map(([c,a])=>({c:c.slice(r.g.length+2),...row(a)})).filter(x=>x.ys.some(v=>Math.abs(v)>0.5)||Math.abs(x.ytd)>0.5||Math.abs(x.now)>0.5||Math.abs(x.prev)>0.5)
+   .sort((a,b)=>key(b)-key(a)).forEach(x=>{html+=`<tr class="jc" data-p="${gi}" hidden><td>${x.c}</td>${cells(x)}</tr>`})});
+ html+=`<tr class="jt"><td>Total</td>${cells(tot)}</tr>`;
+ T.innerHTML=html;
+ T.querySelectorAll('tr.jg').forEach(tr=>tr.onclick=()=>{const open=!tr.classList.contains('open');tr.classList.toggle('open',open);T.querySelectorAll(`tr.jc[data-p="${tr.dataset.g}"]`).forEach(x=>x.hidden=!open)});
+ return {years,tot,has,nowL,prevL,pct}}
+const ytNote=(r,what)=>`${what} by calendar year; "so far" includes this month to date. Refunds are netted off. Click a group to see its categories.${r.has?` Last 12m is ${r.nowL}; prior 12m is ${r.prevL} (complete months only).`:''}`;
+function drawSpendYears(){
+ const r=yearTable({months:Y.months,groups:Y.groups,cats:Y.cats||{}},document.getElementById('stab'));
+ document.getElementById('snote').textContent=ytNote(r,'Your spending (as on this tab, excluding transfers to savings and investments)');
+}
+function drawJoint(){
+ const F=Y.family,K=document.getElementById('jkpis'),N=document.getElementById('jnote'),T=document.getElementById('jtab');
+ if(!F||!F.months||!F.months.length){K.innerHTML='';N.textContent='Joint account figures appear after the next daily YNAB update.';T.innerHTML='';return}
+ const r=yearTable(F,T),t=r.tot,last=r.years[r.years.length-1],lt=t.ys[t.ys.length-1],pt=t.ys[t.ys.length-2];
+ K.innerHTML='';
+ if(r.has)kpi(K,r.nowL,gbp(t.now),`Last 12 complete months. ${sgn(t.now-t.prev)} (${r.pct(t.now-t.prev,t.prev)}) compared with the 12 months before (${r.prevL})`);
+ kpi(K,`${last}`,gbp(lt),pt?`${sgn(lt-pt)} (${r.pct(lt-pt,pt)}) compared with ${last-1}`:'');
+ kpi(K,'Average month',gbp(lt/12),`In ${last}`);
+ N.textContent=ytNote(r,'Spending from the Family Budget in YNAB: everything the joint account pays forrs combined,')+' Money moved between the joint accounts is left out.';
+}
+
+/* investing overview (look-through) */
+const LT=D.look;const MIXP=[['All','all'],['Pension','Pension'],['Funds ISA','Funds ISA'],['Shares ISA','Shares ISA'],['Crypto','Crypto']];let mixSel='all';
+const MP=document.getElementById('mixpot');MIXP.forEach(([l,k])=>{const b=el('button',{},l);if(k===mixSel)b.classList.add('on');b.onclick=()=>{mixSel=k;MP.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));drawMix()};MP.appendChild(b)});
+const REG=c=>({'United States':'United States','United Kingdom':'United Kingdom','Japan':'Japan','Canada':'Other developed','Australia':'Other developed','South Korea':'Other developed','Switzerland':'Europe (ex UK)','France':'Europe (ex UK)','Germany':'Europe (ex UK)','Netherlands':'Europe (ex UK)','Spain':'Europe (ex UK)','Italy':'Europe (ex UK)','Taiwan':'Emerging markets','China':'Emerging markets','India':'Emerging markets','Africa':'Africa'})[c]||c;
+const RC={'United States':'--c1','United Kingdom':'--c3','Europe (ex UK)':'--c5','Japan':'--c7','Other developed':'--c8','North America':'--c1','Europe (ex UK) listed':'--c5','Emerging markets':'--c2','Africa':'--c2','Crypto (no country)':'--c4','Cash':'--c6','Other countries':'--c6'};
+function drawMix(){
+ const hs=H.filter(h=>mixSel==='all'||h.pot===mixSel);const tot=hs.reduce((a,h)=>a+h.value,0);
+ const geo={},sec={},top={},size={Large:0,Medium:0,Small:0};let sizeTot=0,unl=0;const fees=[];
+ const add=(o,k,v)=>o[k]=(o[k]||0)+v;
+ hs.forEach(h=>{const v=h.value;
+  if(h.kind==='Cash'){add(geo,'Cash',v);add(sec,'Cash',v);return}
+  if(h.kind==='Crypto'){add(geo,'Crypto (no country)',v);add(sec,'Crypto',v);return}
+  if(h.ticker){const s=LT.stocks[h.ticker];add(geo,REG(s[1]),v);add(sec,s[2],v);add(top,s[0],v);size.Large+=v;sizeTot+=v;return}
+  if(h.fund&&!LT.funds[h.fund]){add(geo,/US/.test(h.fund)?'United States':'Other countries',v);add(sec,'Not broken down',v);return}
+  const f=LT.funds[h.fund||h.name];if(!f)return;
+  let listed=0;for(const c in f.countries){const w=f.countries[c]/100;listed+=w;add(geo,c==='Cash'?'Cash':REG(c),v*w)}
+  if(listed<0.999){add(geo,'Other countries',v*(1-listed));unl+=v*(1-listed)}
+  const st=Object.values(f.sectors).reduce((a,b)=>a+b,0);for(const k in f.sectors)add(sec,k,v*f.sectors[k]/st);
+  if(f.top)for(const k in f.top)add(top,k,v*f.top[k]/100);
+  if(f.top_via)for(const fn in f.top_via){const g=LT.funds[fn];for(const k in g.top)add(top,k,v*f.top_via[fn]/100*g.top[k]/100)}
+  const zt=f.size.Large+f.size.Medium+f.size.Small;for(const k in size)size[k]+=v*f.size[k]/zt;sizeTot+=v;
+  fees.push({n:h.name,pot:h.pot,v,ocf:f.ocf,n_h:f.holdings,y:f.yield,note:f.ocf_note});
+ });
+ const toItems=(o,cmap,col)=>Object.entries(o).filter(([k,v])=>v>0.5).sort((a,b)=>(a[0].startsWith('Other c')||a[0]==='Cash')-(b[0].startsWith('Other c')||b[0]==='Cash')||b[1]-a[1]).map(([k,v])=>({k,v,c:`var(${(cmap&&cmap[k])||col})`}));
+ bars(document.getElementById('geo'),toItems(geo,RC,'--c6'),tot);
+ document.getElementById('geonote').textContent='Fund factsheets only list their biggest countries, so a small slice of the funds is shown as "Other countries". Airtel Africa is UK-listed but does its business in Africa.'+(H.some(h=>h.fund&&!LT.funds[h.fund])?' Your Aviva pension is counted as United States from its fund name; its factsheet breakdown isn\u2019t available yet.':'');
+ bars(document.getElementById('sect'),toItems(sec,{'Crypto':'--c4','Cash':'--c6'},'--c5'),tot);
+ const ti=Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([k,v])=>({k,v,c:'var(--c1)'}));
+ if(ti.length){bars(document.getElementById('topco'),ti,tot)}else document.getElementById('topco').innerHTML='<p class="note">No company-level data for this pot.</p>';
+ document.getElementById('topnote').textContent='Through your funds and your own shares. Funds only publish their top 10 holdings, so these are minimums. LifeStrategy counts through its US fund only.';
+ bars(document.getElementById('csize'),sizeTot?['Large','Medium','Small'].map(k=>({k,v:size[k],c:'var(--c1)'})):[],sizeTot);
+ if(!sizeTot)document.getElementById('csize').innerHTML='<p class="note">Not applicable to this pot.</p>';
+ const ft=fees.reduce((a,f)=>a+f.v*f.ocf/100,0);
+ document.getElementById('fees').innerHTML=fees.length?'<tr><th>Fund</th><th class="n hm">Holdings</th><th class="n">Yearly charge</th><th class="n">Per year</th></tr>'+fees.map(f=>`<tr><td>${f.n} <span class="note">${f.pot}</span></td><td class="n hm">${f.n_h==null?'-':f.n_h.toLocaleString('en-GB')+(f.n_h<20?' funds':'')}</td><td class="n" title="${f.note||''}">${f.ocf.toFixed(2)}%${f.note?'*':''}</td><td class="n">${gbp(f.v*f.ocf/100)}</td></tr>`).join('')+`<tr class="grp"><td>Total</td><td class="hm"></td><td class="n">${(ft/fees.reduce((a,f)=>a+f.v,0)*100).toFixed(2)}%</td><td class="n">${gbp(ft)}</td></tr>`:'';
+ document.getElementById('feenote').textContent=fees.length?'Fund charges (ongoing charges figure) taken from the fund each year. Your ii and Trading 212 platform fees are not included.'+(fees.some(f=>f.note)?' *Aviva\u2019s example charge; your workplace plan\u2019s charge may be lower.':''):'No funds in this pot.';
+}
+
+/* investing history */
+let histMode='annual';
+document.querySelectorAll('#histmode button').forEach(b=>b.onclick=()=>{histMode=b.dataset.m;document.querySelectorAll('#histmode button').forEach(x=>x.classList.toggle('on',x===b));drawHist()});
+function pbar(x){
+ if(x==null||!isFinite(x))return '<div class="pb"><span class="num">-</span><span class="pt"></span></div>';
+ const CAP=0.5,f=Math.min(1,Math.abs(x)/CAP),pos=x>=0,col=pos?'var(--pos)':'var(--neg)';
+ const ov=Math.abs(x)>CAP?`<b class="ov" style="${pos?'left:calc(100% + 2px);border-left:6px solid '+col:'right:calc(100% + 2px);border-right:6px solid '+col}"></b>`:'';
+ return `<div class="pb"><span class="num ${pos?'pos':'neg'}">${(pos?'+':'−')+(Math.abs(x)*100).toFixed(1)}%</span><span class="pt"><span class="z"></span><i style="${pos?'left:50%':'right:50%'};width:${f*50}%;background:${col}"></i>${ov}</span></div>`;
+}
+function drawHist(){
+ const T=document.getElementById('histtab');if(!D.hist){T.innerHTML='<tr><td class="note">Price history not available yet.</td></tr>';return}
+ const A=D.hist.assets,Y=[1,3,5,10];const by={};
+ H.filter(h=>h.pkey&&A[h.pkey]).forEach(h=>{(by[h.pkey]=by[h.pkey]||{name:h.name,ticker:h.ticker,pots:new Set(),value:0}).pots.add(h.pot);by[h.pkey].value+=h.value});
+ const groups=[['Funds',k=>['GAC','USEQ','LS100','AVUSEQ'].includes(k)],['Shares',k=>by[k].ticker],['Crypto',k=>['BTC','ETH'].includes(k)]];
+ let html=`<tr><th>Investment</th><th class="hm">Where</th>${Y.map(y=>`<th class="n">${y} year${y>1?'s':''}</th>`).join('')}</tr>`;
+ groups.forEach(([g,test])=>{const ks=Object.keys(by).filter(test).sort((a,b)=>by[b].value-by[a].value);if(!ks.length)return;
+  html+=`<tr class="grp"><td colspan="${Y.length+2}">${g}</td></tr>`;
+  ks.forEach(k=>{const a=A[k],b=by[k];
+   html+=`<tr><td>${b.name}${b.ticker?` <span class="note">${b.ticker}</span>`:''}</td><td class="hm note">${[...b.pots].join(', ')}</td>`+Y.map(y=>{const p=a.periods&&a.periods[y];let x=p?p.change:null;if(x!=null&&histMode==='annual')x=Math.pow(1+x,1/y)-1;return `<td class="n" title="${p?'From '+fdate(p.start_date):'No price that far back'}">${pbar(x)}</td>`}).join('')+'</tr>'});
+ });
+ T.innerHTML=html;
+ document.getElementById('histnote').textContent=histMode==='annual'?'Average yearly change in price over each period. Full bar = 50% a year; an arrow means it went beyond that.':'Total change in price over each period. Full bar = 50%; an arrow means it went beyond that.';
+ document.getElementById('histfoot').textContent=`Price change only, to ${fdate(D.hist.updated)}. Your funds reinvest their income, so their prices include it; shares exclude dividends. US shares are converted to pounds at the exchange rate on each date, so changes in the pound-dollar rate are included. Crypto in pounds. A dash means there is no price that far back. Sources: FT (funds and shares), Kraken (crypto). Hover over a figure to see the start date.`;
+}
+
+/* forecast */
+const FC_KEY='wealth-forecast';
+/* tax and pension rules: rules.json is checked weekly against GOV.UK by a GitHub job; these are the fallbacks */
+const RULES=Object.assign({income_tax:{pa:12570,basic_to:50270,higher_to:125140,rates:[20,40,45],taper_from:100000},state_pension_week:241.3,lsa:268275,tax_year:null,checked:null,pension_access:[{from:'2000-01-01',age:55},{from:'2028-04-06',age:57}]},D.rules||{});
+const curTY=(()=>{const n=new Date(),y=n.getMonth()>3||(n.getMonth()===3&&n.getDate()>=6)?n.getFullYear():n.getFullYear()-1;return y+'/'+String((y+1)%100).padStart(2,'0')})();
+const rulesOld=RULES.tax_year!==curTY;
+/* defined-benefit pension: base figure at leaving, revalued by September RPI (capped at the average set by the plan) */
+const DB=(D.db||[])[0]||null;let dbNow=0,dbNote='';
+if(DB){const sep=(D.rpi&&D.rpi.sep)||{},ys=Object.keys(sep).sort(),ly=ys[ys.length-1],b=sep[DB.rpi_base_year];
+ const yrs=ly?(+ly)-(+DB.rpi_base_year):0;
+ const hiIdx=Math.max(...ys.filter(y=>+y>=+DB.rpi_base_year).map(y=>sep[y]));
+ if(b&&ly&&yrs>0){dbNow=DB.base*Math.min(hiIdx/b,Math.pow(1+DB.defer_cap/100,yrs));dbNote=`Today's estimate: ${gbp(DB.base)} at leaving, increased by RPI to Sep ${ly}. ${DB.admin||'The administrator'}'s last figure: ${gbp(DB.last.amount)} (${new Date(DB.last.date).toLocaleDateString('en-GB',{month:'short',year:'numeric'})}).`}
+ else{dbNow=DB.last.amount;dbNote=`${DB.admin||'The administrator'}'s last figure (${DB.last.date}); the RPI figures needed to update it weren't available.`}}
+const pensionNow=potVal['Pension'],isaNow=potVal['Funds ISA']+potVal['Shares ISA'],cryptoNow=potVal['Crypto'];
+/* default spending: take-home pay from a £100,000 salary (income tax at current rules + employee National Insurance 8%/2%) */
+const NIR=Object.assign({main:8,upper:2},RULES.ni||{}),SAL_EQ=100000,NI=x=>NIR.main/100*Math.max(0,Math.min(x,RULES.income_tax.basic_to)-RULES.income_tax.pa)+NIR.upper/100*Math.max(0,x-RULES.income_tax.basic_to);
+const DBN=(DB&&DB.label)||'DB pension';
+const FC_DEF={v:4,age:40,to:100,stop:67,g_pen:5,g_isa:5,g_cry:7,g_cash:0.5,c_pen:0,c_isa:0,c_cry:0,c_cash:0,draw_age:67,draw:Math.round(SAL_EQ-itax(SAL_EQ)-NI(SAL_EQ)),draw_mode:'amount',draw_pct:4,draw_cpct:4,lumps:[],tfc_mode:'ufpls',tfc:'no',tfc_age:57,tfc_pct:25,sp_age:68,sp:Math.round(RULES.state_pension_week*365.25/7*100)/100,cash:'yes',db_age:65,infl:3,tax:'yes',...(D.fc_def||{})};
+let FC={...FC_DEF};try{const sv=JSON.parse(localStorage.getItem(FC_KEY)||'{}');if(!sv.v){delete sv.g_cry;delete sv.g_cash}if((sv.v||0)<4&&!sv.draw)delete sv.draw;sv.v=4;Object.assign(FC,sv)}catch(e){}
+/* not shown as settings: always use the defaults */
+for(const k of ['sp_age','sp','db_age','infl','tax'])FC[k]=FC_DEF[k];
+FC.lumps=(Array.isArray(FC.lumps)?FC.lumps:[]).map(o=>({...o}));
+const PEN_ACCESS=(()=>{const born=new Date().getFullYear()-FC.age,ru=[...RULES.pension_access].sort((a,b)=>a.from<b.from?-1:1);
+ for(let a=50;a<=75;a++){const d=`${born+a}-12-31`;let need=ru[0].age;for(const r of ru)if(r.from<=d)need=r.age;if(a>=need)return a}return 57})();
+const FC_SEL={cash:[['yes','Yes, except the Emergency Fund'],['no','No']],draw_mode:[['amount','£ a year'],['classic','Classic drawdown'],['pct','% of savings']],tfc:[['no','No'],['yes','Yes, spent']],tfc_mode:[['ufpls','25% of each withdrawal'],['first','Tax-free cash first'],['fillpa','Use personal allowance first']],tax:[['yes','Include'],['no','Leave out']]};
+const FC_FIELDS=[['Ages',[['age','Your age now',1],['to','Forecast to age',1],['stop','Stop paying in at age',1],['draw_age','Start drawing at age',1]]],
+ ['Growth a year, after inflation (%)',[['g_pen','Pension',0.1],['g_isa','ISAs (funds and shares)',0.1],['g_cry','Crypto',0.1],['g_cash','Cash',0.1]]],
+ ['Cash savings',[['cash','Include cash in the forecast']]],
+ ['Paying in each month (£)',[['c_pen','Pension (yours + employer)',1],['c_isa','ISAs',1],['c_cry','Crypto',1]]],
+ ['Spending your savings',[['draw_mode','Spend'],['draw','Amount a year (£, today’s money)',100],['draw_cpct','Share of savings when you start (%), then the same amount each year',0.1],['draw_pct','Share of savings each year (%)',0.1]]],
+ ['Tax-free cash from your pension',[['tfc','Take a lump sum'],['tfc_age',`Taken in the first year at or after age (${PEN_ACCESS} at the earliest)`,1],['tfc_pct','Share of pension (max 25%)',1],['tfc_mode','How the tax-free 25% is taken']]]];
+const fcSave=()=>{try{const o={v:FC.v};for(const k in FC)if(k==='lumps'){if(FC.lumps.length)o.lumps=FC.lumps}else if(FC[k]!==FC_DEF[k])o[k]=FC[k];localStorage.setItem(FC_KEY,JSON.stringify(o))}catch(e){}};
+function fcInputs(){const box=document.getElementById('fcin');box.innerHTML='';const wrap=el('div',{class:'fgrid'});
+ FC_FIELDS.forEach(([h,fs])=>{const g=el('div',{class:'fin'});wrap.appendChild(g);g.appendChild(el('h3',{},h));fs.forEach(([k,l,st])=>{
+  if((k==='draw'&&FC.draw_mode!=='amount')||(k==='draw_pct'&&FC.draw_mode!=='pct')||(k==='draw_cpct'&&FC.draw_mode!=='classic'))return;
+  if((k==='tfc_age'||k==='tfc_pct')&&FC.tfc!=='yes')return;
+  if(k==='g_cash'&&FC.cash!=='yes')return;
+  if(k==='tfc_mode'&&FC.tfc==='yes')return;
+  if((k==='db_age'||k==='infl')&&!DB)return;
+  g.appendChild(el('label',{for:'fc_'+k},l));
+  if(FC_SEL[k]){const sel=el('select',{id:'fc_'+k},FC_SEL[k].map(([v,t])=>`<option value="${v}">${t}</option>`).join(''));sel.value=FC[k];sel.style.cssText='font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);width:100%';
+   sel.onchange=()=>{FC[k]=sel.value;fcSave();fcInputs();drawFC()};g.appendChild(sel);
+   if(k==='draw_mode'){const help={amount:'The same amount every year, in today\u2019s money.',classic:'A share of your savings when you start, then that same amount every year.',pct:'A share of whatever is left each year, so your spending rises and falls with your savings.'};
+    g.appendChild(el('p',{class:'note',style:'grid-column:1/-1;margin:0'},help[FC.draw_mode]))}
+   if(k==='tfc_mode'){const help={ufpls:'Every pension withdrawal is a quarter tax-free and three-quarters taxed.',first:'Pension withdrawals are fully tax-free until your 25% is used up, then fully taxed. Your pension is moved into drawdown in stages, taking only the tax-free part.',fillpa:'Each year from '+PEN_ACCESS+', enough pension is taken to use your tax-free personal allowance first; then cash and ISAs; then more pension (a quarter tax-free).'};
+    g.appendChild(el('p',{class:'note',style:'grid-column:1/-1;margin:0'},help[FC.tfc_mode]+' Your provider must allow this.'))}
+   return}
+  const i=el('input',{id:'fc_'+k,type:'number',step:st,inputmode:'decimal',value:FC[k]});
+  i.oninput=()=>{const v=parseFloat(i.value);if(isFinite(v)){FC[k]=v;fcSave();drawFC()}};g.appendChild(i)})});
+ /* one-off lump sums paid into a pot at a chosen age */
+ const L=el('div',{class:'lumps'});L.appendChild(el('h3',{},'Lump sums paid in'));
+ L.appendChild(el('p',{class:'note'},'Added at the start of that year, in today’s money. Pension amounts are used as typed, so include any tax relief or employer top-up.'));
+ if(FC.lumps.length)L.appendChild(el('div',{class:'lrow lhead'},'<span>Age</span><span>Amount (£)</span><span>Into</span><span></span>'));
+ FC.lumps.forEach((o,ix)=>{const row=el('div',{class:'lrow'}),warn=el('div',{class:'note lwarn'});
+  const a=el('input',{type:'number',step:1,inputmode:'numeric',value:o.age,'aria-label':'Age'}),m=el('input',{type:'number',step:1000,inputmode:'decimal',value:o.amt,'aria-label':'Amount'});
+  const sel=el('select',{'aria-label':'Into'},[['pen','Pension'],['isa','ISAs'],['cry','Crypto']].map(([v,t])=>`<option value="${v}">${t}</option>`).join(''));sel.value=o.pot;
+  const x=el('button',{type:'button',class:'lx','aria-label':'Remove lump sum'},'×');
+  const chk=()=>{warn.textContent=o.pot==='isa'&&o.amt>20000?'Over the £20,000 a year ISA allowance.':(o.age<FC.age||o.age>FC.to)?`Outside the forecast (ages ${FC.age} to ${FC.to}), so not counted.`:''};
+  a.oninput=()=>{const v=parseFloat(a.value);if(isFinite(v)){o.age=Math.round(v);chk();fcSave();drawFC()}};
+  m.oninput=()=>{const v=parseFloat(m.value);if(isFinite(v)){o.amt=v;chk();fcSave();drawFC()}};
+  sel.onchange=()=>{o.pot=sel.value;chk();fcSave();drawFC()};
+  x.onclick=()=>{FC.lumps.splice(ix,1);fcSave();fcInputs();drawFC()};
+  row.append(a,m,sel,x);L.append(row,warn);chk()});
+ const add=el('button',{type:'button',class:'lock ladd'},'+ Add lump sum');
+ add.onclick=()=>{FC.lumps.push({age:Math.min(FC.to,FC.age+5),amt:10000,pot:'isa'});fcSave();fcInputs();drawFC()};
+ L.appendChild(add);wrap.appendChild(L);box.appendChild(wrap)}
+document.getElementById('fcreset').onclick=()=>{FC={...FC_DEF,lumps:[]};try{localStorage.removeItem(FC_KEY)}catch(e){}fcInputs();drawFC()};
+/* UK income tax, 2026/27 bands, held level in today's money */
+/* f shrinks the thresholds in today's money while they are frozen in pounds */
+function itax(x,f=1){if(x<=0)return 0;const I=RULES.income_tax,PA=I.pa*f,band=(I.basic_to-I.pa)*f,HT=I.higher_to*f,TP=I.taper_from*f,[r1,r2,r3]=I.rates.map(v=>v/100);
+ const pa=x>TP?Math.max(0,PA-(x-TP)/2):PA;
+ return r1*Math.min(Math.max(0,x-pa),band)+r2*Math.max(0,Math.min(x,HT)-pa-band)+r3*Math.max(0,x-HT)}
+const LSA=RULES.lsa,CGT=Object.assign({aea:3000,rates:[18,24]},RULES.cgt||{});
+/* crypto cost (what you paid), for Capital Gains Tax; coins with no recorded cost count their value as cost */
+const cryptoCost=H.filter(h=>h.pot==='Crypto').reduce((a,h)=>a+(h.cost!=null?h.cost:h.value),0);
+const paOf=(x,f=1)=>{const I=RULES.income_tax;return x>I.taper_from*f?Math.max(0,I.pa*f-(x-I.taper_from*f)/2):I.pa*f};
+/* crypto by coin, for Capital Gains Tax (each coin has its own cost); new crypto money goes into Bitcoin */
+const CRYPTO0=(()=>{const c=k=>H.filter(h=>h.pot==='Crypto'&&h.pkey===k),o=H.filter(h=>h.pot==='Crypto'&&!['BTC','ETH'].includes(h.pkey));
+ const S=a=>({v:a.reduce((x,h)=>x+h.value,0),cost:a.reduce((x,h)=>x+(h.cost!=null?h.cost:h.value),0)});return [{k:'BTC',...S(c('BTC'))},{k:'ETH',...S(c('ETH'))},{k:'Other',...S(o)}]})();
+/* tax years: ages are your age on 6 April; thresholds frozen in pounds until RULES.thresholds_frozen_until */
+const BM=D.born_month||((new Date().getMonth()+1)%12+1);
+const BY=(()=>{const n=new Date();return n.getFullYear()-FC_DEF.age-((n.getMonth()+1)<BM?1:0)})();
+const tyBase=+String(RULES.tax_year||'2026/27').slice(0,4),tyFreezeEnd=RULES.thresholds_frozen_until?+RULES.thresholds_frozen_until.slice(0,4)-1:tyBase;
+const bandF=Y=>Math.pow(1+FC.infl/100,-Math.max(0,Math.min(Y,tyFreezeEnd)-tyBase));
+const EMERG=Math.max(0,(D.ynab&&D.ynab.emergency)||0),cashFree=Math.max(0,cashNow-EMERG);
+const allowUsed=n=>((D.allow||[]).find(a=>a.name===n)||{}).used||0;
+function fcRun(shift,noDraw){
+ /* runs month by month in today's money; each row is a UK tax year (6 April to 5 April) */
+ const coins=CRYPTO0.map(c=>({...c})),cryV=()=>coins.reduce((a,c)=>a+Math.max(0,c.v),0);
+ const pots={pen:pensionNow,isa:isaNow,cash:FC.cash==='yes'?cashFree:0},out=[];
+ const defl=Math.pow(1+FC.infl/100,-1/12),gr=k=>Math.pow(1+(FC['g_'+k]+(k==='cash'?0:shift))/100,1/12)-1,p0=v=>Math.max(0,v);
+ const tfcAge=Math.max(PEN_ACCESS,Math.round(FC.tfc_age)),dbStart=Math.round(FC.db_age),dbReal=(1+Math.min(FC.infl,DB?DB.inpay_cap:0)/100)/(1+FC.infl/100);
+ const ISA_L=RULES.isa_limit||20000,AA=RULES.annual_allowance||60000;
+ let crys=0,mpaaAge=null,isaOver=null,aaOver=null,tfcTaken=false,tfUsed=0,classicAmt=null,flow=null,plan=null,planN=12,tyAge=null,payIn=false,first=true;
+ const ageAt6Apr=Yr=>Yr-BY-(BM>4?1:0);
+ const snap=(age,extra)=>{const c=cryV();out.push({age,pen:pots.pen,isa:pots.isa,cry:c,cash:pots.cash,total:pots.pen+pots.isa+c+pots.cash,...extra})};
+ const now=new Date();let Yr=now.getFullYear(),Mo=now.getMonth(),tyY=Mo>=3?Yr:Yr-1;
+ const startTY=n=>{
+  tyAge=ageAt6Apr(tyY);const frac=n/12,f=bandF(tyY),T=x=>FC.tax==='yes'?itax(x,f):0;planN=n;
+  flow={spend:0,sp:0,db:0,cash:0,isa:0,pen:0,cry:0,tax:0,tax_pen:0,tax_db:0,tax_sp:0,tax_cgt:0,tfc:0,short:0,lump:0,months:n};
+  payIn=tyAge<FC.stop;let isaIn=payIn?FC.c_isa*n:0,penIn=payIn?FC.c_pen*n:0;
+  for(const o of FC.lumps)if(o.age===tyAge&&o.amt>0){if(o.pot==='cry'){coins[0].v+=o.amt;coins[0].cost+=o.amt}else if(pots[o.pot]!==undefined)pots[o.pot]+=o.amt;flow.lump+=o.amt;if(o.pot==='isa')isaIn+=o.amt;if(o.pot==='pen')penIn+=o.amt}
+  /* this tax year is tracked on the Investing tab, so the warnings start from next tax year */
+  if(!first&&isaOver===null&&isaIn>ISA_L+1)isaOver=tyAge;
+  if(!first&&aaOver===null&&penIn>AA+1)aaOver=tyAge;
+  if(!noDraw&&FC.tfc==='yes'&&!tfcTaken&&tyAge>=tfcAge){const amt=Math.min(p0(pots.pen)*Math.min(25,Math.max(0,FC.tfc_pct))/100,p0(LSA-tfUsed));if(amt>0.5){tfUsed+=amt;pots.pen-=amt;flow.tfc=amt;tfcTaken=true}}
+  const total=p0(pots.pen)+p0(pots.isa)+cryV()+p0(pots.cash);
+  if(!noDraw&&tyAge>=FC.draw_age&&classicAmt===null)classicAmt=FC.draw_cpct/100*total;
+  const drawY=(noDraw||tyAge<FC.draw_age?0:(FC.draw_mode==='pct'?FC.draw_pct/100*total:FC.draw_mode==='classic'?classicAmt:FC.draw))*frac;
+  const sp=tyAge>=FC.sp_age?FC.sp*frac:0,db=DB&&tyAge>=dbStart?dbNow*Math.pow(dbReal,tyAge-dbStart)*frac:0,inc=sp+db;
+  const tfLeft=tfcTaken?0:p0(LSA-tfUsed),txb=G=>G-Math.min(0.25*G,tfLeft);
+  const w={cash:0,isa:0,pen:0,cry:0};let need=drawY>0?drawY-(inc-T(inc)):0;
+  const mode=FC.tfc==='yes'?'lump':FC.tfc_mode,canPen=tyAge>=PEN_ACCESS;let g0=0,free=0;
+  /* "use personal allowance first": take enough pension (a quarter tax-free) for its taxable part to fill the personal allowance left after other income; no tax */
+  if(mode==='fillpa'&&canPen&&need>0){const paRem=Math.max(0,paOf(inc,f)-inc),G0=0.25*paRem/0.75<=tfLeft?paRem/0.75:paRem+tfLeft;g0=Math.min(G0,need,p0(pots.pen));need-=g0}
+  if(need>0){w.cash=Math.min(need,p0(pots.cash));need-=w.cash}
+  if(need>0){w.isa=Math.min(need,p0(pots.isa));need-=w.isa}
+  /* "tax-free cash first": move pension into drawdown in stages, taking only the tax-free quarter (the other three-quarters stay invested and become fully taxable) */
+  if(mode==='first'&&canPen&&need>0){const unc=p0(pots.pen-crys);free=Math.min(need,0.25*unc,tfLeft);need-=free;crys+=3*free}
+  const penTx=G=>mode==='first'?G:txb(g0+G);   /* taxable part of the further pension taken */
+  if(need>0&&canPen){const base=mode==='first'?0:txb(g0),net=G=>G-(T(inc+penTx(G))-T(inc+base)),top=p0(pots.pen-free-g0);
+   if(net(top)<=need){w.pen=top;need-=net(top)}else{let a=0,b=top;for(let i=0;i<60;i++){const c=(a+b)/2;if(net(c)<need)a=c;else b=c}w.pen=b;need=0}}
+  const penTaxable=mode==='first'?w.pen:txb(g0+w.pen);
+  if(mode==='first'){tfUsed+=free;crys=Math.max(0,crys-w.pen)}
+  w.pen+=g0+free;
+  /* Capital Gains Tax per coin: sales are spread across coins by value; each coin's gain uses its own cost; gains and losses net within the tax year */
+  const txInc=inc+penTaxable,V=cryV(),unused=Math.max(0,(RULES.income_tax.basic_to-RULES.income_tax.pa)*f-Math.max(0,txInc-paOf(txInc,f)));
+  const gainOf=S=>V>0?coins.reduce((a,c)=>c.v>0?a+S*c.v/V*(1-c.cost/c.v):a,0):0;
+  const cgt=S=>{if(FC.tax!=='yes')return 0;const tg=Math.max(0,gainOf(S)-CGT.aea);return CGT.rates[0]/100*Math.min(tg,unused)+CGT.rates[1]/100*Math.max(0,tg-unused)};
+  if(need>0){const top=V,net=S=>S-cgt(S);
+   if(net(top)<=need){w.cry=top;need-=net(top)}else{let a=0,b=top;for(let i=0;i<60;i++){const c=(a+b)/2;if(net(c)<need)a=c;else b=c}w.cry=b;need=0}}
+  if(!tfcTaken&&mode!=='first')tfUsed+=Math.min(0.25*w.pen,tfLeft);
+  if(mpaaAge===null&&penTaxable>0.5)mpaaAge=tyAge;
+  const tInc=T(inc),tPen=T(txInc)-tInc,tCg=cgt(w.cry);
+  Object.assign(flow,{spend:drawY,sp,db,...w,tax_pen:tPen,tax_sp:inc>0?tInc*sp/inc:0,tax_db:inc>0?tInc*db/inc:0,tax_cgt:tCg,tax:tInc+tPen+tCg,short:p0(need)});plan=w;first=false};
+ const month=()=>{
+  for(const k in pots)pots[k]*=1+gr(k);crys=Math.min(crys*(1+gr('pen')),p0(pots.pen));coins.forEach(c=>{c.v*=1+gr('cry');c.cost*=defl});
+  if(payIn){pots.pen+=FC.c_pen;pots.isa+=FC.c_isa;coins[0].v+=FC.c_cry;coins[0].cost+=FC.c_cry}
+  if(plan){for(const k of ['cash','isa','pen']){const t=Math.min(plan[k]/planN,p0(pots[k]));pots[k]-=t}
+   const V=cryV(),t=Math.min(plan.cry/planN,V);if(t>0&&V>0)coins.forEach(c=>{if(c.v<=0)return;const s=t*c.v/V;c.cost*=1-s/c.v;c.v-=s})}};
+ snap(FC.age,{});
+ const n0=(3-(Mo+1)+12)%12;if(n0>0)startTY(n0);
+ for(let g=0;g<1600;g++){Mo++;if(Mo>11){Mo=0;Yr++}
+  if(Mo===3){if(flow)snap(ageAt6Apr(Yr),{tyAge,ty:tyY,flow});tyY=Yr;if(ageAt6Apr(tyY)>FC.to)break;startTY(12)}
+  month()}
+ Object.assign(out,{mpaaAge,isaOver,aaOver});return out}
+let taxOpen=false;try{taxOpen=localStorage.getItem('wealth-taxopen')==='1'}catch(e){}
+let lastInc=null;const kfmt=v=>{const a=Math.abs(v),sg=v<0?'−':'';return a>=1000?`${sg}£${(a/1000).toFixed(a>=100000?0:1)}k`:`${sg}£${Math.round(a)}`};
+function drawIncome(mid){lastInc=mid;
+ const rows=mid.filter(p=>p.flow&&(p.flow.spend>0||p.flow.tfc>0));const T=document.getElementById('fcinc'),N=document.getElementById('fcincnote');
+ if(!rows.length){T.innerHTML='';N.textContent='Set "Spending your savings" or take tax-free cash to see where your money comes from each year.';return}
+ const tx=FC.tax==='yes';
+ N.textContent=`Each row is a tax year (6 April to 5 April), from age ${rows[0].tyAge}; the age is your age on 6 April. ${rows.some(p=>p.flow.months<12)?'* Part of a tax year (from now to 5 April). ':''}In today's money. Tax bands are frozen in pounds until ${fdate(RULES.thresholds_frozen_until||'2031-04-05')}, so they shrink in today's money until then. Spending comes from your State Pension${DB?' and '+DBN:''} first, then ${FC.cash==='yes'?'cash, then ':''}ISAs, then your pension (from ${PEN_ACCESS}), then crypto. `+(tx?'Tax uses today\u2019s income tax bands; '+(FC.tfc==='yes'?'after the lump sum, pension withdrawals are fully taxable.':({ufpls:'a quarter of each pension withdrawal is tax-free',first:'pension withdrawals are tax-free until your 25% is used up, then fully taxed',fillpa:'each year pension is first taken up to your personal allowance (no tax), then a quarter of further withdrawals is tax-free'})[FC.tfc_mode]+`, until you have had £${LSA.toLocaleString('en-GB')} tax-free in total.`):'Income tax is left out.')+` Crypto sales pay Capital Gains Tax on gains over £${CGT.aea.toLocaleString('en-GB')} a year (${CGT.rates[0]}% or ${CGT.rates[1]}%). Click Tax to see tax by source.`;
+ const cols=[['pen','From pension'],['tfc','Lump sum'],['db',DBN],['sp','State Pension'],['cash','From cash',0,1],['isa','From ISAs',0,1],['cry','From crypto',0,1],['tax','Tax'],...(taxOpen?[['tax_pen','Pension tax',0,0,1],['tax_db',DBN+' tax',0,0,1],['tax_sp','State Pension tax',0,0,1],['tax_cgt','Crypto tax (CGT)',0,0,1]]:[]),['spend','Spending',1]].filter(([k,,always])=>always||(k!=='tax'||tx)&&rows.some(p=>p.flow[k]>0.5));
+ T.innerHTML='<tr><th>Age</th>'+cols.map(([k,l,,h,sub])=>k==='tax'?`<th class="n"><button type="button" class="txt" aria-expanded="${taxOpen}" title="Show or hide tax by source">Tax ${taxOpen?'▾':'▸'}</button></th>`:`<th class="n${h?' hm':''}${sub?' sub':''}">${l}</th>`).join('')+'<th class="n">Savings left</th></tr>'+
+  rows.map(p=>{const f=p.flow;return `<tr${f.short>1?' style="color:var(--neg)"':''}><td>${p.tyAge}${f.months<12?'*':''}</td>`+cols.map(([k,,,h,sub])=>{const t=k.startsWith('tax');return `<td class="n${h?' hm':''}${sub?' sub':''}${t&&f[k]>0.5?' neg':''}">${f[k]>0.5?(t?gbp(-f[k]):gbp(f[k])):'-'}</td>`}).join('')+`<td class="n">${gbp(p.total)}${f.short>1?' *':''}</td></tr>`}).join('');
+ const b=T.querySelector('.txt');if(b)b.onclick=()=>{taxOpen=!taxOpen;try{localStorage.setItem('wealth-taxopen',taxOpen?'1':'0')}catch(e){}drawIncome(lastInc)};
+}
+function drawFC(){
+ const cut=a=>a.filter(p=>p.age<=FC.to),full=fcRun(0),mid=cut(full),lo=cut(fcRun(-2)),hi=cut(fcRun(2)),nd=cut(fcRun(0,true)),end=mid[mid.length-1];
+ const K=document.getElementById('fckpis');K.innerHTML='';
+ const runOut=full.find(p=>p.flow&&p.flow.short>1&&p.tyAge<=FC.to);
+ if(rulesOld)kpi(K,'Tax rules','May be out of date',`Using ${RULES.tax_year||'built-in'} figures. See the note under Your assumptions.`);
+ if(full.mpaaAge!=null&&full.mpaaAge<FC.stop&&FC.c_pen*12>(RULES.mpaa||10000))kpi(K,'Pension paying-in limit',`Drops to ${gbp(RULES.mpaa||10000)} a year at ${full.mpaaAge}`,`Taking taxable money from your pension (from ${full.mpaaAge} in this forecast) cuts what you can pay into pensions to ${gbp(RULES.mpaa||10000)} a year (the Money Purchase Annual Allowance). The forecast keeps paying in ${gbp(FC.c_pen*12)} a year until ${Math.round(FC.stop)}. Start drawing later, or stop paying in earlier.`);
+ if(full.isaOver!=null)kpi(K,'ISA allowance',`Over the limit at ${full.isaOver}`,`In the tax year you are ${full.isaOver}, your monthly ISA payments plus ISA lump sums come to more than the ${gbp(RULES.isa_limit||20000)} ISA allowance. The forecast still counts it all.`);
+ if(full.aaOver!=null)kpi(K,'Pension allowance',`Over the limit at ${full.aaOver}`,`In the tax year you are ${full.aaOver}, pension payments plus pension lump sums come to more than the ${gbp(RULES.annual_allowance||60000)} annual allowance. You may be able to use unused allowance from the previous 3 years. The forecast still counts it all.`);
+ if(runOut){const c=el('div',{class:'card kpi',style:'border-color:var(--neg)'},`<div class="l">Warning</div><div class="v neg">Savings run out at ${runOut.tyAge}</div><div class="d">From then on your savings can't cover the spending you've set. Try spending less, starting later or paying in more.</div>`);K.appendChild(c)}
+ kpi(K,`Wealth at ${end.age}`,gbp(end.total),`Range ${gbp(lo[lo.length-1].total)} to ${gbp(hi[hi.length-1].total)}`);
+ const at=a=>mid.find(p=>p.age===a);
+ const p57=at(PEN_ACCESS);if(p57)kpi(K,`Pension at ${PEN_ACCESS}`,gbp(p57.pen),'The earliest you can take it under current rules');
+ const ps=at(Math.round(FC.stop));if(ps)kpi(K,`Wealth when you stop paying in (${Math.round(FC.stop)})`,gbp(ps.total),'');
+ kpi(K,'Savings today',gbp(mid[0].total),FC.cash==='yes'?`Pension, ISAs and crypto at live prices, plus cash. Your Emergency Fund (${gbp(EMERG)} in YNAB) and debts are left out`:'Pension, ISAs and crypto at live prices. Cash and debts are left out');
+ const dbStart=Math.round(FC.db_age);
+ /* chart */
+ const box=document.getElementById('fcchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?220:300,P={l:56,r:10,t:10,b:24};
+ const keys=[['pen','Pension','--c1'],['isa','ISAs','--c2'],['cry','Crypto','--c4'],...(FC.cash==='yes'?[['cash','Cash','--c6']]:[])];
+ let sc='fit';try{sc=localStorage.getItem('wealth-fc-scale')||'fit'}catch(e){}
+ document.querySelectorAll('#fcscale button').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.v===sc);b.onclick=()=>{try{localStorage.setItem('wealth-fc-scale',b.dataset.v)}catch(e){}drawFC()}});
+ const fitMx=Math.max(...mid.map(p=>p.pen+p.isa+p.cash+p.cry))*1.1,fullMx=Math.max(...hi.map(p=>p.total),...mid.map(p=>p.pen+p.isa+p.cash+p.cry))*1.05;
+ const mx=sc==='fit'?Math.min(fitMx,fullMx):fullMx,clipped=hi.some(p=>p.total>mx);
+ document.getElementById('fcclip').textContent=clipped?`The top of the shaded band runs off the chart (it reaches ${gbp(Math.max(...hi.map(p=>p.total)))}). Choose "Full range" to see all of it.`:'';
+ const x=i=>P.l+(W-P.l-P.r)*i/Math.max(1,mid.length-1),y=v=>P.t+(Hh-P.t-P.b)*(1-Math.max(0,v)/mx);
+ let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Forecast of wealth by age">`;const st=niceStep(mx);
+ for(let v=0;v<=mx;v+=st)svg+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l-6}" y="${y(v)+4}" text-anchor="end">£${v>=1e6?(v/1e6).toFixed(1)+'m':Math.round(v/1000)+'k'}</text>`;
+ const base=mid.map(()=>0);
+ keys.forEach(([k,,c])=>{const top=mid.map((p,i)=>base[i]+Math.max(0,p[k]));svg+=`<path d="M${mid.map((p,i)=>x(i)+','+y(top[i])).join('L')}L${mid.map((p,i)=>x(mid.length-1-i)+','+y(base[mid.length-1-i])).join('L')}Z" fill="var(${c})" opacity=".55"/>`;top.forEach((v,i)=>base[i]=v)});
+ svg+=`<path d="M${hi.map((p,i)=>x(i)+','+y(Math.min(p.total,mx))).join('L')}L${lo.map((p,i)=>x(lo.length-1-i)+','+y(lo[lo.length-1-i].total)).join('L')}Z" fill="var(--fg)" opacity=".08"/>`;
+ svg+=`<path d="M${mid.map((p,i)=>x(i)+','+y(p.total)).join('L')}" fill="none" stroke="var(--fg)" stroke-width="2"/>`;
+ const drew=nd.some((p,i)=>Math.abs(p.total-mid[i].total)>1);
+
+ const lab=Math.max(1,Math.round(mid.length/(W<500?4:8)));mid.forEach((p,i)=>{if(i===mid.length-1||i%lab===0&&mid.length-1-i>=lab*0.6)svg+=`<text x="${x(i)}" y="${Hh-6}" text-anchor="${i===0?'start':i===mid.length-1?'end':'middle'}">${p.age}</text>`});
+ svg+=`<rect x="${P.l}" y="0" width="${W-P.l-P.r}" height="${Hh}" fill="transparent" id="fchit"/></svg>`;box.innerHTML=svg;
+ const hit=box.querySelector('#fchit');hit.onmousemove=e=>{const rc=e.target.getBoundingClientRect();const i=Math.max(0,Math.min(mid.length-1,Math.round((e.clientX-rc.left)/rc.width*(mid.length-1))));const p=mid[i];showTip(e,`Age ${p.age}: <b>${gbp(p.total)}</b><br>Range ${gbp(lo[i].total)} to ${gbp(hi[i].total)}`)};hit.onmouseleave=hideTip;
+ document.getElementById('fcleg').innerHTML=keys.map(([,l,c])=>`<span style="--k:var(${c})">${l}</span>`).join('')+'<span style="--k:var(--fg)">Total</span>';
+ drawIncome(full);
+ /* table */
+ const rows=mid.filter(p=>p.age%5===0||p===mid[0]||p===end);
+ document.getElementById('fctab').innerHTML='<tr><th>Age</th><th class="n">Pension</th><th class="n hm">ISAs</th><th class="n hm">Crypto</th>'+(FC.cash==='yes'?'<th class="n hm">Cash</th>':'')+'<th class="n">Total</th></tr>'+rows.map(p=>`<tr><td>${p.age}</td><td class="n">${gbp(p.pen)}</td><td class="n hm">${gbp(p.isa)}</td><td class="n hm">${gbp(p.cry)}</td>${FC.cash==='yes'?`<td class="n hm">${gbp(p.cash)}</td>`:''}<td class="n"><b style="font-weight:600">${gbp(p.total)}</b></td></tr>`).join('');
+}
+fcInputs();
+{const n=document.getElementById('fcrules'),ck=RULES.checked?new Date(RULES.checked).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'';
+ n.innerHTML=rulesOld?`<b style="color:var(--neg)">Tax rules may be out of date.</b> The forecast is using ${RULES.tax_year?RULES.tax_year+' figures':'built-in figures'}${ck?', last checked '+ck:''}. The weekly GOV.UK check may need fixing.`:`Tax rules: ${RULES.tax_year} figures from GOV.UK, last checked ${ck}.`}
+if(matchMedia('(max-width:1099px)').matches)document.getElementById('fcside').open=false;
+
+document.getElementById('foot').innerHTML=D.notes.map(n=>'<div>'+n+'</div>').join('');
+/* tax */
+let taxSel=null;
+function drawTax(){
+ const T=D.tax,S=document.getElementById('taxyr'),K=document.getElementById('taxkpis'),B=document.getElementById('taxbody'),N=document.getElementById('taxnote');
+ if(!T){N.textContent='No tax figures yet.';return}
+ const yrs=[T.now.y,...T.past.map(p=>p.y)];if(!taxSel)taxSel=yrs[0];
+ S.innerHTML='';yrs.forEach(y=>{const b=el('button',{},y);if(y===taxSel)b.classList.add('on');b.onclick=()=>{taxSel=y;drawTax()};S.appendChild(b)});
+ const g2=v=>v==null?'':gbp(v,2),g0=v=>v==null?'':gbp(v);
+ const card=(h,note,inner)=>`<div class="card"><h2>${h}</h2>${note?`<p class="note">${note}</p>`:''}${inner}</div>`;
+ const tab=rows=>`<div class="tw"><table class="taxt">${rows}</table></div>`;
+ K.innerHTML='';
+ if(taxSel!==T.now.y){
+  const p=T.past.find(x=>x.y===taxSel);N.textContent=`Tax year ${p.y}, from ${p.src}. Figures as filed; check against your own copy before relying on them.`;
+  if(p.total!=null)kpi(K,'Total income',gbp(p.total),p.pa!=null?`Personal allowance ${gbp(p.pa)}${p.pa<12500?' (reduced, as income was over £100,000)':''}`:'');
+  if(p.tax_due!=null)kpi(K,'Income tax due',gbp(p.tax_due,2),'Before tax already paid');
+  kpi(K,'Tax taken through PAYE',gbp(p.deducted,2),'');
+  kpi(K,p.result==null?'Result':p.result<0?'Refund':'Paid on top',p.result==null?'Not shown':gbp(Math.abs(p.result),2),p.result_note);
+  let r='<tr><th>Income</th><th class="n">Amount</th></tr>'+p.rows.map(([n,a])=>`<tr><td>${n}</td><td class="n">${g0(a)}</td></tr>`).join('');
+  if(p.total!=null)r+=`<tr class="t"><td>Total income</td><td class="n">${g0(p.total)}</td></tr>`;
+  let o='<tr><th>Item</th><th class="n">Amount</th></tr>';
+  o+=`<tr><td>Personal pension payments (gross)${p.pension_note?` <span class="note">${p.pension_note}</span>`:''}</td><td class="n">${p.pension==null?'':g0(p.pension)}</td></tr>`;
+  if(p.giftaid!=null)o+=`<tr><td>Gift Aid (gross)</td><td class="n">${g0(p.giftaid)}</td></tr>`;
+  (p.extra||[]).forEach(([n,a])=>o+=`<tr><td>${n}</td><td class="n">${g2(a)}</td></tr>`);
+  if(p.cgt&&(p.cgt.note||p.cgt.due))o+=`<tr><td>Capital gains${p.cgt.note?`<br><span class="note">${p.cgt.note}</span>`:''}</td><td class="n">${p.cgt.due!=null?'Tax '+g2(p.cgt.due):''}</td></tr>`;
+  B.innerHTML=`<div class="grid two" style="margin-top:12px">${card('Income','',tab(r))}${card('Reliefs and gains','',tab(o))}</div>`;
+  return}
+ /* current year */
+ const n=T.now,R=RULES.income_tax,pa=R.pa,band=R.basic_to-pa;
+ const empl=n.income.reduce((a,x)=>a+x.a,0),actual=n.income.filter(x=>x.act).reduce((a,x)=>a+x.a,0);
+ const pens=n.pension.reduce((a,x)=>a+x[2],0),gross=pens*1.25;
+ const nonSav=empl+(n.staking.a||0),taxable=Math.max(0,nonSav-pa),bandX=band+gross;
+ const basic=Math.min(taxable,bandX),higher=Math.max(0,taxable-bandX);
+ const savTax=Math.max(0,n.interest.a-(higher>0?500:1000))*(higher>0?.4:.2);
+ const it=basic*R.rates[0]/100+higher*R.rates[1]/100+savTax;
+ const over=nonSav-R.basic_to-gross;
+ N.textContent=`Tax year ${n.y} (6 April 2026 to 5 April 2027), so far. Actual figures come from your payslips, P45s and exports; anything marked "estimate" is my projection to April. Updated ${fdate(n.updated)}. This is a guide, not tax advice.`;
+ kpi(K,'Taxable income (estimate)',gbp(nonSav+n.interest.a+n.dividends.a),`${gbp(actual)} actual so far, the rest estimated`);
+ kpi(K,'Over the higher-rate line',over>0?gbp(over):'No',over>0?`Income above ${gbp(R.basic_to)} after your pension payments`:'You are under it');
+ kpi(K,'Income tax for the year (estimate)',gbp(it),`PAYE so far ${gbp(n.paye.so_far,2)} (to ${n.paye.to})`);
+ const nx=n.payments.find(p=>p[0]>=new Date().toISOString().slice(0,10));
+ if(nx)kpi(K,'Next payment',nx[2]!=null?gbp(nx[2],2):'To be worked out',`${fdate(nx[0])}: ${nx[1]}`);
+ let r='<tr><th>Income</th><th class="n">Amount</th><th>Source</th></tr>'+n.income.map(x=>`<tr><td>${x.n}</td><td class="n${x.act?'':' est'}">${x.memo?'Tax-free':gbp(x.a,2)}</td><td class="s">${x.s}</td></tr>`).join('');
+ r+=`<tr><td>Savings interest</td><td class="n est">${gbp(n.interest.a)}</td><td class="s">${n.interest.s}</td></tr>`;
+ r+=`<tr><td>Dividends</td><td class="n">${gbp(n.dividends.a,2)}</td><td class="s">${n.dividends.s}; under the £500 allowance</td></tr>`;
+ r+=`<tr><td>Crypto staking rewards</td><td class="n est">-</td><td class="s">${n.staking.s}</td></tr>`;
+ r+=`<tr class="t"><td>Total (estimate)</td><td class="n">${gbp(nonSav+n.interest.a+n.dividends.a)}</td><td></td></tr>`;
+ let pr='<tr><th>Date</th><th>Paid into</th><th class="n">You paid</th><th class="n">With basic-rate relief</th></tr>'+n.pension.map(([d,w,a])=>`<tr><td>${fdate(d)}</td><td>${w}</td><td class="n">${gbp(a,2)}</td><td class="n">${gbp(a*1.25,2)}</td></tr>`).join('');
+ pr+=`<tr class="t"><td colspan="2">Total</td><td class="n">${gbp(pens,2)}</td><td class="n">${gbp(gross,2)}</td></tr>`;
+ const pnote=`Enter ${gbp(gross,2)} on your return to claim about ${gbp(gross*.2,2)} of extra higher-rate relief. Salary sacrifice isn't included here, as it already reduces your pay.`+(over>0?` To bring your income down to ${gbp(R.basic_to)}, you'd need to pay in about ${gbp(over/1.25)} more before 5 April 2027 (${gbp(over)} with relief). That's information, not advice.`:'');
+ let gr='<tr><th>Sale</th><th class="n">Sales</th><th class="n">Proceeds</th><th class="n">Gain</th></tr>'+n.gains.map(x=>`<tr><td>${x.n}<br><span class="note">${x.s}</span></td><td class="n">${x.disposals}</td><td class="n">${gbp(x.proceeds,2)}</td><td class="n">${x.gain==null?'Tiny':gbp(x.gain,2)}</td></tr>`).join('');
+ const gt=n.gains.reduce((a,x)=>a+(x.gain||0),0),aea=(RULES.cgt||{}).aea||3000;
+ gr+=`<tr class="t"><td>Total gains</td><td></td><td class="n">${gbp(n.gains.reduce((a,x)=>a+x.proceeds,0),2)}</td><td class="n">${gbp(gt,2)}</td></tr>`;
+ const gnote=`The tax-free allowance is ${gbp(aea)}. You have ${gbp(Math.max(0,aea-gt))} of it left. Trading 212 works gains out on average cost; HMRC's rules also match shares bought back within 30 days, which could change the figure slightly. I believe you only need to report gains if they're over the allowance or your total sale proceeds are over £50,000, but check HMRC's guidance.`;
+ const c=n.code;let cr=c.rows.map(([k,a])=>`<tr><td>${k}</td><td class="n">${a<0?'−'+gbp(-a):gbp(a)}</td></tr>`).join('');
+ cr+=`<tr class="t"><td>Tax-free amount</td><td class="n">${gbp(c.rows.reduce((a,x)=>a+x[1],0))}</td></tr>`;
+ const py='<tr><th>Due</th><th>What</th><th class="n">Amount</th></tr>'+n.payments.map(([d,w,a,nt])=>`<tr><td>${fdate(d)}</td><td>${w}<br><span class="note">${nt}</span></td><td class="n">${a==null?'-':gbp(a,2)}</td></tr>`).join('');
+ const chk=n.checks||[];
+ B.innerHTML=card('Income','Estimates are in grey italics.',tab(r))
+  +`<div class="grid two" style="margin-top:12px">${card('Pension payments','Personal payments into your SIPP this tax year (ii adds basic-rate relief).',tab(pr)+`<p class="note" style="margin:10px 0 0">${pnote}</p>`)}${card(`Tax code: ${c.code}`,`Since ${fdate(c.from)}. Previously ${c.prev}. ${c.note}`,tab(cr))}</div>`
+  +`<div class="grid two" style="margin-top:12px">${card('Capital gains','Sales of shares and crypto outside ISAs and pensions.',tab(gr)+`<p class="note" style="margin:10px 0 0">${gnote}</p>`)}${card('Payments and deadlines','',tab(py))}</div>`
+  +`<div class="card" style="margin-top:12px"><h2>To check</h2><ul class="chk">${chk.map(x=>`<li>${x}</li>`).join('')}</ul><p class="note" style="margin:10px 0 0">Income tax estimate: ${gbp(basic)} at ${R.rates[0]}% and ${gbp(higher)} at ${R.rates[1]}% after your ${gbp(pa)} personal allowance, plus tax on savings interest over your allowance. National Insurance isn't included (it isn't on your return).</p></div>`;
+}
+function draw(){drawNW();drawCF();drawSpendYears();drawJoint();drawMix();drawHist();drawFC();drawTax()}
+draw();let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(draw,150)});
+};
+</script>
+<script>
+(async function(){
+const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const bu=a=>{let s='';const u=new Uint8Array(a);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)};
+const err=document.getElementById('err'),go=document.getElementById('go'),f=document.getElementById('f');
+const get=async(u,t)=>{const r=await fetch(u+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(u+' '+r.status);return t?r.text():r.json()};
+if(!window.crypto||!crypto.subtle){document.getElementById('lmsg').innerHTML='This page needs a secure connection. <a style="color:inherit;font-weight:600" href="https://'+location.host+location.pathname+'">Open the secure version</a>.';go.disabled=true;document.getElementById('login').style.visibility='visible';return}
+let LOCK;try{LOCK=await get('lock.json')}catch(x){err.textContent='Could not load the page. Check your connection and reload.';document.getElementById('login').style.visibility='visible';return}
+async function openWith(wk){
+  const pk=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(LOCK.wrap.iv)},wk,ub(LOCK.wrap.ct));
+  const priv=await crypto.subtle.importKey('pkcs8',pk,{name:'RSA-OAEP',hash:'SHA-256'},false,['decrypt']);
+  const [enc,prices,funds]=await Promise.all([get('data.enc'),get('prices.json'),get('funds.json')]);
+  let hist=null;try{hist=await get('history.json')}catch(e){}
+  let rpi=null;try{rpi=await get('rpi.json')}catch(e){}
+  let rules=null;try{rules=await get('rules.json')}catch(e){}
+  const dk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(enc.k)),'AES-GCM',false,['decrypt']);
+  const D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(enc.iv)},dk,ub(enc.ct))));
+  D.prices=prices;D.look=funds;D.hist=hist;D.rpi=rpi;D.rules=rules;
+  let newY=false;if(!sessionStorage.getItem('wealth-skip-ynab'))try{const ye=await get('ynab.enc');const yk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(ye.k)),'AES-GCM',false,['decrypt']);D.ynab=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(ye.iv)},yk,ub(ye.ct))));newY=true}catch(e){}
+  document.getElementById('login').hidden=true;document.getElementById('app').hidden=false;
+  const prob=sessionStorage.getItem('wealth-problem');
+  if(prob){const b=document.createElement('div');b.className='card';b.style.cssText='margin-bottom:12px;border-color:var(--neg)';b.innerHTML='<b>The automatic YNAB update could not be shown, so this page is using your last export instead.</b><p class="note" style="margin:6px 0 0">Send Claude this line (it contains no figures): <code style="user-select:all">'+prob.replace(/</g,'&lt;')+'</code></p>';document.getElementById('app').prepend(b)}
+  try{window.startApp(D)}catch(e){
+    if(newY){const Y=D.ynab||{};const L=o=>o?Object.keys(o).length:0;
+      const info=[e.message,'months='+(Y.months||[]).length+' '+((Y.months||[])[0]||'')+'..'+((Y.months||[]).slice(-1)[0]||''),'nw='+(Y.nw||[]).length,'types='+Object.keys(Y.bytype||{}).join('|'),'cf='+Object.keys(Y.cf||{}).map(k=>k+':'+(Y.cf[k]||[]).length).join(','),'groups='+L(Y.groups),'cats='+L(Y.cats),'accounts='+(Y.accounts||[]).length,'cutoff='+Y.cutoff].join(' ; ');
+      sessionStorage.setItem('wealth-skip-ynab','1');sessionStorage.setItem('wealth-problem',info);location.reload();return}
+    throw e}
+}
+const keyFrom=raw=>crypto.subtle.importKey('raw',ub(raw),'AES-GCM',false,['decrypt']);
+for(const st of [sessionStorage,localStorage]){try{const s=JSON.parse(st.getItem('wealth-wk')||'null');if(s&&st===localStorage&&!(s.t>Date.now()-30*864e5)){st.removeItem('wealth-wk');continue}if(s&&s.salt===LOCK.wrap.salt){await openWith(await keyFrom(s.k));return}}catch(e){}}
+document.getElementById('login').style.visibility='visible';
+f.onsubmit=async e=>{
+  e.preventDefault();err.textContent='';go.disabled=true;go.textContent='Unlocking…';
+  let wk;
+  try{
+    const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(document.getElementById('pw').value.trim()),'PBKDF2',false,['deriveKey']);
+    wk=await crypto.subtle.deriveKey({name:'PBKDF2',salt:ub(LOCK.wrap.salt),iterations:LOCK.wrap.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['decrypt']);
+    await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(LOCK.wrap.iv)},wk,ub(LOCK.wrap.ct));
+  }catch(x){err.textContent='That password didn’t work. Try again.';go.disabled=false;go.textContent='Unlock';return}
+  const rec=JSON.stringify({salt:LOCK.wrap.salt,k:bu(await crypto.subtle.exportKey('raw',wk)),t:Date.now()});
+  let saved=false;try{sessionStorage.setItem('wealth-wk',rec);saved=sessionStorage.getItem('wealth-wk')===rec;if(document.getElementById('rem').checked)localStorage.setItem('wealth-wk',rec)}catch(e){}
+  if(saved){location.replace(location.href.split('#')[0]);return}
+  try{await openWith(wk)}catch(x){err.textContent='Unlocked, but the figures could not be loaded: '+x.message;go.disabled=false;go.textContent='Unlock'}
+};
+})();
+</script>
+</body>
+</html>

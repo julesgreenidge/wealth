@@ -1,0 +1,238 @@
+{
+ "funds": {
+  "Vanguard FTSE Global All Cap": {
+   "countries": {
+    "United States": 62.5,
+    "Japan": 6.1,
+    "Taiwan": 3.5,
+    "United Kingdom": 3.1,
+    "Canada": 3.0,
+    "South Korea": 2.6,
+    "China": 2.3,
+    "Switzerland": 1.8,
+    "France": 1.8,
+    "Germany": 1.7
+   },
+   "countries_src": "Vanguard factsheet, 30 September 2026 (top 10 countries)",
+   "sectors": {
+    "Technology": 32.03,
+    "Financial services": 15.78,
+    "Industrials": 10.91,
+    "Healthcare": 8.61,
+    "Consumer cyclical": 8.48,
+    "Communication services": 7.53,
+    "Consumer defensive": 4.38,
+    "Energy": 4,
+    "Basic materials": 3.86,
+    "Utilities": 2.26,
+    "Real estate": 2.16
+   },
+   "top": {
+    "Nvidia": 4.55,
+    "Apple": 4.11,
+    "Microsoft": 3.25,
+    "Alphabet": 3.1,
+    "Amazon": 2.06,
+    "TSMC": 1.62,
+    "Broadcom": 1.39,
+    "Meta Platforms": 1.36,
+    "Micron Technology": 1.02
+   },
+   "size": {
+    "Large": 75,
+    "Medium": 18,
+    "Small": 6
+   },
+   "ocf": 0.23,
+   "holdings": 7336,
+   "yield": 1.16
+  },
+  "Vanguard US Equity Index": {
+   "countries": {
+    "United States": 99.9
+   },
+   "countries_src": "Vanguard factsheet, 30 September 2026 (top 1 countries)",
+   "sectors": {
+    "Technology": 38.42,
+    "Financial services": 11.49,
+    "Healthcare": 9.91,
+    "Communication services": 9.17,
+    "Industrials": 8.78,
+    "Consumer cyclical": 8.73,
+    "Consumer defensive": 4.15,
+    "Energy": 3.55,
+    "Real estate": 2.12,
+    "Utilities": 1.86,
+    "Basic materials": 1.81
+   },
+   "top": {
+    "Nvidia": 7.45,
+    "Apple": 6.55,
+    "Microsoft": 5.13,
+    "Alphabet": 4.9,
+    "Amazon": 3.29,
+    "Broadcom": 2.25,
+    "Meta Platforms": 2.15,
+    "Micron Technology": 1.62,
+    "Tesla": 1.35
+   },
+   "size": {
+    "Large": 71,
+    "Medium": 20,
+    "Small": 9
+   },
+   "ocf": 0.1,
+   "holdings": 3498,
+   "yield": 0.81
+  },
+  "Vanguard LifeStrategy 100%": {
+   "countries": {
+    "United States": 54.09,
+    "United Kingdom": 17.87,
+    "Europe (ex UK)": 9.6,
+    "Other developed": 8.54,
+    "Japan": 5.13,
+    "Emerging markets": 4.23
+   },
+   "countries_src": "Fidelity (Morningstar data), 30/09/2026 (by region)",
+   "sectors": {
+    "Technology": 26.95,
+    "Financial services": 17.85,
+    "Industrials": 11.43,
+    "Healthcare": 9.12,
+    "Consumer cyclical": 8.32,
+    "Communication services": 6.85,
+    "Consumer defensive": 5.9,
+    "Energy": 4.73,
+    "Basic materials": 4.33,
+    "Utilities": 2.62,
+    "Real estate": 1.9
+   },
+   "size": {
+    "Large": 79,
+    "Medium": 17,
+    "Small": 4
+   },
+   "ocf": 0.2,
+   "holdings": 7,
+   "yield": 0.02,
+   "top": {
+    "Nvidia": 4.138,
+    "Apple": 3.684,
+    "Microsoft": 2.9,
+    "Alphabet": 2.746,
+    "Amazon": 1.848,
+    "HSBC": 1.778,
+    "Shell": 1.443,
+    "TSMC": 1.321,
+    "AstraZeneca": 1.275,
+    "Broadcom": 1.257
+   },
+   "top_note": "Worked out from the top 10 companies of each fund LifeStrategy holds (FT data)"
+  },
+  "Aviva Pensions US Equity S6": {
+   "countries": {
+    "United States": 94.9,
+    "Other developed": 4.42
+   },
+   "countries_src": "Fidelity (Morningstar data), 30/09/2026 (by region)",
+   "sectors": {
+    "Technology": 39.39,
+    "Financial services": 12.62,
+    "Communication services": 9.75,
+    "Healthcare": 8.88,
+    "Consumer cyclical": 8.65,
+    "Industrials": 7.6,
+    "Consumer defensive": 4.19,
+    "Energy": 4.06,
+    "Basic materials": 2.18,
+    "Real estate": 1.54,
+    "Utilities": 1.12
+   },
+   "top": {
+    "Nvidia": 7.76,
+    "Apple": 7.02,
+    "Microsoft": 5.55,
+    "Alphabet": 5.28,
+    "Amazon": 3.52,
+    "Broadcom": 2.38,
+    "Meta Platforms": 2.32,
+    "Micron Technology": 1.75,
+    "Tesla": 1.51
+   },
+   "size": {
+    "Large": 79,
+    "Medium": 19,
+    "Small": 0
+   },
+   "ocf": 0.29,
+   "ocf_note": "Your plan's annual fund charge, from your Aviva account (Nov 2026)",
+   "holdings": 567,
+   "yield": null
+  }
+ },
+ "stocks": {
+  "MSFT": [
+   "Microsoft",
+   "United States",
+   "Technology"
+  ],
+  "AAPL": [
+   "Apple",
+   "United States",
+   "Technology"
+  ],
+  "AMZN": [
+   "Amazon",
+   "United States",
+   "Consumer cyclical"
+  ],
+  "META": [
+   "Meta Platforms",
+   "United States",
+   "Communication services"
+  ],
+  "NVDA": [
+   "Nvidia",
+   "United States",
+   "Technology"
+  ],
+  "AAF": [
+   "Airtel Africa",
+   "Africa",
+   "Communication services"
+  ],
+  "AMD": [
+   "Advanced Micro Devices",
+   "United States",
+   "Technology"
+  ],
+  "GOOGL": [
+   "Alphabet",
+   "United States",
+   "Communication services"
+  ],
+  "DIS": [
+   "Walt Disney",
+   "United States",
+   "Communication services"
+  ],
+  "PEP": [
+   "PepsiCo",
+   "United States",
+   "Consumer defensive"
+  ],
+  "MU": [
+   "Micron Technology",
+   "United States",
+   "Technology"
+  ],
+  "AVGO": [
+   "Broadcom",
+   "United States",
+   "Technology"
+  ]
+ },
+ "sources": "Industries, company size and biggest holdings: Fidelity (Morningstar data), 30/09/2026. Countries, regions and charges: Vanguard factsheets, 30 September 2026. LifeStrategy's biggest companies: FT. Aviva charge: your plan's charge from your Aviva account (fixed figure). Updated automatically each month.",
+ "updated": "2026-11-15"
+}

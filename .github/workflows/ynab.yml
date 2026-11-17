@@ -1,0 +1,28 @@
+name: Update YNAB figures
+on:
+  schedule:
+    - cron: '15 5 * * *'   # every day, early morning UK time
+  workflow_dispatch:
+  push:
+    paths: ['scripts/update_ynab.py', '.github/workflows/ynab.yml']
+permissions:
+  contents: write
+concurrency: ynab
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5   # v4.3.1, pinned
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065   # v5.6.0, pinned
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pandas==2.2.3 cryptography==43.0.3
+      - run: python scripts/update_ynab.py
+        env:
+          YNAB_TOKEN: ${{ secrets.YNAB_TOKEN }}
+      - name: Save sealed figures
+        run: |
+          git config user.name "ynab-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -f ynab.enc ]; then git add ynab.enc; fi
+          git diff --cached --quiet || (git commit -m "Update YNAB figures" && git pull --quiet --rebase origin main && git push)

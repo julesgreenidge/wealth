@@ -1,0 +1,29 @@
+name: Update prices
+on:
+  schedule:
+    - cron: '30 21 * * 1-5'   # weekdays 21:30 UTC, after US markets close
+  workflow_dispatch:
+  push:
+    paths: ['scripts/update_prices.py', 'scripts/update_history.py', 'scripts/update_rpi.py', '.github/workflows/prices.yml']
+permissions:
+  contents: write
+concurrency: prices
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5   # v4.3.1, pinned
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065   # v5.6.0, pinned
+        with:
+          python-version: '3.12'
+      - run: python scripts/update_prices.py prices.json
+      - run: python scripts/update_history.py prices.json history.json
+        continue-on-error: true
+      - run: python scripts/update_rpi.py rpi.json
+        continue-on-error: true
+      - name: Save prices
+        run: |
+          git config user.name "price-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add prices.json; if [ -f history.json ]; then git add history.json; fi; if [ -f rpi.json ]; then git add rpi.json; fi
+          git diff --cached --quiet || (git commit -m "Update prices" && git pull --quiet --rebase origin main && git push)
