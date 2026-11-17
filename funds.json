@@ -2,18 +2,18 @@
  "funds": {
   "Vanguard FTSE Global All Cap": {
    "countries": {
-    "United States": 62.5,
-    "Japan": 6.1,
-    "Taiwan": 3.5,
-    "United Kingdom": 3.1,
-    "Canada": 3.0,
-    "South Korea": 2.6,
-    "China": 2.3,
-    "Switzerland": 1.8,
+    "United States": 63.1,
+    "Japan": 5.9,
+    "Taiwan": 3.3,
+    "United Kingdom": 3.2,
+    "Canada": 3.1,
+    "South Korea": 2.2,
+    "China": 2.2,
+    "Switzerland": 2.0,
     "France": 1.8,
-    "Germany": 1.7
+    "Germany": 1.8
    },
-   "countries_src": "Vanguard factsheet, 30 September 2026 (top 10 countries)",
+   "countries_src": "Vanguard factsheet, 31 October 2026 (top 10 countries)",
    "sectors": {
     "Technology": 32.03,
     "Financial services": 15.78,
@@ -44,73 +44,73 @@
     "Small": 6
    },
    "ocf": 0.23,
-   "holdings": 7336,
-   "yield": 1.16
+   "holdings": 7300,
+   "yield": 1.19
   },
   "Vanguard US Equity Index": {
    "countries": {
     "United States": 99.9
    },
-   "countries_src": "Vanguard factsheet, 30 September 2026 (top 1 countries)",
+   "countries_src": "Vanguard factsheet, 31 October 2026 (top 1 countries)",
    "sectors": {
-    "Technology": 38.42,
-    "Financial services": 11.49,
-    "Healthcare": 9.91,
-    "Communication services": 9.17,
-    "Industrials": 8.78,
-    "Consumer cyclical": 8.73,
-    "Consumer defensive": 4.15,
-    "Energy": 3.55,
-    "Real estate": 2.12,
-    "Utilities": 1.86,
-    "Basic materials": 1.81
+    "Technology": 36.21,
+    "Financial services": 12.3,
+    "Healthcare": 10.81,
+    "Consumer cyclical": 9.19,
+    "Industrials": 8.8,
+    "Communication services": 7.82,
+    "Consumer defensive": 4.66,
+    "Energy": 4.08,
+    "Real estate": 2.23,
+    "Utilities": 2.06,
+    "Basic materials": 1.85
    },
    "top": {
-    "Nvidia": 7.45,
-    "Apple": 6.55,
-    "Microsoft": 5.13,
-    "Alphabet": 4.9,
-    "Amazon": 3.29,
-    "Broadcom": 2.25,
-    "Meta Platforms": 2.15,
-    "Micron Technology": 1.62,
-    "Tesla": 1.35
+    "Apple": 6.84,
+    "Nvidia": 6.74,
+    "Microsoft": 5.27,
+    "Alphabet": 4.04,
+    "Amazon": 3.21,
+    "Broadcom": 2.11,
+    "Meta Platforms": 1.85,
+    "Eli Lilly and": 1.54,
+    "Tesla": 1.53
    },
    "size": {
-    "Large": 71,
+    "Large": 72,
     "Medium": 20,
     "Small": 9
    },
    "ocf": 0.1,
-   "holdings": 3498,
-   "yield": 0.81
+   "holdings": 3490,
+   "yield": 0.82
   },
   "Vanguard LifeStrategy 100%": {
    "countries": {
-    "United States": 54.09,
-    "United Kingdom": 17.87,
-    "Europe (ex UK)": 9.6,
-    "Other developed": 8.54,
-    "Japan": 5.13,
-    "Emerging markets": 4.23
+    "United States": 54.31,
+    "United Kingdom": 18.53,
+    "Europe (ex UK)": 9.39,
+    "Other developed": 8.4,
+    "Japan": 5.08,
+    "Emerging markets": 3.32
    },
-   "countries_src": "Fidelity (Morningstar data), 30/09/2026 (by region)",
+   "countries_src": "Fidelity (Morningstar data), 31/10/2026 (by region)",
    "sectors": {
-    "Technology": 26.95,
-    "Financial services": 17.85,
-    "Industrials": 11.43,
-    "Healthcare": 9.12,
-    "Consumer cyclical": 8.32,
-    "Communication services": 6.85,
-    "Consumer defensive": 5.9,
-    "Energy": 4.73,
-    "Basic materials": 4.33,
-    "Utilities": 2.62,
-    "Real estate": 1.9
+    "Technology": 28.1,
+    "Financial services": 17.4,
+    "Industrials": 11.29,
+    "Healthcare": 9.16,
+    "Consumer cyclical": 7.83,
+    "Communication services": 6.97,
+    "Consumer defensive": 5.78,
+    "Energy": 5.02,
+    "Basic materials": 4.06,
+    "Utilities": 2.59,
+    "Real estate": 1.8
    },
    "size": {
-    "Large": 79,
-    "Medium": 17,
+    "Large": 81,
+    "Medium": 15,
     "Small": 4
    },
    "ocf": 0.2,
@@ -234,5 +234,5 @@
   ]
  },
  "sources": "Industries, company size and biggest holdings: Fidelity (Morningstar data), 30/09/2026. Countries, regions and charges: Vanguard factsheets, 30 September 2026. LifeStrategy's biggest companies: FT. Aviva charge: your plan's charge from your Aviva account (fixed figure). Updated automatically each month.",
- "updated": "2026-11-15"
+ "updated": "2026-11-17"
 }
