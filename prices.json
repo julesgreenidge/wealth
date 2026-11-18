@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17 22:50 UTC",
+ "updated": "2026-11-18 02:59 UTC",
  "fx": {
   "usd": {
    "rate": 1.3191,
@@ -87,14 +87,14 @@
    "src": "FT"
   },
   "BTC": {
-   "price": 49044.0,
-   "date": "2026-11-17",
+   "price": 48653.0,
+   "date": "2026-11-18",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1372.8,
-   "date": "2026-11-17",
+   "price": 1363.97,
+   "date": "2026-11-18",
    "cur": "GBP",
    "src": "CoinGecko"
   },
