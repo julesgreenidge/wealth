@@ -132,6 +132,7 @@ if __name__ == '__main__':
     today = pd.Timestamp(dt.date.today())
     df = from_api(token)
     data = build(df, today); data['emergency'] = df.attrs.get('emergency')
+    data['other_names'] = sorted({n for n in df.Account.unique() if re.search(r'P2P|Lending', n)})   # names of the P2P lending accounts, for the chart label
     # ISA allowance used this tax year: money moved into ISAs from non-ISA accounts minus money taken out (Trading 212 ISAs are flexible,
     # so withdrawals give allowance back; the others have no withdrawals). Moves between ISAs, interest, gains and future scheduled items are ignored.
     ty = pd.Timestamp(today.year if (today.month, today.day) >= (4, 6) else today.year - 1, 4, 6)
