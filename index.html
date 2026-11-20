@@ -255,7 +255,7 @@ kpi(K,'Debts',gbp(debtNow),'Cards and personal borrowing');
 function avg(a,end,n){let s=0;for(let i=end-n+1;i<=end;i++)s+=a[i];return s/n}
 
 /* net worth chart: stacked areas of positive types + line */
-const TL=k=>k==='Other assets'?'P2P lending'+((Y.other_names||[]).length?' ('+Y.other_names.join(', ')+')':''):k;
+const TL=k=>k==='Other assets'?'P2P lending':k;
 const TYPES=['Pensions','Stocks & shares ISAs','Cash ISAs','Cash savings','Current accounts','Crypto','Shares (GIA)','Other assets'];
 const TC={'Pensions':'--c1','Stocks & shares ISAs':'--c2','Cash ISAs':'--c5','Cash savings':'--c8','Current accounts':'--c6','Crypto':'--c4','Shares (GIA)':'--c3','Other assets':'--c7'};
 let nwRange=60,nwPct=false;document.querySelectorAll('#nwu button').forEach(b=>b.onclick=()=>{nwPct=b.dataset.u==='pct';document.querySelectorAll('#nwu button').forEach(x=>x.classList.toggle('on',x===b));drawNW()});
