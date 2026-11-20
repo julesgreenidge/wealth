@@ -45,9 +45,17 @@ def build(r, cutoff):
                 accounts=[dict(name=a.Account, type=a.type, balance=round(float(a.balance), 2), updated=str(a.updated.date()), guess=bool(guessed(a.Account))) for a in bal.itertuples()])
 
 def from_api(token):
-    def get(path):
-        req = urllib.request.Request('https://api.ynab.com/v1/budgets/last-used' + path, headers={'Authorization': 'Bearer ' + token})
+    def raw(path):
+        req = urllib.request.Request('https://api.ynab.com/v1' + path, headers={'Authorization': 'Bearer ' + token})
         with urllib.request.urlopen(req, timeout=60) as resp: return json.load(resp)['data']
+    # Always use your own budget, never YNAB's "last used" one (that switches to the Family Budget whenever you last opened it).
+    # Your budget = the one whose name doesn't contain "family"; if there are several, the YNAB_BUDGET setting names it.
+    want = os.environ.get('YNAB_BUDGET', '').strip().lower()
+    budgets = [b for b in raw('/budgets')['budgets'] if (want and b['name'].strip().lower() == want) or (not want and 'family' not in b['name'].lower())]
+    print('Budgets matched:', len(budgets))   # count only
+    if len(budgets) != 1: sys.exit('Could not pick your own YNAB budget: ' + ('none' if not budgets else 'several') + ' matched. Set YNAB_BUDGET to its name.')
+    B = '/budgets/' + budgets[0]['id']
+    get = lambda path: raw(B + path)
     cats, emerg = {}, []
     for g in get('/categories')['category_groups']:
         for c in g['categories']:
