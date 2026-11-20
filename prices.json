@@ -1,118 +1,118 @@
 {
- "updated": "2026-11-19 02:41 UTC",
+ "updated": "2026-11-20 02:27 UTC",
  "fx": {
   "usd": {
-   "rate": 1.3168,
-   "date": "2026-11-18",
+   "rate": 1.3151,
+   "date": "2026-11-19",
    "src": "ECB (Frankfurter)"
   }
  },
  "items": {
   "GAC": {
    "price": 282.48,
-   "date": "2026-11-17",
+   "date": "2026-11-18",
    "cur": "GBP",
    "src": "FT"
   },
   "USEQ": {
-   "price": 1249.76,
-   "date": "2026-11-17",
+   "price": 1253.2,
+   "date": "2026-11-18",
    "cur": "GBP",
    "src": "FT"
   },
   "LS100": {
-   "price": 481.16,
-   "date": "2026-11-17",
+   "price": 479.92,
+   "date": "2026-11-18",
    "cur": "GBP",
    "src": "FT"
   },
   "MSFT": {
-   "price": 508.29,
-   "date": "2026-11-18",
+   "price": 498.3,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "AAPL": {
-   "price": 352.45,
-   "date": "2026-11-18",
+   "price": 349.21,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "AMD": {
-   "price": 530.14,
-   "date": "2026-11-18",
+   "price": 489.19,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "META": {
-   "price": 616.38,
-   "date": "2026-11-18",
+   "price": 596.22,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "NVDA": {
-   "price": 150.96,
-   "date": "2026-11-18",
+   "price": 145.98,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "AMZN": {
-   "price": 267.74,
-   "date": "2026-11-18",
+   "price": 257.37,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "GOOGL": {
-   "price": 282.44,
-   "date": "2026-11-18",
+   "price": 272.66,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "DIS": {
-   "price": 122.36,
-   "date": "2026-11-18",
+   "price": 120.25,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "PEP": {
-   "price": 141.87,
-   "date": "2026-11-18",
+   "price": 139.0,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "AAF": {
-   "price": 272.0,
-   "date": "2026-11-18",
+   "price": 272.4,
+   "date": "2026-11-19",
    "cur": "GBp",
    "src": "FT"
   },
   "BTC": {
-   "price": 47615.0,
-   "date": "2026-11-19",
+   "price": 47005.0,
+   "date": "2026-11-20",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1345.5,
-   "date": "2026-11-19",
+   "price": 1323.61,
+   "date": "2026-11-20",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "AVUSEQ": {
-   "price": 10.8,
-   "date": "2026-11-18",
+   "price": 10.81,
+   "date": "2026-11-19",
    "cur": "GBP",
    "src": "FT"
   },
   "MU": {
-   "price": 705.27,
-   "date": "2026-11-18",
+   "price": 690.44,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   },
   "AVGO": {
-   "price": 354.05,
-   "date": "2026-11-18",
+   "price": 346.65,
+   "date": "2026-11-19",
    "cur": "USD",
    "src": "FT"
   }
