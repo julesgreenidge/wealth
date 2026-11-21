@@ -100,7 +100,7 @@ nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav
 #go{width:100%;font-weight:600;padding:10px;border:0;border-radius:8px;background:var(--fg);color:var(--bg);cursor:pointer}
 #go:disabled{opacity:.6;cursor:wait}
 #taxyr{flex-wrap:wrap;flex-shrink:1;max-width:100%}.taxt td:first-child{white-space:normal}.taxt td.s{color:var(--muted);font-size:12.5px;white-space:normal}.taxt tr.t td{font-weight:600;border-top:1px solid var(--line)}.taxt .est{color:var(--muted);font-style:italic}.chk{margin:0;padding-left:18px;font-size:13.5px}.chk li{margin:4px 0}
-#accts td{white-space:nowrap}#accts td.an{max-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}#err{color:var(--neg);font-size:13px;min-height:20px;margin-top:10px}
+#accts td{white-space:nowrap}#accts td.an{max-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}section p.note:not(.keep){display:none}#foot{display:none}.pnotes{margin:18px 2px 6px;padding:10px 0 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}.pnotes ol{margin:0;padding-left:18px}.pnotes li{margin:3px 0}#err{color:var(--neg);font-size:13px;min-height:20px;margin-top:10px}
 .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0;opacity:0}
 [hidden]{display:none!important}
 footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
@@ -131,7 +131,7 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
   <div id="nwchart"></div><div class="legend" id="nwleg"></div></div>
  <div class="grid two">
   <div class="card"><h2>Where it is today</h2><p class="note">Investments at live prices, everything else from YNAB.</p><div id="where"></div></div>
-  <div class="card"><h2>Accounts</h2><p class="note">Balances as last updated in YNAB.</p><p class="note" id="guessnote" hidden style="color:#8a5a00"></p><div class="tw"><table id="accts"></table></div></div>
+  <div class="card"><h2>Accounts</h2><p class="note">Balances as last updated in YNAB.</p><p class="note keep" id="guessnote" hidden style="color:#8a5a00"></p><div class="tw"><table id="accts"></table></div></div>
  </div>
 </section>
 
@@ -368,7 +368,7 @@ function drawSpendYears(){
 }
 function drawJoint(){
  const F=Y.family,K=document.getElementById('jkpis'),N=document.getElementById('jnote'),T=document.getElementById('jtab');
- if(!F||!F.months||!F.months.length){K.innerHTML='';N.textContent='Joint account figures appear after the next daily YNAB update.';T.innerHTML='';return}
+ if(!F||!F.months||!F.months.length){K.innerHTML='';N.textContent='Joint account figures appear after the next daily YNAB update.';N.classList.add('keep');T.innerHTML='';return}
  const r=yearTable(F,T),t=r.tot,last=r.years[r.years.length-1],lt=t.ys[t.ys.length-1],pt=t.ys[t.ys.length-2];
  K.innerHTML='';
  if(r.has)kpi(K,r.nowL,gbp(t.now),`Last 12 complete months. ${sgn(t.now-t.prev)} (${r.pct(t.now-t.prev,t.prev)}) compared with the 12 months before (${r.prevL})`);
@@ -405,10 +405,10 @@ function drawMix(){
  document.getElementById('geonote').textContent='Fund factsheets only list their biggest countries, so a small slice of the funds is shown as "Other countries". Airtel Africa is UK-listed but does its business in Africa.'+(H.some(h=>h.fund&&!LT.funds[h.fund])?' Your Aviva pension is counted as United States from its fund name; its factsheet breakdown isn\u2019t available yet.':'');
  bars(document.getElementById('sect'),toItems(sec,{'Crypto':'--c4','Cash':'--c6'},'--c5'),tot);
  const ti=Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([k,v])=>({k,v,c:'var(--c1)'}));
- if(ti.length){bars(document.getElementById('topco'),ti,tot)}else document.getElementById('topco').innerHTML='<p class="note">No company-level data for this pot.</p>';
+ if(ti.length){bars(document.getElementById('topco'),ti,tot)}else document.getElementById('topco').innerHTML='<p class="note keep">No company-level data for this pot.</p>';
  document.getElementById('topnote').textContent='Through your funds and your own shares. Funds only publish their top 10 holdings, so these are minimums. LifeStrategy counts through its US fund only.';
  bars(document.getElementById('csize'),sizeTot?['Large','Medium','Small'].map(k=>({k,v:size[k],c:'var(--c1)'})):[],sizeTot);
- if(!sizeTot)document.getElementById('csize').innerHTML='<p class="note">Not applicable to this pot.</p>';
+ if(!sizeTot)document.getElementById('csize').innerHTML='<p class="note keep">Not applicable to this pot.</p>';
  const ft=fees.reduce((a,f)=>a+f.v*f.ocf/100,0);
  document.getElementById('fees').innerHTML=fees.length?'<tr><th>Fund</th><th class="n hm">Holdings</th><th class="n">Yearly charge</th><th class="n">Per year</th></tr>'+fees.map(f=>`<tr><td>${f.n} <span class="note">${f.pot}</span></td><td class="n hm">${f.n_h==null?'-':f.n_h.toLocaleString('en-GB')+(f.n_h<20?' funds':'')}</td><td class="n" title="${f.note||''}">${f.ocf.toFixed(2)}%${f.note?'*':''}</td><td class="n">${gbp(f.v*f.ocf/100)}</td></tr>`).join('')+`<tr class="grp"><td>Total</td><td class="hm"></td><td class="n">${(ft/fees.reduce((a,f)=>a+f.v,0)*100).toFixed(2)}%</td><td class="n">${gbp(ft)}</td></tr>`:'';
  document.getElementById('feenote').textContent=fees.length?'Fund charges (ongoing charges figure) taken from the fund each year. Your ii and Trading 212 platform fees are not included.'+(fees.some(f=>f.note)?' *Your plan\u2019s own charge, from your Aviva account.':''):'No funds in this pot.';
@@ -637,6 +637,7 @@ function drawFC(){
  /* table */
  const rows=mid.filter(p=>p.age%5===0||p===mid[0]||p===end);
  document.getElementById('fctab').innerHTML='<tr><th>Age</th><th class="n">Pension</th><th class="n hm">ISAs</th><th class="n hm">Crypto</th>'+(FC.cash==='yes'?'<th class="n hm">Cash</th>':'')+'<th class="n">Total</th></tr>'+rows.map(p=>`<tr><td>${p.age}</td><td class="n">${gbp(p.pen)}</td><td class="n hm">${gbp(p.isa)}</td><td class="n hm">${gbp(p.cry)}</td>${FC.cash==='yes'?`<td class="n hm">${gbp(p.cash)}</td>`:''}<td class="n"><b style="font-weight:600">${gbp(p.total)}</b></td></tr>`).join('');
+ fcNotes();
 }
 fcInputs();
 {const n=document.getElementById('fcrules'),ck=RULES.checked?new Date(RULES.checked).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'';
@@ -644,6 +645,19 @@ fcInputs();
 if(matchMedia('(max-width:1099px)').matches)document.getElementById('fcside').open=false;
 
 document.getElementById('foot').innerHTML=D.notes.map(n=>'<div>'+n+'</div>').join('');
+/* notes at the bottom of each tab */
+function pnotes(t,arr){const sec=document.getElementById(t);let d=sec.querySelector(':scope>.pnotes');if(!d){d=el('div',{class:'pnotes'});sec.appendChild(d)}
+ arr=arr.filter(Boolean);d.hidden=!arr.length;d.innerHTML='<ol>'+arr.map(x=>'<li>'+x+'</li>').join('')+'</ol>'}
+function drawNotes(){
+ pnotes('overview',['Month-end balances from YNAB; today’s figure uses live prices for investments. Junior ISAs left out.','YNAB updates daily.']);
+ pnotes('investing',['“Paid” is the average cost of the units you hold.','Prices update every weekday evening. Hover over a price to see its date.','Pension allowance: salary sacrifice and employer payments aren’t counted.','Aviva units are estimated until your first statement.']);
+ pnotes('hist',['Average yearly price change. Full bar = 50% a year.','Price only: shares exclude dividends; funds include reinvested income.']);
+ pnotes('mix',['Funds only publish their top 10 holdings, so company figures are minimums.','Fund charges are yearly; platform fees aren’t included. Aviva’s is your plan’s own charge.','Fund make-up updates monthly from factsheets.']);
+ pnotes('spending',['Spending excludes transfers to savings and investments.','Click a group to see its categories.']);
+ pnotes('joint',['From the Family Budget in YNAB.']);
+}
+function fcNotes(){const clip=document.getElementById('fcclip').textContent;
+ pnotes('fc',['In today’s money, after inflation and fund charges. Shaded band = growth 2% a year lower and higher.','Your assumptions are saved on this device. Pension lump sums: include any tax relief and employer top-up.',document.getElementById('fcrules').innerHTML,clip])}
 /* tax */
 let taxSel=null;
 function drawTax(){
@@ -669,10 +683,11 @@ function drawTax(){
   (p.extra||[]).forEach(([n,a])=>o+=`<tr><td>${n}</td><td class="n">${g2(a)}</td></tr>`);
   if(p.cgt&&(p.cgt.note||p.cgt.due))o+=`<tr><td>Capital gains${p.cgt.note?`<br><span class="note">${p.cgt.note}</span>`:''}</td><td class="n">${p.cgt.due!=null?'Tax '+g2(p.cgt.due):''}</td></tr>`;
   B.innerHTML=`<div class="grid two" style="margin-top:12px">${card('Income','',tab(r))}${card('Reliefs and gains','',tab(o))}</div>`;
+  pnotes('tax',['From '+p.src+'. Check against your own copy.',p.result_note]);
   return}
  /* current year */
  const n=T.now,R=RULES.income_tax,pa=R.pa,band=R.basic_to-pa;
- const yi=((D.ynab||{}).interest||{})[n.y],INT=yi?{a:yi.total,s:'YNAB: tagged "Taxed interest", so far this tax year ('+Object.keys(yi.by).join(', ')+')',act:true}:{...n.interest,act:false};
+ const yi=((D.ynab||{}).interest||{})[n.y],INT=yi?{a:yi.total,s:'YNAB, so far',act:true}:{...n.interest,act:false};
  const empl=n.income.reduce((a,x)=>a+x.a,0),actual=n.income.filter(x=>x.act).reduce((a,x)=>a+x.a,0);
  const pens=n.pension.reduce((a,x)=>a+x[2],0),gross=pens*1.25,yc=((D.ynab||{}).charity||{})[n.y],ga=yc?yc.total:0,gaG=ga*1.25;
  const nonSav=empl+(n.staking.a||0),taxable=Math.max(0,nonSav-pa),bandX=band+gross+gaG;
@@ -688,27 +703,28 @@ function drawTax(){
  if(nx)kpi(K,'Next payment',nx[2]!=null?gbp(nx[2],2):'To be worked out',`${fdate(nx[0])}: ${nx[1]}`);
  let r='<tr><th>Income</th><th class="n">Amount</th><th>Source</th></tr>'+n.income.map(x=>`<tr><td>${x.n}</td><td class="n${x.act?'':' est'}">${x.memo?'Tax-free':gbp(x.a,2)}</td><td class="s">${x.s}</td></tr>`).join('');
  r+=`<tr><td>Savings interest</td><td class="n${INT.act?'':' est'}">${gbp(INT.a)}</td><td class="s">${INT.s}</td></tr>`;
- r+=`<tr><td>Dividends</td><td class="n">${gbp(n.dividends.a,2)}</td><td class="s">${n.dividends.s}; under the £500 allowance</td></tr>`;
+ r+=`<tr><td>Dividends</td><td class="n">${gbp(n.dividends.a,2)}</td><td class="s">${n.dividends.s}</td></tr>`;
  r+=`<tr><td>Crypto staking rewards</td><td class="n est">-</td><td class="s">${n.staking.s}</td></tr>`;
  r+=`<tr class="t"><td>Total (estimate)</td><td class="n">${gbp(nonSav+INT.a+n.dividends.a)}</td><td></td></tr>`;
  let pr='<tr><th>Date</th><th>Paid into</th><th class="n">You paid</th><th class="n">With basic-rate relief</th></tr>'+n.pension.map(([d,w,a])=>`<tr><td>${fdate(d)}</td><td>${w}</td><td class="n">${gbp(a,2)}</td><td class="n">${gbp(a*1.25,2)}</td></tr>`).join('');
  pr+=`<tr class="t"><td colspan="2">Total pension payments</td><td class="n">${gbp(pens,2)}</td><td class="n">${gbp(gross,2)}</td></tr>`;
- pr+=`<tr><td colspan="2">Gift Aid donations <span class="note">tagged "Charity" in YNAB${yc?', '+yc.n+' payment'+(yc.n===1?'':'s'):', none yet'}</span></td><td class="n">${gbp(ga,2)}</td><td class="n">${gbp(gaG,2)}</td></tr>`;
+ pr+=`<tr><td colspan="2">Gift Aid donations</td><td class="n">${gbp(ga,2)}</td><td class="n">${gbp(gaG,2)}</td></tr>`;
  const pnote=`On your return, enter ${gbp(gross,2)} for pension payments and ${gbp(ga,2)} for Gift Aid (the amount you gave; HMRC adds the 25%). Together they give about ${gbp((gross+gaG)*.2,2)} of extra higher-rate relief. Salary sacrifice isn't included here, as it already reduces your pay.`+(over>0?` To bring your income down to ${gbp(R.basic_to)}, you'd need to pay in about ${gbp(over/1.25)} more before 5 April 2027 (${gbp(over)} with relief). That's information, not advice.`:'');
- let gr='<tr><th>Sale</th><th class="n">Sales</th><th class="n">Proceeds</th><th class="n">Gain</th></tr>'+n.gains.map(x=>`<tr><td>${x.n}<br><span class="note">${x.s}</span></td><td class="n">${x.disposals}</td><td class="n">${gbp(x.proceeds,2)}</td><td class="n">${x.gain==null?'Tiny':gbp(x.gain,2)}</td></tr>`).join('');
+ let gr='<tr><th>Sale</th><th class="n">Sales</th><th class="n">Proceeds</th><th class="n">Gain</th></tr>'+n.gains.map(x=>`<tr><td>${x.n}</td><td class="n">${x.disposals}</td><td class="n">${gbp(x.proceeds,2)}</td><td class="n">${x.gain==null?'Tiny':gbp(x.gain,2)}</td></tr>`).join('');
  const gt=n.gains.reduce((a,x)=>a+(x.gain||0),0),aea=(RULES.cgt||{}).aea||3000;
  gr+=`<tr class="t"><td>Total gains</td><td></td><td class="n">${gbp(n.gains.reduce((a,x)=>a+x.proceeds,0),2)}</td><td class="n">${gbp(gt,2)}</td></tr>`;
  const gnote=`The tax-free allowance is ${gbp(aea)}. You have ${gbp(Math.max(0,aea-gt))} of it left. Trading 212 works gains out on average cost; HMRC's rules also match shares bought back within 30 days, which could change the figure slightly. I believe you only need to report gains if they're over the allowance or your total sale proceeds are over £50,000, but check HMRC's guidance.`;
  const c=n.code;let cr=c.rows.map(([k,a])=>`<tr><td>${k}</td><td class="n">${a<0?'−'+gbp(-a):gbp(a)}</td></tr>`).join('');
  cr+=`<tr class="t"><td>Tax-free amount</td><td class="n">${gbp(c.rows.reduce((a,x)=>a+x[1],0))}</td></tr>`;
- const py='<tr><th>Due</th><th>What</th><th class="n">Amount</th></tr>'+n.payments.map(([d,w,a,nt])=>`<tr><td>${fdate(d)}</td><td>${w}<br><span class="note">${nt}</span></td><td class="n">${a==null?'-':gbp(a,2)}</td></tr>`).join('');
+ const py='<tr><th>Due</th><th>What</th><th class="n">Amount</th></tr>'+n.payments.map(([d,w,a,nt])=>`<tr><td>${fdate(d)}</td><td>${w}</td><td class="n">${a==null?'-':gbp(a,2)}</td></tr>`).join('');
  const chk=n.checks||[];
  B.innerHTML=card('Income','Estimates are in grey italics.',tab(r))
   +`<div class="grid two" style="margin-top:12px">${card('Pension payments and Gift Aid','Personal payments into your SIPP (ii adds basic-rate relief) and Gift Aid donations this tax year.',tab(pr)+`<p class="note" style="margin:10px 0 0">${pnote}</p>`)}${card(`Tax code: ${c.code}`,`Since ${fdate(c.from)}. Previously ${c.prev}. ${c.note}`,tab(cr))}</div>`
   +`<div class="grid two" style="margin-top:12px">${card('Capital gains','Sales of shares and crypto outside ISAs and pensions.',tab(gr)+`<p class="note" style="margin:10px 0 0">${gnote}</p>`)}${card('Payments and deadlines','',tab(py))}</div>`
-  +`<div class="card" style="margin-top:12px"><h2>To check</h2><ul class="chk">${chk.map(x=>`<li>${x}</li>`).join('')}</ul><p class="note" style="margin:10px 0 0">Income tax estimate: ${gbp(basic)} at ${R.rates[0]}% and ${gbp(higher)} at ${R.rates[1]}% after your ${gbp(pa)} personal allowance, plus tax on savings interest over your allowance. National Insurance isn't included (it isn't on your return).</p></div>`;
+;
+ pnotes('tax',['Estimates are in grey italics. A guide, not tax advice.',`On your return, enter ${gbp(gross,2)} for pension payments and ${gbp(ga,2)} for Gift Aid.`,over>0?`To get under ${gbp(R.basic_to)}, pay about ${gbp(over/1.25)} more into your pension before 5 April (${gbp(over)} with relief).`:'',`Capital gains: ${gbp(Math.max(0,aea-gt))} of the ${gbp(aea)} allowance left.`,`Tax code ${c.code} since ${fdate(c.from)} (was ${c.prev}).`,...chk])
 }
-function draw(){drawNW();drawCF();drawSpendYears();drawJoint();drawMix();drawHist();drawFC();drawTax()}
+function draw(){drawNW();drawCF();drawSpendYears();drawJoint();drawMix();drawHist();drawFC();drawTax();drawNotes()}
 draw();let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(draw,150)});
 };
 </script>
@@ -733,7 +749,7 @@ async function openWith(wk){
   let newY=false;if(!sessionStorage.getItem('wealth-skip-ynab'))try{const ye=await get('ynab.enc');const yk=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},priv,ub(ye.k)),'AES-GCM',false,['decrypt']);D.ynab=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(ye.iv)},yk,ub(ye.ct))));newY=true}catch(e){}
   document.getElementById('login').hidden=true;document.getElementById('app').hidden=false;
   const prob=sessionStorage.getItem('wealth-problem');
-  if(prob){const b=document.createElement('div');b.className='card';b.style.cssText='margin-bottom:12px;border-color:var(--neg)';b.innerHTML='<b>The automatic YNAB update could not be shown, so this page is using your last export instead.</b><p class="note" style="margin:6px 0 0">Send Claude this line (it contains no figures): <code style="user-select:all">'+prob.replace(/</g,'&lt;')+'</code></p>';document.getElementById('app').prepend(b)}
+  if(prob){const b=document.createElement('div');b.className='card';b.style.cssText='margin-bottom:12px;border-color:var(--neg)';b.innerHTML='<b>The automatic YNAB update could not be shown, so this page is using your last export instead.</b><p class="note keep" style="margin:6px 0 0">Send Claude this line (it contains no figures): <code style="user-select:all">'+prob.replace(/</g,'&lt;')+'</code></p>';document.getElementById('app').prepend(b)}
   try{window.startApp(D)}catch(e){
     if(newY){const Y=D.ynab||{};const L=o=>o?Object.keys(o).length:0;
       const info=[e.message,'months='+(Y.months||[]).length+' '+((Y.months||[])[0]||'')+'..'+((Y.months||[]).slice(-1)[0]||''),'nw='+(Y.nw||[]).length,'types='+Object.keys(Y.bytype||{}).join('|'),'cf='+Object.keys(Y.cf||{}).map(k=>k+':'+(Y.cf[k]||[]).length).join(','),'groups='+L(Y.groups),'cats='+L(Y.cats),'accounts='+(Y.accounts||[]).length,'cutoff='+Y.cutoff].join(' ; ');
