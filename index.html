@@ -661,11 +661,18 @@ function drawSeries(k,row){
  row.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.r===serRange));
  const C=row.querySelector('.sc-c'),Hd=row.querySelector('.sc-ch'),S=(SER||{})[k]||{};Hd.innerHTML='';
  const pence=k==='AAF',fmt=v=>pence?v.toFixed(1)+'p':'£'+v.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
- let pts=[];const today=new Date(),back=d=>{const x=new Date(today);x.setDate(x.getDate()-d);return x.toISOString().slice(0,10)};
- if(serRange==='1d')pts=S.h||[];
- else if(['7d','1m','6m','1y'].includes(serRange)){const days={'7d':7,'1m':31,'6m':183,'1y':366}[serRange],c=back(days);pts=(S.d||[]).filter(p=>p[0]>=c)}
- else{const c=back(serRange==='5y'?1827:3653);pts=(S.w||[]).filter(p=>p[0]>=c)}
- if(pts.length<2){C.innerHTML=`<p class="note keep">${serRange==='1d'&&FUNDK.includes(k)?'Funds are priced once a day, so there’s no hourly chart.':'No prices for this period yet.'}</p>`;return}
+ let pts=[];const iso=d=>d.toISOString().slice(0,10),addD=(x,n)=>{const d=new Date(x+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return iso(d)},todayS=iso(new Date()),nowT=new Date().toISOString().slice(0,16);
+ const all=[...(S.w||[]),...(S.d||[])].sort((p,q)=>p[0]<q[0]?-1:1);
+ const walk=(arr,times)=>{let v=null,j=0;const out=[];for(const t of times){while(j<arr.length&&arr[j][0]<=t){v=arr[j][1];j++}if(v!=null)out.push([t,v])}return out};
+ if(serRange==='1d'){const H=S.h||[];
+  if(['BTC','ETH'].includes(k)){if(H.length){const end=new Date(H[H.length-1][0]+':00Z'),ts=[];for(let i=23;i>=0;i--)ts.push(new Date(end-i*3600e3).toISOString().slice(0,16));pts=walk([...all.map(p=>[p[0]+'T00:00',p[1]]),...H].sort((p,q)=>p[0]<q[0]?-1:1),ts)}}
+  else{const day=H.length?H[H.length-1][0].slice(0,10):(S.d&&S.d.length?S.d[S.d.length-1][0]:null);
+   if(day){const ts=[];for(let h=0;h<24;h++){const t=day+'T'+String(h).padStart(2,'0')+':00';if(t<=nowT)ts.push(t)}
+    const base=FUNDK.includes(k)?all.filter(p=>p[0]<=day).map(p=>[p[0]==day?day+'T00:00':p[0]+'T00:00',p[1]]):[...all.filter(p=>p[0]<day).map(p=>[p[0]+'T00:00',p[1]]),...H];
+    pts=walk(base.sort((p,q)=>p[0]<q[0]?-1:1),ts)}}}
+ else if(['7d','1m','6m','1y'].includes(serRange)){const n={'7d':7,'1m':31,'6m':183,'1y':366}[serRange],ts=[];for(let i=n;i>=0;i--)ts.push(addD(todayS,-i));pts=walk(all,ts)}
+ else{const n=serRange==='5y'?261:522,dow=new Date(todayS+'T00:00:00Z').getUTCDay(),fri=addD(todayS,-((dow+2)%7)),ts=[];for(let i=n;i>=0;i--)ts.push(addD(fri,-7*i));if(fri<todayS)ts.push(todayS);pts=walk(all,ts)}
+ if(pts.length<2){C.innerHTML='<p class="note keep">No prices for this period yet.</p>';return}
  const v=pts.map(p=>p[1]),a=v[0],z=v[v.length-1],ch=z/a-1,lo=Math.min(...v),hi=Math.max(...v),pad=(hi-lo)*.08||hi*.01;
  const first=serRange==='1d'?ukt(pts[0][0]):fdate(pts[0][0]),last=serRange==='1d'?ukt(pts[pts.length-1][0]):fdate(pts[pts.length-1][0]);
  Hd.innerHTML=`<b class="${ch>=0?'pos':'neg'}">${ch>=0?'+':'−'}${(Math.abs(ch)*100).toFixed(1)}%</b> <span class="note">${fmt(a)} → ${fmt(z)}${serRange==='1d'?(['BTC','ETH'].includes(k)?' · last 24 hours':' · '+fdate(pts[0][0].slice(0,10))):''}</span>`;
@@ -689,7 +696,7 @@ function pnotes(t,arr){const sec=document.getElementById(t);let d=sec.querySelec
 function drawNotes(){
  pnotes('overview',['Month-end balances from YNAB; today’s figure uses live prices for investments. Junior ISAs left out.','YNAB updates daily.']);
  pnotes('investing',['“Paid” is the average cost of the units you hold.','Prices update every weekday evening. Hover over a price to see its date.','Pension allowance: salary sacrifice and employer payments aren’t counted.','Aviva units are estimated until your first statement.']);
- pnotes('hist',['Click a holding to see its price chart. Hourly prices are for the latest trading day; funds are priced once a day.','Average yearly price change. Full bar = 50% a year.','Price only: shares exclude dividends; funds include reinvested income.']);
+ pnotes('hist',['Click a holding to see its price chart. The 1 day chart shows the latest trading day (crypto: the last 24 hours); funds are priced once a day. When there’s no new price, the chart carries the last one forward.','Average yearly price change. Full bar = 50% a year.','Price only: shares exclude dividends; funds include reinvested income.']);
  pnotes('mix',['Funds only publish their top 10 holdings, so company figures are minimums.','Fund charges are yearly; platform fees aren’t included. Aviva’s is your plan’s own charge.','Fund make-up updates monthly from factsheets.']);
  pnotes('spending',['Spending excludes transfers to savings and investments.','Click a group to see its categories.']);
  pnotes('joint',['From the Family Budget in YNAB.']);
