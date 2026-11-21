@@ -9,7 +9,7 @@
 <style>
 :root{--bg:#f6f5f1;--panel:#fff;--fg:#1d1d1b;--muted:#6b6a65;--line:#e4e2db;--accent:#2a6fdb;--pos:#17855a;--neg:#c2413b;
 --c1:#2a6fdb;--c2:#e07a2f;--c3:#c24a87;--c4:#7b5cd6;--c5:#1aa38a;--c6:#9a9890;--c7:#d4a017;--c8:#5f8f3a;--c9:#8c6d4f}
-@media (prefers-color-scheme:dark){:root{--g1:#8aa8e0;--g2:#5fbf9a;--g3:#e0aa55;--g4:#b096e0;--bg:#161615;--panel:#201f1d;--fg:#f0efe9;--muted:#a4a29a;--line:#34332f;--accent:#6aa0ff;--pos:#3fbf86;--neg:#ef7a72;
+@media (prefers-color-scheme:dark){:root{--g1:#8aa8e0;--g2:#5fbf9a;--g3:#e0aa55;--g4:#b096e0;--g5:#e48a7d;--bg:#161615;--panel:#201f1d;--fg:#f0efe9;--muted:#a4a29a;--line:#34332f;--accent:#6aa0ff;--pos:#3fbf86;--neg:#ef7a72;
 --c1:#5b93f0;--c2:#f0924a;--c3:#e070a8;--c4:#9a85ec;--c5:#35c3a6;--c6:#8a887f;--c7:#e6b93a;--c8:#7fb356;--c9:#b8977a}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
@@ -21,7 +21,7 @@ button{font:inherit;color:inherit}
 .lock{background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--muted);font-size:13px}
 nav{display:flex;gap:4px;margin:20px 0 16px;border-bottom:1px solid var(--line)}
 nav button{background:none;border:0;padding:10px 14px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;font-weight:500}
-nav button.on{color:var(--fg);border-color:var(--fg)}:root{--g1:#5b7fbf;--g2:#3f9a7a;--g3:#c0892e;--g4:#8a6bbf}nav button.g1{--g:var(--g1)}nav button.g2{--g:var(--g2)}nav button.g3{--g:var(--g3)}nav button.g4{--g:var(--g4)}nav button{border-bottom:3px solid color-mix(in srgb,var(--g,transparent) 70%,transparent)}nav button:hover{border-bottom-color:var(--g)}nav button.on{border-bottom-color:var(--g,var(--fg));background:color-mix(in srgb,var(--g) 12%,transparent);border-radius:6px 6px 0 0}nav button.gs{margin-left:12px}#overview .card{border-top:3px solid color-mix(in srgb,var(--g1) 40%,var(--line))}#investing .card,#hist .card,#mix .card,#fc .card{border-top:3px solid color-mix(in srgb,var(--g2) 40%,var(--line))}#spending .card,#joint .card{border-top:3px solid color-mix(in srgb,var(--g3) 40%,var(--line))}#tax .card{border-top:3px solid color-mix(in srgb,var(--g4) 40%,var(--line))}
+nav button.on{color:var(--fg);border-color:var(--fg)}:root{--g1:#5b7fbf;--g2:#3f9a7a;--g3:#c0892e;--g4:#8a6bbf;--g5:#c4665a}nav button.g1{--g:var(--g1)}nav button.g2{--g:var(--g2)}nav button.g3{--g:var(--g3)}nav button.g4{--g:var(--g4)}nav button.g5{--g:var(--g5)}nav button{border-bottom:3px solid color-mix(in srgb,var(--g,transparent) 70%,transparent)}nav button:hover{border-bottom-color:var(--g)}nav button.on{border-bottom-color:var(--g,var(--fg));background:color-mix(in srgb,var(--g) 12%,transparent);border-radius:6px 6px 0 0}nav button.gs{margin-left:12px}#overview .card{border-top:3px solid color-mix(in srgb,var(--g1) 40%,var(--line))}#fc .card{border-top:3px solid color-mix(in srgb,var(--g5) 40%,var(--line))}#investing .card,#hist .card,#mix .card{border-top:3px solid color-mix(in srgb,var(--g2) 40%,var(--line))}#spending .card,#joint .card{border-top:3px solid color-mix(in srgb,var(--g3) 40%,var(--line))}#tax .card{border-top:3px solid color-mix(in srgb,var(--g4) 40%,var(--line))}
 .grid{display:grid;gap:12px}
 .kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
 .two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
@@ -100,7 +100,7 @@ nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav
 #go{width:100%;font-weight:600;padding:10px;border:0;border-radius:8px;background:var(--fg);color:var(--bg);cursor:pointer}
 #go:disabled{opacity:.6;cursor:wait}
 #taxyr{flex-wrap:wrap;flex-shrink:1;max-width:100%}.taxt td:first-child{white-space:normal}.taxt td.s{color:var(--muted);font-size:12.5px;white-space:normal}.taxt tr.t td{font-weight:600;border-top:1px solid var(--line)}.taxt .est{color:var(--muted);font-style:italic}.chk{margin:0;padding-left:18px;font-size:13.5px}.chk li{margin:4px 0}
-#accts td{white-space:nowrap}#accts td.an{max-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}section p.note:not(.keep){display:none}#foot{display:none}.pnotes{margin:18px 2px 6px;padding:10px 0 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}.pnotes ol{margin:0;padding-left:18px}.pnotes li{margin:3px 0}#histtab tr.hr{cursor:pointer}#histtab tr.hr:hover td{background:color-mix(in srgb,var(--g2) 8%,transparent)}#histtab tr.hr.open td{background:color-mix(in srgb,var(--g2) 12%,transparent)}#histtab tr.hd>td{padding:10px 8px 14px;white-space:normal}.sc-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}.sc-ch{font-size:14px}.sc{max-width:calc(100vw - 48px)}.sc .seg{display:flex;flex-wrap:wrap;max-width:100%}.sc svg{width:100%;height:auto;display:block}#err{color:var(--neg);font-size:13px;min-height:20px;margin-top:10px}
+#accts td{white-space:nowrap}#accts td.an{max-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}section p.note:not(.keep){display:none}#foot{display:none}.pnotes{margin:18px 2px 6px;padding:10px 0 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}.pnotes ol{margin:0;padding-left:18px}.pnotes li{margin:3px 0}#histtab tr.hr{cursor:pointer}#histtab tr.hr:hover td{background:color-mix(in srgb,var(--g2) 8%,transparent)}#histtab tr.hr.open td{background:color-mix(in srgb,var(--g2) 12%,transparent)}#histtab tr.hd>td{padding:10px 8px 14px;white-space:normal}.sc-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}.sc-ch{font-size:14px}.sc{max-width:calc(100vw - 48px)}.sc .seg{display:flex;flex-wrap:wrap;max-width:100%}.sc svg{width:100%;height:auto;display:block}.ytab .sep{border-left:1px solid var(--muted)}#err{color:var(--neg);font-size:13px;min-height:20px;margin-top:10px}
 .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0;opacity:0}
 [hidden]{display:none!important}
 footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
@@ -122,7 +122,7 @@ footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
 </div>
 <div class="wrap" id="app" hidden>
 <header><div><h1>Wealth</h1><div class="sub" id="asof"></div><div class="stale" id="stale" hidden></div></div><button class="lock" id="lock" type="button">Lock</button></header>
-<nav><button class="on g1" data-t="overview">Net worth</button><button class="g2 gs" data-t="investing">Investments</button><button class="g2" data-t="hist">Performance</button><button class="g2" data-t="mix">Breakdown</button><button class="g2" data-t="fc">Forecast</button><button class="g3 gs" data-t="spending">Spending</button><button class="g3" data-t="joint">Joint Spending</button><button class="g4 gs" data-t="tax">Tax</button></nav>
+<nav><button class="on g1" data-t="overview">Net worth</button><button class="g2 gs" data-t="investing">Investments</button><button class="g2" data-t="hist">Performance</button><button class="g2" data-t="mix">Breakdown</button><button class="g5 gs" data-t="fc">Forecast</button><button class="g3 gs" data-t="spending">Spending</button><button class="g3" data-t="joint">Joint Spending</button><button class="g4 gs" data-t="tax">Tax</button></nav>
 
 <section id="overview" class="on">
  <div class="grid kpis" id="kpis"></div>
@@ -206,8 +206,8 @@ const Y=D.ynab,H=D.hold.holdings;
 const COVERED=new Set(D.covered||[]);COVERED.test=n=>COVERED.has(n);
 const EXTRA=(Y.accounts||[]).filter(a=>['Pensions','Stocks & shares ISAs'].includes(a.type)&&!COVERED.test(a.name)&&Math.abs(a.balance)>0.5);
 EXTRA.forEach(a=>H.push({pot:a.type==='Pensions'?'Pension':'Funds ISA',name:a.name,kind:'Fund (value from YNAB)',units:null,value:a.balance,ynab_date:a.updated,fund:/Aviva/i.test(a.name)?'Aviva Pensions US Equity S6':null}));
-const gbp=(v,dp=0)=>(v<0?'−':'')+'£'+Math.abs(v).toLocaleString('en-GB',{minimumFractionDigits:dp,maximumFractionDigits:dp});
-const sgn=v=>(v>=0?'+':'−')+'£'+Math.abs(Math.round(v)).toLocaleString('en-GB');
+const gbp=(v,dp=0)=>(v<0?'-':'')+'£'+Math.abs(v).toLocaleString('en-GB',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+const sgn=v=>(v>=0?'+':'-')+'£'+Math.abs(Math.round(v)).toLocaleString('en-GB');
 const pct=(v,dp=1)=>(v*100).toFixed(dp)+'%';
 const mname=m=>{if(!m)return '';const[y,mo]=m.split('-');return new Date(+y,+mo-1,1).toLocaleDateString('en-GB',{month:'short',year:'numeric'})};
 const fdate=s=>new Date(s+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
@@ -304,10 +304,10 @@ Object.keys(PC).forEach(p=>{const rows=H.filter(h=>h.pot===p).sort((a,b)=>b.valu
  {const known=rows.filter(h=>h.cost!=null),cashR=rows.filter(h=>h.kind==='Cash'),unk=rows.filter(h=>h.cost==null&&h.kind!=='Cash');
   const cashV=cashR.reduce((a,h)=>a+h.value,0),cost=known.reduce((a,h)=>a+h.cost,0),paid=cost+cashV,gain=known.reduce((a,h)=>a+h.value-h.cost,0);
   const note=unk.length?` title="Excludes ${unk.map(h=>h.name).join(', ')} (${gbp(unk.reduce((a,h)=>a+h.value,0))}), whose cost isn't known"`:'';
-  hh+=`<tr class="grp"><td>${p}</td><td class="hm"></td><td></td><td class="n">${gbp(potVal[p])}</td><td class="n hm"${note}>${gbp(paid)}${unk.length?'*':''}</td><td class="n ${gain>=0?'pos':'neg'}"${note}>${sgn(gain)}<span class="hm"> (${gain>=0?'+':'−'}${cost?pct(Math.abs(gain/cost)):'0.0%'})</span></td><td class="hm"></td></tr>`;}
+  hh+=`<tr class="grp"><td>${p}</td><td class="hm"></td><td></td><td class="n">${gbp(potVal[p])}</td><td class="n hm"${note}>${gbp(paid)}${unk.length?'*':''}</td><td class="n ${gain>=0?'pos':'neg'}"${note}>${sgn(gain)}<span class="hm"> (${gain>=0?'+':'-'}${cost?pct(Math.abs(gain/cost)):'0.0%'})</span></td><td class="hm"></td></tr>`;}
  rows.forEach(h=>{const g=h.cost!=null?h.value-h.cost:null;
   const price=h.price==null?'':h.cur==='p'?h.price.toFixed(1)+'p':h.cur==='$'?'$'+h.price.toFixed(2):'£'+h.price.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
-  hh+=`<tr><td>${h.name}${h.ynab_date?' <span class="note">YNAB balance</span>':''}${h.ticker?` <span class="note">${h.ticker}</span>`:''}</td><td class="n hm">${h.units==null?'':(+h.units).toLocaleString('en-GB',{maximumFractionDigits:4})}</td><td class="n" title="${h.price_date?'Price on '+fdate(h.price_date):''}">${price}</td><td class="n">${gbp(h.value)}</td><td class="n hm">${h.cost!=null?gbp(h.cost):''}</td><td class="n ${g==null?'':g>=0?'pos':'neg'}">${g==null?'':sgn(g)+'<span class="hm"> ('+(g>=0?'+':'−')+pct(Math.abs(g/h.cost))+')</span>'}</td><td class="n hm">${pct(h.value/potVal[p])}</td></tr>`});
+  hh+=`<tr><td>${h.name}${h.ynab_date?' <span class="note">YNAB balance</span>':''}${h.ticker?` <span class="note">${h.ticker}</span>`:''}</td><td class="n hm">${h.units==null?'':(+h.units).toLocaleString('en-GB',{maximumFractionDigits:4})}</td><td class="n" title="${h.price_date?'Price on '+fdate(h.price_date):''}">${price}</td><td class="n">${gbp(h.value)}</td><td class="n hm">${h.cost!=null?gbp(h.cost):''}</td><td class="n ${g==null?'':g>=0?'pos':'neg'}">${g==null?'':sgn(g)+'<span class="hm"> ('+(g>=0?'+':'-')+pct(Math.abs(g/h.cost))+')</span>'}</td><td class="n hm">${pct(h.value/potVal[p])}</td></tr>`});
 });
 HT.innerHTML=hh;
 document.getElementById('hnote').textContent=`US shares converted at $${(+D.hold.fx[0]).toFixed(4)} to the pound (${D.hold.fx[2]}, ${fdate(D.hold.fx[1])}). "Paid" is the average cost of the units you hold, from your Vanguard, ii and Trading 212 records and Koinly for crypto (to 14 Nov 2026). For funds you switched into, the cost is what the switch bought them for.`;
@@ -321,8 +321,9 @@ const SK=document.getElementById('skpis');const iNow=last(0);
 const avg12=avg(Y.cf.spending,iLastFull,12), inc12=avg(Y.cf.income,iLastFull,12);
 kpi(SK,`${mname(Y.months[iNow])} so far`,gbp(Y.cf.spending[iNow]),`Spent to ${fdate(Y.cutoff)}`);
 kpi(SK,`${mname(Y.months[iLastFull])}`,gbp(Y.cf.spending[iLastFull]),`<span class="${Y.cf.spending[iLastFull]<=avg12?'pos':'neg'}">${sgn(Y.cf.spending[iLastFull]-avg12)}</span> on your 12-month average`);
-kpi(SK,'Average month (last 12)',gbp(avg12),`${mname(Y.months[iLastFull-11])} to ${mname(Y.months[iLastFull])}`);
-kpi(SK,'Saved in the last 12 months',gbp(inc12*12-avg12*12),`Income ${gbp(inc12*12)} less spending`);
+const avgP=avg(Y.cf.spending,iLastFull-12,12),incP=avg(Y.cf.income,iLastFull-12,12),vs12=(a,b)=>`${sgn(a-b)} (${b>0.5?(a>=b?'+':'-')+Math.abs(Math.round((a-b)/b*100))+'%':'-'}) versus previous 12 months`;
+kpi(SK,'Average month (last 12)',gbp(avg12),vs12(avg12,avgP));
+kpi(SK,'Saved in the last 12 months',gbp(inc12*12-avg12*12),vs12(inc12*12-avg12*12,incP*12-avgP*12));
 function drawCF(){
  const box=document.getElementById('cfchart');const W=Math.max(320,box.clientWidth||700),Hh=W<500?200:240,P={l:46,r:6,t:10,b:24};
  const idx=[];for(let i=Math.max(0,iNow-12);i<=iNow;i++)idx.push(i);
@@ -347,13 +348,13 @@ function yearTable(F,T){
  const ml=m=>new Date(+m.slice(0,4),+m.slice(5,7)-1,1).toLocaleDateString('en-GB',{month:'short',year:'numeric'});
  const nowL=has?`${ml(M[L-11])} to ${ml(M[L])}`:'',prevL=has?`${ml(M[L-23])} to ${ml(M[L-12])}`:'';
  const row=a=>({ys:years.map(y=>sumIf(a,inYear(y))),ytd:sumIf(a,inYear(cy)),now:has?sumIf(a,win(0)):0,prev:has?sumIf(a,win(1)):0});
- const pct=(d,b)=>b>0.5?((d>=0?'+':'−')+Math.abs(Math.round(d/b*100))+'%'):'-';
+ const pct=(d,b)=>b>0.5?((d>=0?'+':'-')+Math.abs(Math.round(d/b*100))+'%'):'-';
  const ch=(a,b)=>{const d=a-b,c=d>0.5?'neg':d<-0.5?'pos':'';return `<td class="n ${c}">${Math.abs(d)<0.5?'-':sgn(d)}</td><td class="n ${c}">${pct(d,b)}</td>`};
- const cells=r=>r.ys.map(v=>`<td class="n">${Math.abs(v)<0.5?'-':gbp(v)}</td>`).join('')+`<td class="n">${Math.abs(r.ytd)<0.5?'-':gbp(r.ytd)}</td>`+(has?`<td class="n">${Math.abs(r.prev)<0.5?'-':gbp(r.prev)}</td><td class="n">${Math.abs(r.now)<0.5?'-':gbp(r.now)}</td>`+ch(r.now,r.prev):'');
+ const cells=r=>r.ys.map(v=>`<td class="n">${Math.abs(v)<0.5?'-':gbp(v)}</td>`).join('')+`<td class="n">${Math.abs(r.ytd)<0.5?'-':gbp(r.ytd)}</td>`+(has?`<td class="n sep">${Math.abs(r.prev)<0.5?'-':gbp(r.prev)}</td><td class="n">${Math.abs(r.now)<0.5?'-':gbp(r.now)}</td>`+ch(r.now,r.prev):'');
  const key=r=>has?r.now:(r.ys[r.ys.length-1]||0);
  const groups=Object.entries(F.groups).map(([g,a])=>({g,...row(a)})).filter(r=>r.ys.some(v=>Math.abs(v)>0.5)||Math.abs(r.ytd)>0.5||Math.abs(r.now)>0.5||Math.abs(r.prev)>0.5).sort((a,b)=>key(b)-key(a));
  const tot=row(M.map((_,i)=>Object.values(F.groups).reduce((t,a)=>t+a[i],0)));
- let html=`<tr><th>Group</th>${years.map(y=>`<th class="n">${y}</th>`).join('')}<th class="n" title="1 Jan ${cy} to today">${cy} so far</th>${has?`<th class="n" title="${prevL}">Prior 12m</th><th class="n" title="${nowL}">Last 12m</th><th class="n">Change</th><th class="n">%</th>`:''}</tr>`;
+ let html=`<tr><th>Group</th>${years.map(y=>`<th class="n">${y}</th>`).join('')}<th class="n" title="1 Jan ${cy} to today">${cy} so far</th>${has?`<th class="n sep" title="${prevL}">Prior 12m</th><th class="n" title="${nowL}">Last 12m</th><th class="n">Change</th><th class="n">%</th>`:''}</tr>`;
  groups.forEach((r,gi)=>{html+=`<tr class="jg" data-g="${gi}"><td>${r.g}</td>${cells(r)}</tr>`;
   Object.entries(F.cats).filter(([c])=>c.startsWith(r.g+': ')).map(([c,a])=>({c:c.slice(r.g.length+2),...row(a)})).filter(x=>x.ys.some(v=>Math.abs(v)>0.5)||Math.abs(x.ytd)>0.5||Math.abs(x.now)>0.5||Math.abs(x.prev)>0.5)
    .sort((a,b)=>key(b)-key(a)).forEach(x=>{html+=`<tr class="jc" data-p="${gi}" hidden><td>${x.c}</td>${cells(x)}</tr>`})});
@@ -371,9 +372,8 @@ function drawJoint(){
  if(!F||!F.months||!F.months.length){K.innerHTML='';N.textContent='Joint account figures appear after the next daily YNAB update.';N.classList.add('keep');T.innerHTML='';return}
  const r=yearTable(F,T),t=r.tot,last=r.years[r.years.length-1],lt=t.ys[t.ys.length-1],pt=t.ys[t.ys.length-2];
  K.innerHTML='';
- if(r.has)kpi(K,r.nowL,gbp(t.now),`Last 12 complete months. ${sgn(t.now-t.prev)} (${r.pct(t.now-t.prev,t.prev)}) compared with the 12 months before (${r.prevL})`);
- kpi(K,`${last}`,gbp(lt),pt?`${sgn(lt-pt)} (${r.pct(lt-pt,pt)}) compared with ${last-1}`:'');
- kpi(K,'Average month',gbp(lt/12),`In ${last}`);
+ const vs=(a,b)=>`${sgn(a-b)} (${r.pct(a-b,b)}) versus previous 12 months`;
+ if(r.has){kpi(K,r.nowL,gbp(t.now),vs(t.now,t.prev));kpi(K,'Average month',gbp(t.now/12),vs(t.now/12,t.prev/12))}
  N.textContent=ytNote(r,'Spending from the Family Budget in YNAB: everything the joint account pays forrs combined,')+' Money moved between the joint accounts is left out.';
 }
 
@@ -421,7 +421,7 @@ function pbar(x){
  if(x==null||!isFinite(x))return '<div class="pb"><span class="num">-</span><span class="pt"></span></div>';
  const CAP=0.5,f=Math.min(1,Math.abs(x)/CAP),pos=x>=0,col=pos?'var(--pos)':'var(--neg)';
  const ov=Math.abs(x)>CAP?`<b class="ov" style="${pos?'left:calc(100% + 2px);border-left:6px solid '+col:'right:calc(100% + 2px);border-right:6px solid '+col}"></b>`:'';
- return `<div class="pb"><span class="num ${pos?'pos':'neg'}">${(pos?'+':'−')+(Math.abs(x)*100).toFixed(1)}%</span><span class="pt"><span class="z"></span><i style="${pos?'left:50%':'right:50%'};width:${f*50}%;background:${col}"></i>${ov}</span></div>`;
+ return `<div class="pb"><span class="num ${pos?'pos':'neg'}">${(pos?'+':'-')+(Math.abs(x)*100).toFixed(1)}%</span><span class="pt"><span class="z"></span><i style="${pos?'left:50%':'right:50%'};width:${f*50}%;background:${col}"></i>${ov}</span></div>`;
 }
 function drawHist(){
  const T=document.getElementById('histtab');if(!D.hist){T.innerHTML='<tr><td class="note">Price history not available yet.</td></tr>';return}
@@ -587,7 +587,7 @@ function fcRun(shift,noDraw){
   month()}
  Object.assign(out,{mpaaAge,isaOver,aaOver});return out}
 let taxOpen=false;try{taxOpen=localStorage.getItem('wealth-taxopen')==='1'}catch(e){}
-let lastInc=null;const kfmt=v=>{const a=Math.abs(v),sg=v<0?'−':'';return a>=1000?`${sg}£${(a/1000).toFixed(a>=100000?0:1)}k`:`${sg}£${Math.round(a)}`};
+let lastInc=null;const kfmt=v=>{const a=Math.abs(v),sg=v<0?'-':'';return a>=1000?`${sg}£${(a/1000).toFixed(a>=100000?0:1)}k`:`${sg}£${Math.round(a)}`};
 function drawIncome(mid){lastInc=mid;
  const rows=mid.filter(p=>p.flow&&(p.flow.spend>0||p.flow.tfc>0));const T=document.getElementById('fcinc'),N=document.getElementById('fcincnote');
  if(!rows.length){T.innerHTML='';N.textContent='Set "Spending your savings" or take tax-free cash to see where your money comes from each year.';return}
@@ -675,7 +675,7 @@ function drawSeries(k,row){
  if(pts.length<2){C.innerHTML='<p class="note keep">No prices for this period yet.</p>';return}
  const v=pts.map(p=>p[1]),a=v[0],z=v[v.length-1],ch=z/a-1,lo=Math.min(...v),hi=Math.max(...v),pad=(hi-lo)*.08||hi*.01;
  const first=serRange==='1d'?ukt(pts[0][0]):fdate(pts[0][0]),last=serRange==='1d'?ukt(pts[pts.length-1][0]):fdate(pts[pts.length-1][0]);
- Hd.innerHTML=`<b class="${ch>=0?'pos':'neg'}">${ch>=0?'+':'−'}${(Math.abs(ch)*100).toFixed(1)}%</b> <span class="note">${fmt(a)} → ${fmt(z)}${serRange==='1d'?(['BTC','ETH'].includes(k)?' · last 24 hours':' · '+fdate(pts[0][0].slice(0,10))):''}</span>`;
+ Hd.innerHTML=`<b class="${ch>=0?'pos':'neg'}">${ch>=0?'+':'-'}${(Math.abs(ch)*100).toFixed(1)}%</b> <span class="note">${fmt(a)} → ${fmt(z)}${serRange==='1d'?(['BTC','ETH'].includes(k)?' · last 24 hours':' · '+fdate(pts[0][0].slice(0,10))):''}</span>`;
  const W=Math.max(300,Math.min(900,C.clientWidth||640)),Hh=W<500?180:200,P={l:66,r:10,t:10,b:24},y0=lo-pad,y1=hi+pad;
  const x=i=>P.l+(W-P.l-P.r)*i/(pts.length-1),y=val=>P.t+(Hh-P.t-P.b)*(1-(val-y0)/(y1-y0));
  const col=ch>=0?'var(--pos)':'var(--neg)';let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Price chart">`;
@@ -759,7 +759,7 @@ function drawTax(){
  const gt=n.gains.reduce((a,x)=>a+(x.gain||0),0),aea=(RULES.cgt||{}).aea||3000;
  gr+=`<tr class="t"><td>Total gains</td><td></td><td class="n">${gbp(n.gains.reduce((a,x)=>a+x.proceeds,0),2)}</td><td class="n">${gbp(gt,2)}</td></tr>`;
  const gnote=`The tax-free allowance is ${gbp(aea)}. You have ${gbp(Math.max(0,aea-gt))} of it left. Trading 212 works gains out on average cost; HMRC's rules also match shares bought back within 30 days, which could change the figure slightly. I believe you only need to report gains if they're over the allowance or your total sale proceeds are over £50,000, but check HMRC's guidance.`;
- const c=n.code;let cr=c.rows.map(([k,a])=>`<tr><td>${k}</td><td class="n">${a<0?'−'+gbp(-a):gbp(a)}</td></tr>`).join('');
+ const c=n.code;let cr=c.rows.map(([k,a])=>`<tr><td>${k}</td><td class="n">${a<0?'-'+gbp(-a):gbp(a)}</td></tr>`).join('');
  cr+=`<tr class="t"><td>Tax-free amount</td><td class="n">${gbp(c.rows.reduce((a,x)=>a+x[1],0))}</td></tr>`;
  const py='<tr><th>Due</th><th>What</th><th class="n">Amount</th></tr>'+n.payments.map(([d,w,a,nt])=>`<tr><td>${fdate(d)}</td><td>${w}</td><td class="n">${a==null?'-':gbp(a,2)}</td></tr>`).join('');
  const chk=n.checks||[];
