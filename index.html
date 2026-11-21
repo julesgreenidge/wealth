@@ -8,9 +8,9 @@
 <title>Wealth</title>
 <style>
 :root{--bg:#f6f5f1;--panel:#fff;--fg:#1d1d1b;--muted:#6b6a65;--line:#e4e2db;--accent:#2a6fdb;--pos:#17855a;--neg:#c2413b;
---c1:#2a6fdb;--c2:#e07a2f;--c3:#c24a87;--c4:#7b5cd6;--c5:#1aa38a;--c6:#9a9890;--c7:#d4a017;--c8:#5f8f3a}
+--c1:#2a6fdb;--c2:#e07a2f;--c3:#c24a87;--c4:#7b5cd6;--c5:#1aa38a;--c6:#9a9890;--c7:#d4a017;--c8:#5f8f3a;--c9:#8c6d4f}
 @media (prefers-color-scheme:dark){:root{--g1:#8aa8e0;--g2:#5fbf9a;--g3:#e0aa55;--g4:#b096e0;--bg:#161615;--panel:#201f1d;--fg:#f0efe9;--muted:#a4a29a;--line:#34332f;--accent:#6aa0ff;--pos:#3fbf86;--neg:#ef7a72;
---c1:#5b93f0;--c2:#f0924a;--c3:#e070a8;--c4:#9a85ec;--c5:#35c3a6;--c6:#8a887f;--c7:#e6b93a;--c8:#7fb356}}
+--c1:#5b93f0;--c2:#f0924a;--c3:#e070a8;--c4:#9a85ec;--c5:#35c3a6;--c6:#8a887f;--c7:#e6b93a;--c8:#7fb356;--c9:#b8977a}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
@@ -256,8 +256,8 @@ function avg(a,end,n){let s=0;for(let i=end-n+1;i<=end;i++)s+=a[i];return s/n}
 
 /* net worth chart: stacked areas of positive types + line */
 const TL=k=>k==='Other assets'?'P2P lending':k;
-const TYPES=['Pensions','Stocks & shares ISAs','Cash ISAs','Cash savings','Current accounts','Crypto','Shares (GIA)','Other assets'];
-const TC={'Pensions':'--c1','Stocks & shares ISAs':'--c2','Cash ISAs':'--c5','Cash savings':'--c8','Current accounts':'--c6','Crypto':'--c4','Shares (GIA)':'--c3','Other assets':'--c7'};
+const TYPES=['Pensions','Stocks & shares ISAs','Cash ISAs','Cash savings','Current accounts','Crypto','Shares (GIA)','Other assets','Money lent'];
+const TC={'Pensions':'--c1','Stocks & shares ISAs':'--c2','Cash ISAs':'--c5','Cash savings':'--c8','Current accounts':'--c6','Crypto':'--c4','Shares (GIA)':'--c3','Other assets':'--c7','Money lent':'--c9'};
 let nwRange=60,nwPct=false;document.querySelectorAll('#nwu button').forEach(b=>b.onclick=()=>{nwPct=b.dataset.u==='pct';document.querySelectorAll('#nwu button').forEach(x=>x.classList.toggle('on',x===b));drawNW()});
 document.querySelectorAll('#nwr button').forEach(b=>b.onclick=()=>{nwRange=+b.dataset.r;document.querySelectorAll('#nwr button').forEach(x=>x.classList.toggle('on',x===b));drawNW()});
 function drawNW(){

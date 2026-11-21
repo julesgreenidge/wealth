@@ -10,6 +10,7 @@ def atype(a):
     if re.search(r'Cash ISA', a): return 'Cash ISAs'
     if re.search(r'Crypto|Coinbase|Electrum|Ledger|Solflare', a): return 'Crypto'
     if re.search(r'GIA|Freetrade', a): return 'Shares (GIA)'
+    if re.search(r'Personal Lending|Money lent', a): return 'Money lent'   # money lent to someone, not P2P
     if re.search(r'P2P|Lending', a): return 'Other assets'
     if re.search(r'Borrowing', a): return 'Loans'
     if re.search(r'Credit Card|AMEX', a): return 'Credit cards'
