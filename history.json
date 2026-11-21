@@ -493,56 +493,56 @@
    }
   },
   "BTC": {
-   "now": 44850.0,
+   "now": 46145.0,
    "now_date": "2026-11-21",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 70000.0,
      "start_date": "2025-11-19",
-     "change": -0.359286
+     "change": -0.340786
     },
     "3": {
      "start": 30527.8,
      "start_date": "2023-11-15",
-     "change": 0.469153
+     "change": 0.511573
     },
     "5": {
      "start": 44804.4,
      "start_date": "2021-11-17",
-     "change": 0.001018
+     "change": 0.029921
     },
     "10": {
      "start": 593.1,
      "start_date": "2016-11-16",
-     "change": 74.619626
+     "change": 76.803069
     }
    }
   },
   "ETH": {
-   "now": 1236.88,
+   "now": 1298.4,
    "now_date": "2026-11-21",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 2314.07,
      "start_date": "2025-11-19",
-     "change": -0.465496
+     "change": -0.438911
     },
     "3": {
      "start": 1658.17,
      "start_date": "2023-11-15",
-     "change": -0.254069
+     "change": -0.216968
     },
     "5": {
      "start": 3175.75,
      "start_date": "2021-11-17",
-     "change": -0.610523
+     "change": -0.591152
     },
     "10": {
      "start": 8.02,
      "start_date": "2016-11-16",
-     "change": 153.224439
+     "change": 160.895262
     }
    }
   }
