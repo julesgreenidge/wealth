@@ -100,7 +100,7 @@ nav{overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav
 #go{width:100%;font-weight:600;padding:10px;border:0;border-radius:8px;background:var(--fg);color:var(--bg);cursor:pointer}
 #go:disabled{opacity:.6;cursor:wait}
 #taxyr{flex-wrap:wrap;flex-shrink:1;max-width:100%}.taxt td:first-child{white-space:normal}.taxt td.s{color:var(--muted);font-size:12.5px;white-space:normal}.taxt tr.t td{font-weight:600;border-top:1px solid var(--line)}.taxt .est{color:var(--muted);font-style:italic}.chk{margin:0;padding-left:18px;font-size:13.5px}.chk li{margin:4px 0}
-#accts td{white-space:nowrap}#accts td.an{max-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}section p.note:not(.keep){display:none}#foot{display:none}.pnotes{margin:18px 2px 6px;padding:10px 0 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}.pnotes ol{margin:0;padding-left:18px}.pnotes li{margin:3px 0}#err{color:var(--neg);font-size:13px;min-height:20px;margin-top:10px}
+#accts td{white-space:nowrap}#accts td.an{max-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}section p.note:not(.keep){display:none}#foot{display:none}.pnotes{margin:18px 2px 6px;padding:10px 0 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}.pnotes ol{margin:0;padding-left:18px}.pnotes li{margin:3px 0}#histtab tr.hr{cursor:pointer}#histtab tr.hr:hover td{background:color-mix(in srgb,var(--g2) 8%,transparent)}#histtab tr.hr.open td{background:color-mix(in srgb,var(--g2) 12%,transparent)}#histtab tr.hd>td{padding:10px 8px 14px;white-space:normal}.sc-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}.sc-ch{font-size:14px}.sc{max-width:calc(100vw - 48px)}.sc .seg{display:flex;flex-wrap:wrap;max-width:100%}.sc svg{width:100%;height:auto;display:block}#err{color:var(--neg);font-size:13px;min-height:20px;margin-top:10px}
 .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0;opacity:0}
 [hidden]{display:none!important}
 footer{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6}
@@ -432,9 +432,10 @@ function drawHist(){
  groups.forEach(([g,test])=>{const ks=Object.keys(by).filter(test).sort((a,b)=>by[b].value-by[a].value);if(!ks.length)return;
   html+=`<tr class="grp"><td colspan="${Y.length+2}">${g}</td></tr>`;
   ks.forEach(k=>{const a=A[k],b=by[k];
-   html+=`<tr><td>${b.name}${b.ticker?` <span class="note">${b.ticker}</span>`:''}</td><td class="hm note">${[...b.pots].join(', ')}</td>`+Y.map(y=>{const p=a.periods&&a.periods[y];let x=p?p.change:null;if(x!=null&&histMode==='annual')x=Math.pow(1+x,1/y)-1;return `<td class="n" title="${p?'From '+fdate(p.start_date):'No price that far back'}">${pbar(x)}</td>`}).join('')+'</tr>'});
+   html+=`<tr class="hr" data-k="${k}"><td>${b.name}${b.ticker?` <span class="note">${b.ticker}</span>`:''}</td><td class="hm note">${[...b.pots].join(', ')}</td>`+Y.map(y=>{const p=a.periods&&a.periods[y];let x=p?p.change:null;if(x!=null&&histMode==='annual')x=Math.pow(1+x,1/y)-1;return `<td class="n" title="${p?'From '+fdate(p.start_date):'No price that far back'}">${pbar(x)}</td>`}).join('')+'</tr>'});
  });
  T.innerHTML=html;
+ T.querySelectorAll('tr.hr').forEach(tr=>tr.onclick=()=>openSeries(tr));
  document.getElementById('histnote').textContent=histMode==='annual'?'Average yearly change in price over each period. Full bar = 50% a year; an arrow means it went beyond that.':'Total change in price over each period. Full bar = 50%; an arrow means it went beyond that.';
  document.getElementById('histfoot').textContent=`Price change only, to ${fdate(D.hist.updated)}. Your funds reinvest their income, so their prices include it; shares exclude dividends. US shares are converted to pounds at the exchange rate on each date, so changes in the pound-dollar rate are included. Crypto in pounds. A dash means there is no price that far back. Sources: FT (funds and shares), Kraken (crypto). Hover over a figure to see the start date.`;
 }
@@ -645,13 +646,50 @@ fcInputs();
 if(matchMedia('(max-width:1099px)').matches)document.getElementById('fcside').open=false;
 
 document.getElementById('foot').innerHTML=D.notes.map(n=>'<div>'+n+'</div>').join('');
+/* price chart under a holding on Performance */
+let SER=null,serRange='1y';const RANGES=[['1d','1 day'],['7d','7 days'],['1m','1 month'],['6m','6 months'],['1y','1 year'],['5y','5 years'],['10y','10 years']];
+const FUNDK=['GAC','USEQ','LS100','AVUSEQ'],ukt=t=>new Date(t+':00Z').toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit'});
+async function openSeries(tr){
+ const T=tr.parentNode,was=tr.classList.contains('open');T.querySelectorAll('tr.hd').forEach(r=>r.remove());T.querySelectorAll('tr.hr.open').forEach(r=>r.classList.remove('open'));
+ if(was)return;tr.classList.add('open');
+ const k=tr.dataset.k,row=document.createElement('tr');row.className='hd';row.innerHTML=`<td colspan="${tr.children.length}"><div class="sc"><div class="sc-head"><div class="sc-ch"></div><div class="seg">${RANGES.map(([r,l])=>`<button data-r="${r}">${l}</button>`).join('')}</div></div><div class="sc-c"><p class="note keep">Loading…</p></div></div></td>`;
+ tr.after(row);
+ row.querySelectorAll('.seg button').forEach(b=>b.onclick=e=>{e.stopPropagation();serRange=b.dataset.r;drawSeries(k,row)});
+ if(!SER){try{const r=await fetch('series.json?t='+Date.now(),{cache:'no-store'});SER=r.ok?(await r.json()).assets:{}}catch(e){SER={}}}
+ drawSeries(k,row)}
+function drawSeries(k,row){
+ row.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.r===serRange));
+ const C=row.querySelector('.sc-c'),Hd=row.querySelector('.sc-ch'),S=(SER||{})[k]||{};Hd.innerHTML='';
+ const pence=k==='AAF',fmt=v=>pence?v.toFixed(1)+'p':'£'+v.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
+ let pts=[];const today=new Date(),back=d=>{const x=new Date(today);x.setDate(x.getDate()-d);return x.toISOString().slice(0,10)};
+ if(serRange==='1d')pts=S.h||[];
+ else if(['7d','1m','6m','1y'].includes(serRange)){const days={'7d':7,'1m':31,'6m':183,'1y':366}[serRange],c=back(days);pts=(S.d||[]).filter(p=>p[0]>=c)}
+ else{const c=back(serRange==='5y'?1827:3653);pts=(S.w||[]).filter(p=>p[0]>=c)}
+ if(pts.length<2){C.innerHTML=`<p class="note keep">${serRange==='1d'&&FUNDK.includes(k)?'Funds are priced once a day, so there’s no hourly chart.':'No prices for this period yet.'}</p>`;return}
+ const v=pts.map(p=>p[1]),a=v[0],z=v[v.length-1],ch=z/a-1,lo=Math.min(...v),hi=Math.max(...v),pad=(hi-lo)*.08||hi*.01;
+ const first=serRange==='1d'?ukt(pts[0][0]):fdate(pts[0][0]),last=serRange==='1d'?ukt(pts[pts.length-1][0]):fdate(pts[pts.length-1][0]);
+ Hd.innerHTML=`<b class="${ch>=0?'pos':'neg'}">${ch>=0?'+':'−'}${(Math.abs(ch)*100).toFixed(1)}%</b> <span class="note">${fmt(a)} → ${fmt(z)}${serRange==='1d'?(['BTC','ETH'].includes(k)?' · last 24 hours':' · '+fdate(pts[0][0].slice(0,10))):''}</span>`;
+ const W=Math.max(300,Math.min(900,C.clientWidth||640)),Hh=W<500?180:200,P={l:66,r:10,t:10,b:24},y0=lo-pad,y1=hi+pad;
+ const x=i=>P.l+(W-P.l-P.r)*i/(pts.length-1),y=val=>P.t+(Hh-P.t-P.b)*(1-(val-y0)/(y1-y0));
+ const col=ch>=0?'var(--pos)':'var(--neg)';let svg=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Price chart">`;
+ for(let i=0;i<=3;i++){const val=y0+(y1-y0)*i/3;svg+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y(val)}" y2="${y(val)}" stroke="var(--line)"/><text x="${P.l-6}" y="${y(val)+4}" font-size="11" fill="var(--muted)" text-anchor="end">${pence?val.toFixed(1)+'p':val>=1000?'£'+Math.round(val).toLocaleString('en-GB'):'£'+val.toFixed(2)}</text>`}
+ const d='M'+pts.map((p,i)=>x(i).toFixed(1)+','+y(p[1]).toFixed(1)).join('L');
+ svg+=`<path d="${d}L${x(pts.length-1)},${Hh-P.b}L${P.l},${Hh-P.b}Z" fill="${col}" opacity=".1"/><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>`;
+ svg+=`<text x="${P.l}" y="${Hh-6}" font-size="11" fill="var(--muted)">${first}</text><text x="${W-P.r}" y="${Hh-6}" font-size="11" fill="var(--muted)" text-anchor="end">${last}</text>`;
+ svg+=`<line class="sx" x1="0" x2="0" y1="${P.t}" y2="${Hh-P.b}" stroke="var(--muted)" stroke-dasharray="3 3" visibility="hidden"/><rect x="${P.l}" y="0" width="${W-P.l-P.r}" height="${Hh}" fill="transparent" class="sh"/></svg>`;
+ C.innerHTML=svg;const sv=C.querySelector('svg'),ln=sv.querySelector('.sx');
+ sv.querySelector('.sh').onmousemove=e=>{const r=sv.getBoundingClientRect(),fx=(e.clientX-r.left)/r.width*W,i=Math.max(0,Math.min(pts.length-1,Math.round((fx-P.l)/(W-P.l-P.r)*(pts.length-1))));
+  ln.setAttribute('x1',x(i));ln.setAttribute('x2',x(i));ln.setAttribute('visibility','visible');
+  showTip(e,`${serRange==='1d'?ukt(pts[i][0]):fdate(pts[i][0])}: <b>${fmt(pts[i][1])}</b>`)};
+ sv.querySelector('.sh').onmouseleave=()=>{ln.setAttribute('visibility','hidden');hideTip()};
+}
 /* notes at the bottom of each tab */
 function pnotes(t,arr){const sec=document.getElementById(t);let d=sec.querySelector(':scope>.pnotes');if(!d){d=el('div',{class:'pnotes'});sec.appendChild(d)}
  arr=arr.filter(Boolean);d.hidden=!arr.length;d.innerHTML='<ol>'+arr.map(x=>'<li>'+x+'</li>').join('')+'</ol>'}
 function drawNotes(){
  pnotes('overview',['Month-end balances from YNAB; today’s figure uses live prices for investments. Junior ISAs left out.','YNAB updates daily.']);
  pnotes('investing',['“Paid” is the average cost of the units you hold.','Prices update every weekday evening. Hover over a price to see its date.','Pension allowance: salary sacrifice and employer payments aren’t counted.','Aviva units are estimated until your first statement.']);
- pnotes('hist',['Average yearly price change. Full bar = 50% a year.','Price only: shares exclude dividends; funds include reinvested income.']);
+ pnotes('hist',['Click a holding to see its price chart. Hourly prices are for the latest trading day; funds are priced once a day.','Average yearly price change. Full bar = 50% a year.','Price only: shares exclude dividends; funds include reinvested income.']);
  pnotes('mix',['Funds only publish their top 10 holdings, so company figures are minimums.','Fund charges are yearly; platform fees aren’t included. Aviva’s is your plan’s own charge.','Fund make-up updates monthly from factsheets.']);
  pnotes('spending',['Spending excludes transfers to savings and investments.','Click a group to see its categories.']);
  pnotes('joint',['From the Family Budget in YNAB.']);
