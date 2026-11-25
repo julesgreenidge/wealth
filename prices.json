@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-24 05:24 UTC",
+ "updated": "2026-11-25 04:24 UTC",
  "fx": {
   "usd": {
-   "rate": 1.3074,
-   "date": "2026-11-23",
+   "rate": 1.3098,
+   "date": "2026-11-24",
    "src": "ECB (Frankfurter)"
   }
  },
@@ -27,92 +27,92 @@
    "src": "FT"
   },
   "MSFT": {
-   "price": 492.5,
-   "date": "2026-11-23",
+   "price": 496.13,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "AAPL": {
-   "price": 349.08,
-   "date": "2026-11-23",
+   "price": 354.07,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "AMD": {
-   "price": 453.46,
-   "date": "2026-11-23",
+   "price": 413.27,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "META": {
-   "price": 597.6,
-   "date": "2026-11-23",
+   "price": 589.82,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "NVDA": {
-   "price": 165.05,
-   "date": "2026-11-23",
+   "price": 155.38,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "AMZN": {
-   "price": 255.39,
-   "date": "2026-11-23",
+   "price": 252.29,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "GOOGL": {
-   "price": 282.1,
-   "date": "2026-11-23",
+   "price": 279.05,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "DIS": {
-   "price": 120.27,
-   "date": "2026-11-23",
+   "price": 122.51,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "PEP": {
-   "price": 140.21,
-   "date": "2026-11-23",
+   "price": 142.68,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "AAF": {
-   "price": 272.4,
-   "date": "2026-11-23",
+   "price": 272.2,
+   "date": "2026-11-24",
    "cur": "GBp",
    "src": "FT"
   },
   "BTC": {
-   "price": 46477.0,
-   "date": "2026-11-24",
+   "price": 45211.0,
+   "date": "2026-11-25",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1307.99,
-   "date": "2026-11-24",
+   "price": 1268.59,
+   "date": "2026-11-25",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "AVUSEQ": {
-   "price": 10.25,
-   "date": "2026-11-23",
+   "price": 10.79,
+   "date": "2026-11-24",
    "cur": "GBP",
    "src": "FT"
   },
   "MU": {
-   "price": 707.7,
-   "date": "2026-11-23",
+   "price": 629.79,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   },
   "AVGO": {
-   "price": 313.55,
-   "date": "2026-11-23",
+   "price": 301.08,
+   "date": "2026-11-24",
    "cur": "USD",
    "src": "FT"
   }
