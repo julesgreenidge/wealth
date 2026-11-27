@@ -1,28 +1,28 @@
 {
- "updated": "2026-11-26 03:41 UTC",
+ "updated": "2026-11-27 03:41 UTC",
  "fx": {
   "usd": {
-   "rate": 1.306,
-   "date": "2026-11-25",
+   "rate": 1.3104,
+   "date": "2026-11-26",
    "src": "ECB (Frankfurter)"
   }
  },
  "items": {
   "GAC": {
-   "price": 278.63,
-   "date": "2026-11-24",
+   "price": 278.13,
+   "date": "2026-11-25",
    "cur": "GBP",
    "src": "FT"
   },
   "USEQ": {
-   "price": 1235.87,
-   "date": "2026-11-24",
+   "price": 1239.42,
+   "date": "2026-11-25",
    "cur": "GBP",
    "src": "FT"
   },
   "LS100": {
-   "price": 474.28,
-   "date": "2026-11-24",
+   "price": 472.78,
+   "date": "2026-11-25",
    "cur": "GBP",
    "src": "FT"
   },
@@ -81,26 +81,26 @@
    "src": "FT"
   },
   "AAF": {
-   "price": 270.2,
-   "date": "2026-11-25",
+   "price": 274.0,
+   "date": "2026-11-26",
    "cur": "GBp",
    "src": "FT"
   },
   "BTC": {
-   "price": 46261.0,
-   "date": "2026-11-26",
+   "price": 46854.0,
+   "date": "2026-11-27",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "ETH": {
-   "price": 1292.4,
-   "date": "2026-11-26",
+   "price": 1316.74,
+   "date": "2026-11-27",
    "cur": "GBP",
    "src": "CoinGecko"
   },
   "AVUSEQ": {
-   "price": 10.66,
-   "date": "2026-11-25",
+   "price": 10.67,
+   "date": "2026-11-26",
    "cur": "GBP",
    "src": "FT"
   },

@@ -1,126 +1,126 @@
 {
- "updated": "2026-11-26",
+ "updated": "2026-11-27",
  "assets": {
   "GAC": {
-   "now": 278.63,
-   "now_date": "2026-11-24",
+   "now": 278.13,
+   "now_date": "2026-11-25",
    "src": "FT",
    "periods": {
     "1": {
-     "start": 258.4,
-     "start_date": "2025-11-26",
-     "change": 0.078289,
+     "start": 258.14,
+     "start_date": "2025-11-27",
+     "change": 0.077439,
      "gbp": false
     },
     "3": {
-     "start": 183.98,
-     "start_date": "2023-11-24",
-     "change": 0.514458,
+     "start": 183.65,
+     "start_date": "2023-11-27",
+     "change": 0.514457,
      "gbp": false
     },
     "5": {
      "start": 179.6,
      "start_date": "2021-11-26",
-     "change": 0.551392,
+     "change": 0.548608,
      "gbp": false
     },
     "10": {
      "start": 101.18,
      "start_date": "2016-11-25",
-     "change": 1.753805,
+     "change": 1.748863,
      "gbp": false
     }
    }
   },
   "AVUSEQ": {
-   "now": 10.66,
-   "now_date": "2026-11-25",
+   "now": 10.67,
+   "now_date": "2026-11-26",
    "src": "FT",
    "periods": {
     "1": {
-     "start": 9.86,
-     "start_date": "2025-11-26",
-     "change": 0.081136,
+     "start": 9.9,
+     "start_date": "2025-11-27",
+     "change": 0.077778,
      "gbp": false
     },
     "3": {
-     "start": 6.76,
-     "start_date": "2023-11-24",
-     "change": 0.576923,
+     "start": 6.72,
+     "start_date": "2023-11-27",
+     "change": 0.587798,
      "gbp": false
     },
     "5": {
      "start": 6.41,
      "start_date": "2021-11-26",
-     "change": 0.663027,
+     "change": 0.664587,
      "gbp": false
     },
     "10": {
      "start": 2.95,
      "start_date": "2016-11-25",
-     "change": 2.613559,
+     "change": 2.616949,
      "gbp": false
     }
    }
   },
   "USEQ": {
-   "now": 1235.87,
-   "now_date": "2026-11-24",
+   "now": 1239.42,
+   "now_date": "2026-11-25",
    "src": "FT",
    "periods": {
     "1": {
-     "start": 1149.59,
-     "start_date": "2025-11-26",
-     "change": 0.075053,
+     "start": 1147.64,
+     "start_date": "2025-11-27",
+     "change": 0.079973,
      "gbp": false
     },
     "3": {
-     "start": 795.3,
-     "start_date": "2023-11-24",
-     "change": 0.553967,
+     "start": 794.2,
+     "start_date": "2023-11-27",
+     "change": 0.560589,
      "gbp": false
     },
     "5": {
      "start": 766.28,
      "start_date": "2021-11-26",
-     "change": 0.612818,
+     "change": 0.617451,
      "gbp": false
     },
     "10": {
      "start": 372.5,
      "start_date": "2016-11-25",
-     "change": 2.317772,
+     "change": 2.327302,
      "gbp": false
     }
    }
   },
   "LS100": {
-   "now": 474.28,
-   "now_date": "2026-11-24",
+   "now": 472.78,
+   "now_date": "2026-11-25",
    "src": "FT",
    "periods": {
     "1": {
-     "start": 435.34,
-     "start_date": "2025-11-26",
-     "change": 0.089447,
+     "start": 435.12,
+     "start_date": "2025-11-27",
+     "change": 0.086551,
      "gbp": false
     },
     "3": {
-     "start": 310.14,
-     "start_date": "2023-11-24",
-     "change": 0.529245,
+     "start": 309.18,
+     "start_date": "2023-11-27",
+     "change": 0.529142,
      "gbp": false
     },
     "5": {
      "start": 296.8,
      "start_date": "2021-11-26",
-     "change": 0.597978,
+     "change": 0.592925,
      "gbp": false
     },
     "10": {
      "start": 177.06,
      "start_date": "2016-11-25",
-     "change": 1.67864,
+     "change": 1.670168,
      "gbp": false
     }
    }
@@ -133,25 +133,25 @@
     "1": {
      "start": 485.5,
      "start_date": "2025-11-26",
-     "change": 0.019324,
+     "change": 0.015901,
      "gbp": true
     },
     "3": {
-     "start": 377.43,
-     "start_date": "2023-11-24",
-     "change": 0.249664,
+     "start": 378.61,
+     "start_date": "2023-11-27",
+     "change": 0.247709,
      "gbp": true
     },
     "5": {
      "start": 329.68,
      "start_date": "2021-11-26",
-     "change": 0.51828,
+     "change": 0.513182,
      "gbp": true
     },
     "10": {
      "start": 60.53,
      "start_date": "2016-11-25",
-     "change": 6.706656,
+     "change": 6.680779,
      "gbp": true
     }
    }
@@ -164,25 +164,25 @@
     "1": {
      "start": 277.55,
      "start_date": "2025-11-26",
-     "change": 0.294087,
+     "change": 0.289742,
      "gbp": true
     },
     "3": {
-     "start": 189.97,
-     "start_date": "2023-11-24",
-     "change": 0.801972,
+     "start": 189.79,
+     "start_date": "2023-11-27",
+     "change": 0.806489,
      "gbp": true
     },
     "5": {
      "start": 156.81,
      "start_date": "2021-11-26",
-     "change": 1.316722,
+     "change": 1.308943,
      "gbp": true
     },
     "10": {
      "start": 27.95,
      "start_date": "2016-11-25",
-     "change": 11.113179,
+     "change": 11.072506,
      "gbp": true
     }
    }
@@ -195,25 +195,25 @@
     "1": {
      "start": 214.24,
      "start_date": "2025-11-26",
-     "change": 0.914366,
+     "change": 0.907938,
      "gbp": true
     },
     "3": {
-     "start": 122.31,
-     "start_date": "2023-11-24",
-     "change": 2.195891,
+     "start": 122.65,
+     "start_date": "2023-11-27",
+     "change": 2.191993,
      "gbp": true
     },
     "5": {
      "start": 154.81,
      "start_date": "2021-11-26",
-     "change": 1.679597,
+     "change": 1.670599,
      "gbp": true
     },
     "10": {
      "start": 8.77,
      "start_date": "2016-11-25",
-     "change": 43.081985,
+     "change": 42.933969,
      "gbp": true
     }
    }
@@ -226,25 +226,25 @@
     "1": {
      "start": 633.61,
      "start_date": "2025-11-26",
-     "change": -0.027707,
+     "change": -0.030972,
      "gbp": true
     },
     "3": {
-     "start": 338.23,
-     "start_date": "2023-11-24",
-     "change": 0.735942,
+     "start": 334.7,
+     "start_date": "2023-11-27",
+     "change": 0.756981,
      "gbp": true
     },
     "5": {
      "start": 333.12,
      "start_date": "2021-11-26",
-     "change": 0.870515,
+     "change": 0.864234,
      "gbp": true
     },
     "10": {
      "start": 120.38,
      "start_date": "2016-11-25",
-     "change": 3.823917,
+     "change": 3.807719,
      "gbp": true
     }
    }
@@ -257,25 +257,25 @@
     "1": {
      "start": 180.26,
      "start_date": "2025-11-26",
-     "change": -0.163381,
+     "change": -0.16619,
      "gbp": true
     },
     "3": {
-     "start": 47.78,
-     "start_date": "2023-11-24",
-     "change": 2.008219,
+     "start": 48.24,
+     "start_date": "2023-11-27",
+     "change": 1.984172,
      "gbp": true
     },
     "5": {
      "start": 31.5,
      "start_date": "2021-11-26",
-     "change": 3.842388,
+     "change": 3.826128,
      "gbp": true
     },
     "10": {
      "start": 2.35,
      "start_date": "2016-11-25",
-     "change": 59.491528,
+     "change": 59.288413,
      "gbp": true
     }
    }
@@ -288,25 +288,25 @@
     "1": {
      "start": 229.16,
      "start_date": "2025-11-26",
-     "change": 0.077415,
+     "change": 0.073798,
      "gbp": true
     },
     "3": {
-     "start": 146.74,
-     "start_date": "2023-11-24",
-     "change": 0.603621,
+     "start": 147.73,
+     "start_date": "2023-11-27",
+     "change": 0.595354,
      "gbp": true
     },
     "5": {
      "start": 175.23,
      "start_date": "2021-11-26",
-     "change": 0.425136,
+     "change": 0.420351,
      "gbp": true
     },
     "10": {
      "start": 39.02,
      "start_date": "2016-11-25",
-     "change": 4.964442,
+     "change": 4.944415,
      "gbp": true
     }
    }
@@ -319,25 +319,25 @@
     "1": {
      "start": 319.95,
      "start_date": "2025-11-26",
-     "change": -0.137802,
+     "change": -0.140697,
      "gbp": true
     },
     "3": {
-     "start": 136.69,
-     "start_date": "2023-11-24",
-     "change": 0.923449,
+     "start": 136.41,
+     "start_date": "2023-11-27",
+     "change": 0.930398,
      "gbp": true
     },
     "5": {
      "start": 142.18,
      "start_date": "2021-11-26",
-     "change": 0.962427,
+     "change": 0.955838,
      "gbp": true
     },
     "10": {
      "start": 39.01,
      "start_date": "2016-11-25",
-     "change": 5.66574,
+     "change": 5.643358,
      "gbp": true
     }
    }
@@ -350,25 +350,25 @@
     "1": {
      "start": 103.43,
      "start_date": "2025-11-26",
-     "change": 0.226622,
+     "change": 0.222503,
      "gbp": true
     },
     "3": {
-     "start": 96.06,
-     "start_date": "2023-11-24",
-     "change": 0.25876,
+     "start": 95.17,
+     "start_date": "2023-11-27",
+     "change": 0.272509,
      "gbp": true
     },
     "5": {
      "start": 148.11,
      "start_date": "2021-11-26",
-     "change": -0.133606,
+     "change": -0.136515,
      "gbp": true
     },
     "10": {
      "start": 98.82,
      "start_date": "2016-11-25",
-     "change": 0.210173,
+     "change": 0.206109,
      "gbp": true
     }
    }
@@ -381,25 +381,25 @@
     "1": {
      "start": 147.98,
      "start_date": "2025-11-26",
-     "change": -0.017538,
+     "change": -0.020837,
      "gbp": true
     },
     "3": {
-     "start": 169.37,
-     "start_date": "2023-11-24",
-     "change": -0.181892,
+     "start": 168.32,
+     "start_date": "2023-11-27",
+     "change": -0.175507,
      "gbp": true
     },
     "5": {
      "start": 161.14,
      "start_date": "2021-11-26",
-     "change": -0.087447,
+     "change": -0.090511,
      "gbp": true
     },
     "10": {
      "start": 102.17,
      "start_date": "2016-11-25",
-     "change": 0.341314,
+     "change": 0.33681,
      "gbp": true
     }
    }
@@ -412,25 +412,25 @@
     "1": {
      "start": 230.26,
      "start_date": "2025-11-26",
-     "change": 1.63757,
+     "change": 1.628714,
      "gbp": true
     },
     "3": {
-     "start": 76.87,
-     "start_date": "2023-11-24",
-     "change": 6.529982,
+     "start": 77.51,
+     "start_date": "2023-11-27",
+     "change": 6.479434,
      "gbp": true
     },
     "5": {
      "start": 83.42,
      "start_date": "2021-11-26",
-     "change": 6.363685,
+     "change": 6.33896,
      "gbp": true
     },
     "10": {
      "start": 20.13,
      "start_date": "2016-11-25",
-     "change": 27.438974,
+     "change": 27.343483,
      "gbp": true
     }
    }
@@ -443,106 +443,106 @@
     "1": {
      "start": 397.57,
      "start_date": "2025-11-26",
-     "change": -0.235604,
+     "change": -0.238171,
      "gbp": true
     },
     "3": {
-     "start": 97.89,
-     "start_date": "2023-11-24",
-     "change": 1.958843,
+     "start": 95.02,
+     "start_date": "2023-11-27",
+     "change": 2.052958,
      "gbp": true
     },
     "5": {
      "start": 54.66,
      "start_date": "2021-11-26",
-     "change": 4.62348,
+     "change": 4.604597,
      "gbp": true
     },
     "10": {
      "start": 17.68,
      "start_date": "2016-11-25",
-     "change": 15.202603,
+     "change": 15.148199,
      "gbp": true
     }
    }
   },
   "AAF": {
-   "now": 270.2,
-   "now_date": "2026-11-25",
+   "now": 274.0,
+   "now_date": "2026-11-26",
    "src": "FT",
    "periods": {
     "1": {
-     "start": 314.6,
-     "start_date": "2025-11-26",
-     "change": -0.141132,
+     "start": 311.2,
+     "start_date": "2025-11-27",
+     "change": -0.119537,
      "gbp": false
     },
     "3": {
-     "start": 112.3,
-     "start_date": "2023-11-24",
-     "change": 1.406055,
+     "start": 113.1,
+     "start_date": "2023-11-27",
+     "change": 1.422635,
      "gbp": false
     },
     "5": {
      "start": 121.3,
      "start_date": "2021-11-26",
-     "change": 1.227535,
+     "change": 1.258862,
      "gbp": false
     },
     "10": null
    }
   },
   "BTC": {
-   "now": 46261.0,
-   "now_date": "2026-11-26",
+   "now": 46854.0,
+   "now_date": "2026-11-27",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 68361.8,
      "start_date": "2025-11-26",
-     "change": -0.323292
+     "change": -0.314617
     },
     "3": {
      "start": 29980.8,
      "start_date": "2023-11-22",
-     "change": 0.543021
+     "change": 0.5628
     },
     "5": {
      "start": 42942.9,
      "start_date": "2021-11-24",
-     "change": 0.077268
+     "change": 0.091077
     },
     "10": {
      "start": 609.1,
      "start_date": "2016-11-23",
-     "change": 74.949762
+     "change": 75.92333
     }
    }
   },
   "ETH": {
-   "now": 1292.4,
-   "now_date": "2026-11-26",
+   "now": 1316.74,
+   "now_date": "2026-11-27",
    "src": "Kraken (weekly closes)",
    "periods": {
     "1": {
      "start": 2286.21,
      "start_date": "2025-11-26",
-     "change": -0.434698
+     "change": -0.424051
     },
     "3": {
      "start": 1652.9,
      "start_date": "2023-11-22",
-     "change": -0.218102
+     "change": -0.203376
     },
     "5": {
      "start": 3208.43,
      "start_date": "2021-11-24",
-     "change": -0.597186
+     "change": -0.5896
     },
     "10": {
      "start": 8.0,
      "start_date": "2016-11-23",
-     "change": 160.55
+     "change": 163.5925
     }
    }
   }
